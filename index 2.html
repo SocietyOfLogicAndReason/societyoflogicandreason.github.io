@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>SOLAR - Society of Logic and Reason</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+      /* Header */
+      header {
+        background-color: #24f;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        flex-wrap: wrap; /* stack on small screens */
+      }
+
+      header img {
+        height: auto;
+        max-height: 80px;
+        flex: 1 1 auto;
+        object-fit: contain;
+      }
+
+      /* Tabs */
+      .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        display: flex;
+        justify-content: center; /* centers the tab buttons */
+        flex-wrap: wrap; /* wrap tabs on mobile */
+      }
+
+      .tab button {
+        background-color: inherit;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        margin: 4px;
+        border-radius: 8px; /* rounded edges */
+      }
+
+      .tab button:hover {
+        background-color: #ddd;
+      }
+
+      .tab button.active {
+        background-color: #ccc;
+      }
+
+      /* Tab content */
+      .tabcontent {
+        display: none;
+        padding: 12px;
+      }
+
+      /* Centering utility */
+      .centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      /* Responsive YouTube embeds */
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 700px;
+        padding-bottom: 56.25%; /* 16:9 ratio */
+        height: 0;
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Responsive PDF embeds */
+      .pdf-container {
+        width: 100%;
+        max-width: 600px;
+        height: 80vh; /* take up most of screen height */
+      }
+
+      .pdf-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+
+    <script>
+      function openTab(evt, name) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(name).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Banner -->
+    <header>
+      <img src="bannerLeft.png" alt="Left Banner">
+      <img src="bannerText.png" alt="Center Banner Text">
+      <img src="bannerRight.png" alt="Right Banner">
+    </header>
+
+    <!-- Tabs -->
+    <div class="tab">
+      <button class="tablinks active" onclick="openTab(event, 'about')">About</button>
+      <button class="tablinks" onclick="openTab(event, 'mission')">Mission Statement</button>
+      <button class="tablinks" onclick="openTab(event, 'PIP')">Prove It Post</button>
+      <button class="tablinks" onclick="openTab(event, 'members')">Members</button>
+      <button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <!-- About -->
+      <div class="tabcontent" id="about" style="display: block;">
+        SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth. 
+        <a href="https://www.youtube.com/@societyoflogicandreason">YouTube channel</a>
+      </div>
+
+      <!-- Mission -->
+      <div class="tabcontent" id="mission">
+        Mature in knowledge and wisdom of logic and the Bible, equipping ourselves to stand up for moral values, uphold a Biblical worldview, and ultimately defend truth. 
+        <p><em>1 Peter 3:15</em> — “But in your hearts honor Christ the Lord as holy, always being prepared to make a defense to anyone who asks you for a reason for the hope that is in you; yet do it with gentleness and respect.”</p>
+      </div>
+
+      <!-- Prove It Posts -->
+      <div class="tabcontent" id="PIP">
+        <div class="centered">
+          <div class="pdf-container">
+            <iframe src="THE PROVE IT POST DECEMBER.pdf"></iframe>
+          </div>
+        </div>
+        <div class="centered">
+          <div class="pdf-container">
+            <iframe src="THE PROVE IT POST January.pdf"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Members -->
+      <div class="tabcontent" id="members">
+        Our members are... Lincoln Bontrager, Lucas Miller, Sammy Buck, Ben Buck, Ian Miller, Logan Ulrich, Elijah Lehman.
+      </div>
+
+      <!-- Videos -->
+      <div class="tabcontent" id="videos">
+        <div class="centered">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/sViNL4i0xJo?si=9HHj_ZrTeP0MphCE" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="centered">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/IjR7fYYx2gU?si=eEsWIOo6_UcIb84V" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="centered">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/-3My_NYp8_I?si=3z627BRAT3Iy93Jt" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="centered">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/9I4N441ePCg?si=_1funzpW36IGGTjp" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
