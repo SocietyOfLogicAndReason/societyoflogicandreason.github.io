@@ -1,185 +1,279 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>SOLAR - Society of Logic and Reason</title>
-		<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR - Society of Logic and Reason</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
-		<style>
-		   /* Style the tab */
-		.tab {
-		  overflow: hidden;
-		  border: 1px solid #ccc;
-		  background-color: #f1f1f1;
-		  display: flex;
-          justify-content: center; /* centers the tab buttons */
-		}
+<style>
+/* ----------------- HEADER / BANNER ----------------- */
+.banner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px; /* reduced gap for shorter banner */
+  padding: 6px; /* reduced padding to shorten height */
+  background-color: #24f;
+}
 
-		/* Style the buttons that are used to open the tab content */
-		.tab button {
-         background-color: inherit;
-         border: none;
-         outline: none;
-         cursor: pointer;
-         padding: 14px 16px;
-         transition: 0.3s;
-         margin: 0 4px; /* optional spacing between buttons */
-         border-radius: 8px; /* rounded edges */
-		}
+.BannerLeft,
+.BannerText,
+.BannerRight {
+  width: 90%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+}
 
-		/* Change background color of buttons on hover */
-		.tab button:hover {
-		  background-color: #ddd;
-		}
+/* Desktop layout */
+@media (min-width: 900px) {
+  .banner-container {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 50px !important; /* spacing between images */
+    padding: 10px !important; /* reduce vertical height */
+  }
+  .BannerLeft {
+    width: 25% !important;
+  }
+  .BannerText {
+    width: 25% !important;
+  }
+  .BannerRight {
+    width: 30% !important; /* right banner slightly bigger */
+    max-width: 400px !important;
+  }
+}
 
-		/* Create an active/current tablink class */
-		.tab button.active {
-		  background-color: #ccc;
-		}
+/* ----------------- TABS ----------------- */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tab button {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  margin: 4px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+.tab button:hover {
+  background-color: #ddd;
+}
+.tab button.active {
+  background-color: #ccc;
+}
+.tabcontent {
+  display: none;
+  padding: 15px;
+  max-width: 900px;
+  margin: 0 auto;
+}
 
-		/* Style the tab content */
-		.tabcontent {
-		  display: none;
-		  padding: 6px 12px;
-		}
+/* ----------------- MEMBERS GRID ----------------- */
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin: 20px auto;
+  max-width: 1000px;
+}
+.member {
+  text-align: center;
+}
+.member img {
+  border-radius: 12px;
+  max-width: 180px;
+  height: auto;
+}
 
-		header img {
-			padding: 15px;
-		}
-		</style>
-		<script>
-				function openTab(evt, name) {
-			  // Declare all variables
-			  var i, tabcontent, tablinks;
+/* ----------------- PROVE IT POSTS ----------------- */
+.pip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin: 20px auto;
+  max-width: 900px;
+}
+.pip-item img {
+  width: 100%;
+  border-radius: 14px;
+}
 
-			  // Get all elements with class="tabcontent" and hide them
-			  tabcontent = document.getElementsByClassName("tabcontent");
-			  for (i = 0; i < tabcontent.length; i++) {
-			    tabcontent[i].style.display = "none";
-			  }
+/* ----------------- YOUTUBE RESPONSIVE ----------------- */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto 20px;
+  padding-bottom: 56.25%;
+}
+.video-wrapper iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
 
-			  // Get all elements with class="tablinks" and remove the class "active"
-			  tablinks = document.getElementsByClassName("tablinks");
-			  for (i = 0; i < tablinks.length; i++) {
-			    tablinks[i].className = tablinks[i].className.replace(" active", "");
-			  }
+/* ----------------- RESPONSIVE ----------------- */
+@media (max-width: 899px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+  }
+  .pip-grid {
+    grid-template-columns: 1fr;
+  }
+  .BannerLeft,
+  .BannerText,
+  .BannerRight {
+    max-width: 180px; /* smaller on mobile */
+  }
+}
+</style>
 
-			  // Show the current tab, and add an "active" class to the button that opened the tab
-			  document.getElementById(name).style.display = "block";
-			  evt.currentTarget.className += " active";
-			}
-		</script>
-	</head>
+<script>
+function openTab(evt, name) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(name).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+window.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('.tablinks').click();
+});
+</script>
 
-	<body>
-		<header style="background-color: #24f; display: flex; align-items: center;">
-				<img src="bannerLeft.png" align="left" width="20%" height="auto">
-				<img src="bannerText.png" align="center" width="50%" height="auto">
-				<img src="bannerRight.png" align="right" width="20%" height="auto">
-			
-		</header>
-		<div class="tab">
-			<button class="tablinks active" onclick="openTab(event, 'about')">About</button>
-			<button class="tablinks" onclick="openTab(event, 'values')">Core Values</button>
-			<button class="tablinks" onclick="openTab(event, 'PIP')">Prove it Post</button>
-			<button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
-			<button class="tablinks" onclick="openTab(event, 'contact')">Contact</button>
-		</div>
-		<div class="main">
-			<div class="tabcontent" id="about" style="display: block;">
-				<font size="4">
-				<p>SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth.</p>
-               <font size="5">
-				<p>Members<br>
-				<font size="4">
-            <p>Lincoln Bontrager,</p>
-			<p>Lucas Miller,</p>
-			<p>Sammy Buck, </p>
-			<p>Ben Buck, </p>
-			<p>Ian Miller, </p>
-			<p>Logan Ulrich, </p>
-			<p>Elijah Lehman.</p>
-			</div>
-			<div class="tabcontent" id="values">
-				<font size="5">
-				<p>Core Values<br>
-				<font size="4">
-			  The Society of Logic and Reason is founded and governed by logic, which is right thinking. All things that SOLAR occupants decide for the club, be it moral or opinionated, shall be dictated by correct reasoning, using logic. That is to say, one cannot be perfectly logical, because logic (correct thinking) is based on God. God is the only one perfectly logical in all he does. And since we are not God, we are not perfectly logical. However, this does not mean we should not try to be logical. God calls us to be like Him. So we should try to be logical in everything we do.</p>
-			  <font size="5">
-			  <p>Mission statement<br>
-			  <font size="4">
-              Mature in knowledge and wisdom of logic and the Bible, equipping ourselves to stand up for moral values, uphold a Biblical worldview, and ultimately defend truth.<br>1 Peter 3:15 “But in your hearts honor Christ the Lord as holy, always being prepared to make a defense to anyone who asks you for a reason for the hope that is in you; yet do it with gentleness and respect.”</p>
+</head>
+<body>
 
-			</div>
-			<div class="tabcontent" id="PIP">
-			<font size="5">
-				THE PROVE IT POST#2 This is America!
-			<p><a href="THEPROVEITPOST02ThisisAmerica.pdf"><img src="PIP2TN.png" align="center" width="35%" height="auto"></a></p>
-			THE PROVE IT POST#3Sunday is not part of the weekend!
-			<p><a href="THEPROVEITPOST03Sundayisnotpartoftheweekend.pdf"><img src="PIP3TN.png" align="center" width="35%" height="auto"></a></p>
-			<font size="5">
-				THE PROVE IT POST#4 Adornment finidhing
-			<p><a href="THEPROVEITPOST04Adornmentfinidhing.pdf"><img src="PIP4TN.png" align="center" width="35%" height="auto"></a></p>
-				
-			</div>
-			
-			<div class="tabcontent" id="videos">
-			<font size="5">
-				<p>Playlist</p>
-			
-			<p><iframe width="560" height="315" 
-			src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&amp;list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" 
-			title="YouTube video player" 
-			frameborder="0" 
-			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+<!-- ----------------- HEADER / BANNER ----------------- -->
+<header>
+  <div class="banner-container">
+    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
+    <img class="BannerText" src="bannerText.png" alt="banner text">
+    <img class="BannerRight" src="bannerRight.png" alt="right banner">
+  </div>
+</header>
 
-			<p>
-		    Playlist Videos
-			</p>
+<!-- ----------------- TABS ----------------- -->
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'about')">About</button>
+  <button class="tablinks" onclick="openTab(event, 'values')">Core Values</button>
+  <button class="tablinks" onclick="openTab(event, 'PIP')">Prove it Post</button>
+  <button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
+  <button class="tablinks" onclick="openTab(event, 'contact')">Contact</button>
+</div>
 
-			 		<p><iframe width="560" 
-			 			height="315" src="https://www.youtube.com/embed/FSLjkPfEcOg?si=jT4_efGzwGTqjTzc" 
-			 			title="YouTube video player" 
-			 			frameborder="10" 
-			 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+<!-- ----------------- ABOUT TAB ----------------- -->
+<div class="tabcontent" id="about" style="display: block;">
+  <p>SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth.</p>
+  <h3>Members</h3>
+  <div class="members-grid">
+    <div class="member">
+      <img src="lincoln.JPG" alt="Lincoln Bontrager">
+      <p><strong>Lincoln Bontrager</strong></p>
+      <p>-founder-</p>
+    </div>
+    <div class="member">
+      <img src="Lucas.JPG" alt="Lucas Miller">
+      <p><strong>Lucas Miller</strong></p>
+      <p>-Co-founder-</p>
+      <p>-Writer-</p>
+    </div>
+    <div class="member">
+      <img src="Sammy.JPG" alt="Sammy Buck">
+      <p><strong>Sammy Buck</strong></p>
+      <p>-Co-founder-</p>
+      <p>-Video-</p>
+      <p>-Treasurer-</p>
+    </div>
+    <div class="member">
+      <img src="Ben.JPG" alt="Ben Buck">
+      <p><strong>Ben Buck</strong></p>
+      <p>-Member-</p>
+      <p>-Writer-</p>
+    </div>
+    <div class="member">
+      <img src="Ian.JPG" alt="Ian Miller">
+      <p><strong>Ian Miller</strong></p>
+      <p>-Member-</p>
+    </div>
+    <div class="member">
+      <img src="Logan.JPG" alt="Logan Ulrich">
+      <p><strong>Logan Ulrich</strong></p>
+      <p>-Member-</p>
+    </div>
+    <div class="member">
+      <img src="Elijah.JPG" alt="Elijah Lehman">
+      <p><strong>Elijah Lehman</strong></p>
+      <p>-Member-</p>
+    </div>
+  </div>
+</div>
 
-			 			<p><iframe width="560" 
-			 				height="315" 
-			 				src="https://www.youtube.com/embed/bwgJCYLqtoE?si=v88SSa9Bb2-SfIA_" 
-			 				title="YouTube video player" 
-			 				frameborder="10" 
-			 				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+<!-- ----------------- VALUES TAB ----------------- -->
+<div class="tabcontent" id="values">
+  <h3>Core Values</h3>
+  <p>The Society of Logic and Reason is founded and governed by logic...</p>
+  <h3>Mission statement</h3>
+  <p>Mature in knowledge and wisdom of logic and the Bible...</p>
+</div>
 
-			 			<p><iframe width="560" 
-			 					height="315" 
-			 					src="https://www.youtube.com/embed/q6wf_mIAyFw?si=dL8Dfg_3fuo9SiTF" 
-			 					title="YouTube video player" 
-			 					frameborder="10" 
-			 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+<!-- ----------------- PIP TAB ----------------- -->
+<div class="tabcontent" id="PIP">
+  <div class="pip-grid">
+    <div class="pip-item">
+      <p><strong>THE PROVE IT POST#2 This is America!</strong></p>
+      <a href="THEPROVEITPOST02ThisisAmerica.pdf"><img src="PIP2TN.png" alt="" class="post-thumb"></a>
+    </div>
+    <div class="pip-item">
+      <p><strong>THE PROVE IT POST#3 Sunday is not part of the weekend!</strong></p>
+      <a href="THEPROVEITPOST03Sundayisnotpartoftheweekend.pdf"><img src="PIP3TN.png" alt="" class="post-thumb"></a>
+    </div>
+    <div class="pip-item">
+      <p><strong>THE PROVE IT POST#4 Anti Adornment</strong></p>
+      <a href="THEPROVEITPOST04AntiAdornment.pdf"><img src="PIP4TN.png" alt="" class="post-thumb"></a>
+    </div>
+  </div>
+</div>
 
-                      <p><iframe width="560" height="315"
-			 
-			 src="https://www.youtube.com/embed/y9Jr5ENVFVA?si=wUDeQfY-olK1WHTU" 
-			 title="YouTube video player" 
-			 frameborder="10" 
-			 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+<!-- ----------------- VIDEOS TAB ----------------- -->
+<div class="tabcontent" id="videos">
+  <h3>Playlist</h3>
+  <div class="video-wrapper">
+    <iframe src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+  <p>Playlist Videos</p>
+  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/FSLjkPfEcOg" allowfullscreen></iframe></div>
+  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/bwgJCYLqtoE" allowfullscreen></iframe></div>
+  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/q6wf_mIAyFw" allowfullscreen></iframe></div>
+  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/y9Jr5ENVFVA" allowfullscreen></iframe></div>
+  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/VrIvwPConv0" allowfullscreen></iframe></div>
+</div>
 
+<!-- ----------------- CONTACT TAB ----------------- -->
+<div class="tabcontent" id="contact">
+  <p>Email - societyoflogicandreason@gmail.com</p>
+  <p>YouTube - <a href="https://www.youtube.com/@societyoflogicandreason">@societyoflogicandreason</a></p>
+</div>
 
-			 			<p><iframe width="560" height="315" 
-			 		src="https://www.youtube.com/embed/VrIvwPConv0?si=gvDJAeYK5NEBuMis" 
-			 		title="YouTube video player" 
-			 		frameborder="10" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
-
-			</div>
-
-			<div class="tabcontent" id="contact">
-				<font size="4">
-			<p>Email-societyoflogicandreason@gmail.com 
-				
-				</p>YouTube channel-<a href="https://www.youtube.com/@societyoflogicandreason">@societyoflogicandreason.com</a></p>	
-			</div>
-		</div>
-		
-	</body>
+</body>
 </html>
+
