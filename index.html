@@ -12,8 +12,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px; /* reduced gap for shorter banner */
-  padding: 6px; /* reduced padding to shorten height */
+  gap: 8px; 
+  padding: 6px; 
   background-color: #24f;
 }
 
@@ -31,19 +31,12 @@
   .banner-container {
     flex-direction: row !important;
     justify-content: space-between !important;
-    gap: 50px !important; /* spacing between images */
-    padding: 10px !important; /* reduce vertical height */
+    gap: 50px !important;
+    padding: 10px !important;
   }
-  .BannerLeft {
-    width: 25% !important;
-  }
-  .BannerText {
-    width: 25% !important;
-  }
-  .BannerRight {
-    width: 30% !important; /* right banner slightly bigger */
-    max-width: 400px !important;
-  }
+  .BannerLeft { width: 25% !important; }
+  .BannerText { width: 25% !important; }
+  .BannerRight { width: 30% !important; max-width: 400px !important; }
 }
 
 /* ----------------- TABS ----------------- */
@@ -66,12 +59,8 @@
   transition: 0.3s;
   font-size: 16px;
 }
-.tab button:hover {
-  background-color: #ddd;
-}
-.tab button.active {
-  background-color: #ccc;
-}
+.tab button:hover { background-color: #ddd; }
+.tab button.active { background-color: #ccc; }
 .tabcontent {
   display: none;
   padding: 15px;
@@ -87,9 +76,7 @@
   margin: 20px auto;
   max-width: 1000px;
 }
-.member {
-  text-align: center;
-}
+.member { text-align: center; }
 .member img {
   border-radius: 12px;
   max-width: 180px;
@@ -127,17 +114,11 @@
 
 /* ----------------- RESPONSIVE ----------------- */
 @media (max-width: 899px) {
-  .members-grid {
-    grid-template-columns: 1fr;
-  }
-  .pip-grid {
-    grid-template-columns: 1fr;
-  }
+  .members-grid { grid-template-columns: 1fr; }
+  .pip-grid { grid-template-columns: 1fr; }
   .BannerLeft,
   .BannerText,
-  .BannerRight {
-    max-width: 180px; /* smaller on mobile */
-  }
+  .BannerRight { max-width: 180px; }
 }
 </style>
 
@@ -145,13 +126,9 @@
 function openTab(evt, name) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
+  for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
   tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
+  for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
   document.getElementById(name).style.display = "block";
   evt.currentTarget.className += " active";
 }
@@ -163,7 +140,6 @@ window.addEventListener('DOMContentLoaded', function () {
 </head>
 <body>
 
-<!-- ----------------- HEADER / BANNER ----------------- -->
 <header>
   <div class="banner-container">
     <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
@@ -172,7 +148,6 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </header>
 
-<!-- ----------------- TABS ----------------- -->
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'about')">About</button>
   <button class="tablinks" onclick="openTab(event, 'values')">Core Values</button>
@@ -181,54 +156,52 @@ window.addEventListener('DOMContentLoaded', function () {
   <button class="tablinks" onclick="openTab(event, 'contact')">Contact</button>
 </div>
 
-<!-- ----------------- ABOUT TAB ----------------- -->
 <div class="tabcontent" id="about" style="display: block;">
   <p>SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth.</p>
   <h3>Members</h3>
   <div class="members-grid">
     <div class="member">
-      <img src="lincoln.JPG" alt="Lincoln Bontrager">
+      <img src="lincoln.jpg" alt="Lincoln Bontrager">
       <p><strong>Lincoln Bontrager</strong></p>
       <p>-founder-</p>
     </div>
     <div class="member">
-      <img src="Lucas.JPG" alt="Lucas Miller">
+      <img src="lucas.jpg" alt="Lucas Miller">
       <p><strong>Lucas Miller</strong></p>
       <p>-Co-founder-</p>
       <p>-Writer-</p>
     </div>
     <div class="member">
-      <img src="Sammy.JPG" alt="Sammy Buck">
+      <img src="sammy.jpg" alt="Sammy Buck">
       <p><strong>Sammy Buck</strong></p>
       <p>-Co-founder-</p>
       <p>-Video-</p>
       <p>-Treasurer-</p>
     </div>
     <div class="member">
-      <img src="Ben.JPG" alt="Ben Buck">
+      <img src="ben.jpg" alt="Ben Buck">
       <p><strong>Ben Buck</strong></p>
       <p>-Member-</p>
       <p>-Writer-</p>
     </div>
     <div class="member">
-      <img src="Ian.JPG" alt="Ian Miller">
+      <img src="ian.jpg" alt="Ian Miller">
       <p><strong>Ian Miller</strong></p>
       <p>-Member-</p>
     </div>
     <div class="member">
-      <img src="Logan.JPG" alt="Logan Ulrich">
+      <img src="logan.jpg" alt="Logan Ulrich">
       <p><strong>Logan Ulrich</strong></p>
       <p>-Member-</p>
     </div>
     <div class="member">
-      <img src="Elijah.JPG" alt="Elijah Lehman">
+      <img src="elijah.jpg" alt="Elijah Lehman">
       <p><strong>Elijah Lehman</strong></p>
       <p>-Member-</p>
     </div>
   </div>
 </div>
 
-<!-- ----------------- VALUES TAB ----------------- -->
 <div class="tabcontent" id="values">
   <h3>Core Values</h3>
   <p>The Society of Logic and Reason is founded and governed by logic...</p>
@@ -236,7 +209,6 @@ window.addEventListener('DOMContentLoaded', function () {
   <p>Mature in knowledge and wisdom of logic and the Bible...</p>
 </div>
 
-<!-- ----------------- PIP TAB ----------------- -->
 <div class="tabcontent" id="PIP">
   <div class="pip-grid">
     <div class="pip-item">
@@ -254,21 +226,13 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<!-- ----------------- VIDEOS TAB ----------------- -->
 <div class="tabcontent" id="videos">
   <h3>Playlist</h3>
   <div class="video-wrapper">
     <iframe src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" title="YouTube video player" allowfullscreen></iframe>
   </div>
-  <p>Playlist Videos</p>
-  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/FSLjkPfEcOg" allowfullscreen></iframe></div>
-  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/bwgJCYLqtoE" allowfullscreen></iframe></div>
-  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/q6wf_mIAyFw" allowfullscreen></iframe></div>
-  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/y9Jr5ENVFVA" allowfullscreen></iframe></div>
-  <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/VrIvwPConv0" allowfullscreen></iframe></div>
 </div>
 
-<!-- ----------------- CONTACT TAB ----------------- -->
 <div class="tabcontent" id="contact">
   <p>Email - societyoflogicandreason@gmail.com</p>
   <p>YouTube - <a href="https://www.youtube.com/@societyoflogicandreason">@societyoflogicandreason</a></p>
@@ -276,4 +240,3 @@ window.addEventListener('DOMContentLoaded', function () {
 
 </body>
 </html>
-
