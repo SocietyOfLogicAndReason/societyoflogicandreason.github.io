@@ -73,12 +73,11 @@
 
 /* Main Layout */
 .main-layout {
-  max-width: 1200px;
-  margin: 0 auto 50px auto;
   display: flex;
   gap: 25px;
   align-items: flex-start;
 }
+
 .pip-column {
   flex: 2;
   max-width: 750px;
@@ -86,11 +85,12 @@
   font-size: 24px;
 }
 .ads-column {
-  flex: 1;
-  max-width: 320px;
+  width: 300px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  text-align: center;
 }
 .ad-box {
   border: 1px solid #ccc;
