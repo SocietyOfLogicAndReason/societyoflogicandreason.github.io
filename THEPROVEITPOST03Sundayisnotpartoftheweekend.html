@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR - Society of Logic and Reason</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+<style>
+/* Banner */
+.banner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background-color: #24f;
+}
+
+.BannerLeft, .BannerText, .BannerRight {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+/* Desktop Banner Layout */
+@media (min-width: 900px) {
+  .banner-container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 250px;
+  }
+  .BannerLeft { width: 8%; }
+  .BannerText { width: 100%; max-width: 350px; }
+  .BannerRight { width: 110%; max-width: 240px; }
+}
+
+/* Tabs */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tab button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  margin: 4px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+.tab button:hover { background-color: #ddd; }
+
+/* Prove It Post header */
+.pip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 25px auto;
+}
+.pip-header h1 {
+  font-size: 70px;
+  margin: 0;
+}
+.pip-header img {
+  max-height: 120px;
+  object-fit: contain;
+  margin-left: 20px;
+}
+
+/* Main Layout */
+.main-layout {
+  max-width: 1200px;
+  margin: 0 auto 50px auto;
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+}
+
+/* LEFT COLUMN – ARTICLE */
+.pip-column {
+  flex: 2;
+  max-width: 750px;
+  line-height: 1.6;
+  font-size: 24px;
+}
+
+/* RIGHT COLUMN – ADS */
+.ads-column {
+  flex: 1;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Ad blocks */
+.ad-box {
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fafafa;
+  text-align: center;
+  min-height: 120px;
+}
+.ad-box img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 899px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  .ads-column {
+    max-width: 100%;
+  }
+  .pip-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .pip-header img {
+    margin-left: 0;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="banner-container">
+    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
+    <img class="BannerText" src="bannerText.png" alt="banner text">
+    <img class="BannerRight" src="bannerRight.png" alt="right banner">
+  </div>
+</header>
+
+<!-- Tabs -->
+<div class="tab">
+  <button onclick="location.href='https://societyoflogicandreason.com'">About</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Members</button>
+  <button onclick="location.href='https://societyoflogicandreason.com/pip'">Prove it Post</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Videos</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Contact</button>
+</div>
+
+<!-- HEADER ABOVE MAIN CONTENT -->
+<div class="pip-header" style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 20px auto;">
+  
+  <!-- Left text column -->
+  <div style="display: flex; flex-direction: column;">
+    <p style="font-size: 16px; margin: 0;">Common 1st month of the year of our Lord 2,023  Post#3</p>
+    <p style="font-size: 90px; margin: 0;">THE PROVE IT POST</p>
+  </div>
+  
+  <!-- Right image -->
+  <img src="piplogo.png" alt="Banner Image" style="max-height: 120px; object-fit: contain; margin-left: 20px;">
+</div>
+
+<!-- MAIN LAYOUT: ARTICLE LEFT, ADS RIGHT -->
+<div class="main-layout">
+
+  <!-- LEFT: ARTICLE -->
+  <div class="pip-column">
+
+    <h3 style="font-size: 45px; margin: 0;">Sunday is not part of the weekend!</h3>
+    <p>By Ben Buck, post writer.</p>
+
+    <p>People commonly consider Sunday as part of the
+weekend, but that makes no sense, because it is the
+first day of the week. Some say the weekend is both
+ends of the week but then it would be the weekends,
+and weeks go forewords and can never go backwords.
+They have a start and an end, not 2 ends. People never
+consider January as part of the end of the year. Some
+people claim that Monday is the first day of the week
+but you just have to look at a calendar to prove that
+wrong. Jesus rose from the dead on Sunday, the first
+day of the week, the day after the sabbath (Matthew
+28:1). The Seventh-day Adventists have church on
+Saturday, so if Sunday is actually the 7th day then oops.
+People also talk about “week days” or something is
+“During the week” but if some days are not part of the
+week what are they part of? Its because most people
+work Monday through Friday, so they say Monday
+through Friday are the weekdays and Saturday and
+Sunday is the weekend. But that's like school people
+saying that mid August through mid June is the
+yearmonths and mid June through mid August is the
+yearend. That makes no sense. Some people even
+consider Monday as part of the weekend if it is a
+holiday, which is stupid. Weeks are 7 days long, so all
+days are part of a week! So the weeks starts with
+Sunday and ends with Saturday, Ha!</p>
+<img src="PIP031.png"width="95%">
+<img src="PIP032.png"width="95%">
+<p>And the names of the days of the week are pagan, so
+maybe we should rename them. We should name them
+based on what God created on the first days of the first
+week. The 1st day: Sunday, the day of the Sun, is
+derived from Hellenistic astrology. We can call it
+Liteday. The 2nd day: Monday or “Moon Day” we can
+call it Skyday. The 3rd day: Tuesday which comes from
+the day of Tiw or Týr, the god of single combat. We
+can call it Landay from Land, or Lantday from land,
+plant. The 4th day: Wednesday which comes from
+Wōdnesdæg 'day of Woden', reflecting the religion
+practiced by the Anglo-Saxons. We can call it Sunday,
+because God made the son, moon and stars in the 4th
+day. But that would be confusing, so Smooserday from
+sun, moon, star. Or Starday. The 5th day: Thursday
+from Thor the Norse god of thunder. We can call it
+Birday from Bird, or Fliesimday from fly-swim. The
+6
+th day: Friday from the goddess Frigg. We can call it
+Manday from man, or Anhumday from Animal,
+Human. The 7th day: Saturday, from Saturn. We can
+call it Restday or Sabbathday.
+So our new day of the week are:
+<p>1
+st day: Liteday (Sunday)</p>
+<p>2
+nd day: Skyday (Monday)</p>
+<p>3
+rd day: Landay (Tuesday)</p>
+<p>4
+th day: Smooserday (Wednesday)</p>
+<p>5
+th day: Fliesimday (Thursday)</p>
+<p>6
+th day: Anhumday (Friday)</p>
+<p>7
+th day: Restday (Saturday)</p>
+But we need new names for the days of the months too.
+I will discus that in the next Prove It Post: When was
+Jesus born?</p>
+
+
+  </div>
+
+  <!-- RIGHT: ADS -->
+  <div class="ads-column">
+
+  
+    <div class="ad-box">
+      <h2>Duck Eggs for Sale!!</h2>
+<p style="font-size: 18px;">Better than chicken
+eggs and better for you!</p>
+<p style="font-size: 20px;">Only $6.00/dozen<br>phone # (574)971-0572</p>
+<p style="font-size: 18px;">Isaiah 55:2b Listen diligently
+to me, and eat what is good
+and delight yourselves in
+rich food.</p>
+    </div>
+
+    <div class="ad-box">
+ <h2>Terry Tales</h2>
+ <p style="font-size: 18px;">Funny comedy videos made by Sammy Buck.</p>
+ <img src="ad3.png";>
+ <p style="font-size: 18px;"><a href="https://www.youtube.com/@SammyTheBuck" target="_blank">youtube.com/@SammyTheBuck</a></p>
+     </div>
+     
+   <div class="ad-box">
+      <img src="ad1.png";>
+    </div>
+     <div class="ad-box">
+      <h2>Advertise for free!</h2>
+      <p style="font-size: 18px;">Need to advertise something? You
+      can advertise for free in The Prove
+      It Post. Email
+      benbuck@mail.com subject “Prove
+      it post ad”</p>
+    </div>
+
+    <div class="ad-box">
+      <img src="ad2.png";>
+    </div>
+   
+    <div class="ad-box">
+    <h2>Zappizoids</h2>
+    <p style="font-size: 20px;">SALE!!!<br>
+ <s>$25 each</s> 2 for $50!
+ Order now! </p>
+ <p>www.Zappizoids.fake</p>
+    </div>
+  <div class="ad-box">
+    <h2>Hate this Prove it Post?</h2>
+      <p style="font-size: 18px;">If you disagree with this post, we
+want to hear about it so we can
+prove you wrong. Email your
+objections to benbuck@mail.com
+under the subject “Objection PIP#2”</p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
