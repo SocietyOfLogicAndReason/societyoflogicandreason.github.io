@@ -147,12 +147,17 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </header>
 
-<div class="tab">
+<div class="tab" style="display: flex; align-items: center; gap: 8px;">
   <button class="tablinks" onclick="openTab(event, 'about')">About</button>
   <button class="tablinks" onclick="openTab(event, 'members')">Members</button>
   <button class="tablinks" onclick="openTab(event, 'PIP')">Prove it Post</button>
   <button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
-  <button class="tablinks" onclick="openTab(event, 'contact')">Contact</button>
+    <button class="tablinks" onclick="openTab(event, 'contact')">Contact</button>
+
+  <!-- YouTube icon link -->
+  <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" style="display: flex; align-items: center; height: 100%;">
+    <img src="yt.png" height="20px">
+  </a>
 </div>
 
 <div class="tabcontent" id="members" style="display: block;">
