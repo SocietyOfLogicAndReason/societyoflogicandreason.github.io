@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR - Society of Logic and Reason</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+<style>
+/* Banner */
+.banner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background-color: #24f;
+}
+
+.BannerLeft, .BannerText, .BannerRight {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+/* Desktop Banner Layout */
+@media (min-width: 900px) {
+  .banner-container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 250px;
+  }
+  .BannerLeft { width: 8%; }
+  .BannerText { width: 100%; max-width: 350px; }
+  .BannerRight { width: 110%; max-width: 240px; }
+}
+
+/* Tabs */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tab button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  margin: 4px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+.tab button:hover { background-color: #ddd; }
+
+/* Prove It Post header */
+.pip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 25px auto;
+}
+.pip-header h1 {
+  font-size: 70px;
+  margin: 0;
+}
+.pip-header img {
+  max-height: 120px;
+  object-fit: contain;
+  margin-left: 20px;
+}
+
+/* Main Layout */
+.main-layout {
+  max-width: 1200px;
+  margin: 0 auto 50px auto;
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+}
+
+/* LEFT COLUMN – ARTICLE */
+.pip-column {
+  flex: 2;
+  max-width: 750px;
+  line-height: 1.6;
+  font-size: 24px;
+}
+
+/* RIGHT COLUMN – ADS */
+.ads-column {
+  flex: 1;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Ad blocks */
+.ad-box {
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fafafa;
+  text-align: center;
+  min-height: 120px;
+}
+.ad-box img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 899px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  .ads-column {
+    max-width: 100%;
+  }
+  .pip-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .pip-header img {
+    margin-left: 0;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="banner-container">
+    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
+    <img class="BannerText" src="bannerText.png" alt="banner text">
+    <img class="BannerRight" src="bannerRight.png" alt="right banner">
+  </div>
+</header>
+
+<!-- Tabs -->
+<div class="tab">
+  <button onclick="location.href='https://societyoflogicandreason.com'">About</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Members</button>
+  <button onclick="location.href='https://societyoflogicandreason.com/pip'">Prove it Post</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Videos</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Contact</button>
+</div>
+
+<!-- HEADER ABOVE MAIN CONTENT -->
+<div class="pip-header" style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 20px auto;">
+  
+  <!-- Left text column -->
+  <div style="display: flex; flex-direction: column;">
+    <p style="font-size: 16px; margin: 0;">Common 12th month of the year of our Lord 2,022 Post#2</p>
+    <p style="font-size: 90px; margin: 0;">THE PROVE IT POST</p>
+  </div>
+  
+  <!-- Right image -->
+  <img src="piplogo.png" alt="Banner Image" style="max-height: 120px; object-fit: contain; margin-left: 20px;">
+</div>
+
+<!-- MAIN LAYOUT: ARTICLE LEFT, ADS RIGHT -->
+<div class="main-layout">
+
+  <!-- LEFT: ARTICLE -->
+  <div class="pip-column">
+
+    <h3 style="font-size: 45px; margin: 0;">This is America!</h3>
+    <p>By Ben Buck, post writer.</p>
+
+    <p>People commonly call the United
+States of America just “America”
+but is just 1 of the 23 continental
+American countries not including
+the island countries. The name
+"America" was first recorded on a
+map made by the German
+cartographer Martin Waldseemüller
+in France in the year of our Lord
+1,507 placed in south America. It
+was the first map to show America
+as a separate continent instead of
+part of Asia. In a book that went
+with the map apparently written by
+Martin Waldseemüller's collaborator
+Matthias Ringmann says "I do not
+see what right any one would have
+to object to calling this part [that is,
+the South American mainland], after
+Americus who discovered it and
+who is a man of intelligence,
+Amerigen, that is, the Land of
+Americus, or America: since both
+Europa and Asia got their names
+from women" But its suspicious
+because it was not the cartographer who named new lands but explorers or monarchs, and it was
+tradition to only use first names of royal people and last names
+of other people. His map did not reach Spain until after
+Amerigo Vespucci's death. So the name may have came from
+the Amerrisque Mountains in Nicaragua where Christopher
+Columbus landed on his 4th voyage. Amerrisque means
+“country of the Wind” so it may have changed to America and
+then spread by spoken language throughout Europe relatively
+quickly even reaching Martin Waldseemüller. Either way America became the name of the new double continent. Later
+the British colonized part of America and call it British
+America because it was the part of America the British owned.
+Part of British America became the 13 colonies and became a
+independent country and called themselves the United States of
+America because it was colonies that where now states that
+where united in America. But United States of America is so
+much work to say that people are lazy and just call it “United
+states” or “America” but United states could be confused with
+the United States of Colombia (Year of our Lord 1,863-1,886)
+or the United Mexican States witch conveniently is in a
+different order. But you can just call those “Colombia” and
+“Mexico” without confusion (except for maybe all of America
+should be called Colombia after Christopher Columbus who
+usually gets the credit for discovering it) So if you are to lazy
+to say United States of America its better to say United States
+because the United States of Colombia don't exist anymore and
+Mexico is in a different order, but if you call it America then it
+can be confused with the double continent of America witch in
+some countries is considered 1 continent called America. Or
+you could call it the USA witch if they know what it stands for
+they wont be confused. As for what you call someone from the
+United States of America, most people call them Americans
+but this is confused with Americans. Some people call them
+“United-Statesian” which is better but a Mexican could just as
+easily call as a United-Statesian. So you can call the USAmericans but this is lazy so they should be called “United
+States of Americans” calling the United States of America
+“America” is like calling France “Eurasia” and so you compare
+America and Canada you could compare Eurasia and Spain.
+That makes no sense! And calling united states of Americans
+“Americans” would be like calling people from Central
+African Republic “Africans”. So the United States of America
+in in America and people from the are United States of
+Americans! The problem is the United States of America does
+not have a name, just a title of what it is.</p>
+
+  </div>
+
+  <!-- RIGHT: ADS -->
+  <div class="ads-column">
+
+  
+    <div class="ad-box">
+      <h2>Duck Eggs for Sale!!</h2>
+<p style="font-size: 18px;">Better than chicken
+eggs and better for you!</p>
+<p style="font-size: 20px;">Only $6.00/dozen<br>phone # (574)971-0572</p>
+<p style="font-size: 18px;">Isaiah 55:2b Listen diligently
+to me, and eat what is good
+and delight yourselves in
+rich food.</p>
+    </div>
+
+    <div class="ad-box">
+ <h2>Terry Tales</h2>
+ <p style="font-size: 18px;">Funny comedy videos made by Sammy Buck.</p>
+ <img src="ad3.png";>
+ <p style="font-size: 18px;"><a href="https://www.youtube.com/@SammyTheBuck" target="_blank">youtube.com/@SammyTheBuck</a></p>
+     </div>
+     
+   <div class="ad-box">
+      <img src="ad1.png";>
+    </div>
+     <div class="ad-box">
+      <h2>Advertise for free!</h2>
+      <p style="font-size: 18px;">Need to advertise something? You
+      can advertise for free in The Prove
+      It Post. Email
+      benbuck@mail.com subject “Prove
+      it post ad”</p>
+    </div>
+
+    <div class="ad-box">
+      <img src="ad2.png";>
+    </div>
+   
+    <div class="ad-box">
+    <h2>Zappizoids</h2>
+    <p style="font-size: 20px;">SALE!!!<br>
+ <s>$25 each</s> 2 for $50!
+ Order now! </p>
+ <p>www.Zappizoids.fake</p>
+    </div>
+  <div class="ad-box">
+    <h2>Hate this Prove it Post?</h2>
+      <p style="font-size: 18px;">If you disagree with this post, we
+want to hear about it so we can
+prove you wrong. Email your
+objections to benbuck@mail.com
+under the subject “Objection PIP#2”</p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
