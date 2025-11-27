@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR - Society of Logic and Reason</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+<style>
+/* Banner */
+.banner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background-color: #24f;
+}
+
+.BannerLeft, .BannerText, .BannerRight {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+/* Desktop Banner Layout */
+@media (min-width: 900px) {
+  .banner-container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 250px;
+  }
+  .BannerLeft { width: 8%; }
+  .BannerText { width: 100%; max-width: 350px; }
+  .BannerRight { width: 110%; max-width: 240px; }
+}
+
+/* Tabs */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tab button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  margin: 4px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+.tab button:hover { background-color: #ddd; }
+
+/* Prove It Post header */
+.pip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 25px auto;
+}
+.pip-header h1 {
+  font-size: 70px;
+  margin: 0;
+}
+.pip-header img {
+  max-height: 120px;
+  object-fit: contain;
+  margin-left: 20px;
+}
+
+/* Main Layout */
+.main-layout {
+  max-width: 1200px;
+  margin: 0 auto 50px auto;
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+}
+
+/* LEFT COLUMN – ARTICLE */
+.pip-column {
+  flex: 2;
+  max-width: 750px;
+  line-height: 1.6;
+  font-size: 24px;
+}
+
+/* RIGHT COLUMN – ADS */
+.ads-column {
+  flex: 1;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Ad blocks */
+.ad-box {
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fafafa;
+  text-align: center;
+  min-height: 120px;
+}
+.ad-box img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 899px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  .ads-column {
+    max-width: 100%;
+  }
+  .pip-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .pip-header img {
+    margin-left: 0;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="banner-container">
+    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
+    <img class="BannerText" src="bannerText.png" alt="banner text">
+    <img class="BannerRight" src="bannerRight.png" alt="right banner">
+  </div>
+</header>
+
+<!-- Tabs -->
+<div class="tab">
+  <button onclick="location.href='https://societyoflogicandreason.com'">About</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Members</button>
+  <button onclick="location.href='https://societyoflogicandreason.com/pip'">Prove it Post</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Videos</button>
+  <button onclick="location.href='https://societyoflogicandreason.com'">Contact</button>
+</div>
+
+<!-- HEADER ABOVE MAIN CONTENT -->
+<div class="pip-header" style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 20px auto;">
+  
+  <!-- Left text column -->
+  <div style="display: flex; flex-direction: column;">
+    <p style="font-size: 16px; margin: 0;">Common 10th month of the year of our Lord 2,025  Post#4</p>
+    <p style="font-size: 90px; margin: 0;">THE PROVE IT POST</p>
+  </div>
+  
+  <!-- Right image -->
+  <img src="piplogo.png" alt="Banner Image" style="max-height: 120px; object-fit: contain; margin-left: 20px;">
+</div>
+
+<!-- MAIN LAYOUT: ARTICLE LEFT, ADS RIGHT -->
+<div class="main-layout">
+
+  <!-- LEFT: ARTICLE -->
+  <div class="pip-column">
+
+    <h3 style="font-size: 45px; margin: 0;">Girls shouldn't adorn themselves
+in vain jewelry and make up!!!!
+</h3>
+    <p>By Ben Buck, post writer.</p>
+
+    <p>Stop wearing jewelry: earrings, finger rings, necklaces, bracelets, and the
+like!!! Stop wearing makeup on your eyelids and face, and lipstick on
+your lips and painting your nails!!! Stop styling your hair!!! Do you wish
+to please the world or follow the scriptures? But what do the scriptures
+say? It is written: “Likewise also women should adorn themselves in
+respectable apparel, with modesty and self-control, not with braided hair
+or gold or pearls or costly clothing, but with good works, as is proper for
+women who profess godliness.” 1 Timothy 2:9-11
+it is also written: “Do not let your adorning be outward - braiding of hair
+and putting around of gold, or putting on of garments, but the hidden man
+of the heart, in the imperishable of the gentle and quiet spirit, which is of
+great worth before God.” 1 Peter 3:3-4</p>
+<h3>What should you NOT do?</h3>
+<p>“not with braided hair or gold or pearls or costly clothing”
+“Do not let your adorning be outward - braiding of hair and putting
+around of gold, or putting on of garments”
+That is 3 forbidden things:
+<br>1 braided hair
+<br>2 gold and pearls
+<br>3 costly clothing
+gold, pearls and costly clothing are expensive. Do not waste your money
+on vain adornment when you could be giving the money to feed someone
+who is dying of starvation. However its not just about money, its about
+not decorating your outward appearance to draw attention. So you should
+not were jewelry even if your get it for free, like earrings, noes rings,
+finger rings, necklaces, bracelets, anklelets or fake gold, fake pearls and
+gems. Don't were cheap fashion clothing either for Peter just says
+“putting on of garments” referring to adorning yourself in garments,
+instead of them being just to clothe yourself. Braided hair is not
+expensive. So modifying outward appearance to draw attention in any
+way like wearing makeup on your eyelids and face, and lipstick on your
+lips and painting your fingernails nails and toenails, styling your hair
+straightening curly hair, curling straightening hair, dying your hair, and
+other such vanities are not to be done! are you not content with the way
+God made your hair? by changing your hair and your face you are
+rejecting the beauty God gave you and are exchanging it for the beauty of
+the gentiles. Or wearing high heels, they are not practical and just to
+make you look taller, why do you want to look taller anyway? For it is
+written: “...the Lord does not see as man sees; for man looks at the
+outward appearance, but the Lord looks at the heart.” 1 Samuel 16:7
+It is also written: “Charm is deceitful and beauty is vain, But a woman who fears the Lord, she shall be praised.” Proverbs 31:30
+Engagement rings and marriage rings could be argued as not vain because
+of there symbolism, however why do they need to be gold and/or have a
+diamond or gem on them? Just symbolism? Or a excuse for vain
+adornment. Not to mention the money people spend on them.
+So the ring itself may not be vain, but the diamond is. </p>
+<h3>What should you do?</h3>
+<p>“Likewise also women should adorn themselves in respectable apparel,
+with modesty and self-control,.......with good works, as is proper for
+women who profess godliness. Let a woman learn in quietness, in all
+submissiveness. But I do not permit a woman to teach, nor to use
+authority over a man, but to to remain quiet. For Adam was formed first,
+then Eve. And Adam was not deceived, but the woman, having been
+deceived, has come into transgression. But she will be saved through
+childbearing, if they continue in faith and love and holiness, with selfcontrol. ” 1 Timothy 2:9,11-15
+“Likewise wives, be subject to the own husbands so that, even if any are
+disobedient to the word, they will be won over without word by the
+conduct of the wives, having witnessed your respectful, pure conduct, Do
+not let your adorning be outward …. but the hidden man of the heart, in
+the imperishable of the gentle and quiet spirit, which is of great worth
+before God. For in this manner, in former times, the holy women who
+trusted in God also adorned themselves, being subject to the own
+husbands, as Sarah obeyed Abraham, calling him lord, of whom you have
+become children, doing good and not fearing any consternation” 1 Peter
+3:1-2,4-6
+So ware modest, respectable apparel. Not vain or immodest clothing, or
+ornaments on you body, But “let your adorning be of the heart” question
+what you put on. Is it decorating your outward appearance to draw
+attention?
+</p>
+<h3>Objection 1.</h3>
+<p>someone will say: “I can do both, as long as I am adorning
+my hart I can also have external adornments as long as there not
+important to me” NO! It is written: “Do not let your adorning be
+outward .” “..women <span style="font-size:28px; font-style:italic;font-weight:600;">should</span> adorn themselves in respectable
+apparel,...<span style="font-size:28px; font-style:italic;font-weight:600;">not</span> with braided hair or gold or pearls or costly clothing...”
+If God does not care for your outward adornments, than who do you
+adorn yourself for? Yourself? No you can't see your your own head. For
+others? Who do you want to be attractive to? The Gentiles? Any Godly
+man would see your outward adornment as ugly! It is written: “Charm is
+deceitful and beauty is vain, But a woman who fears the Lord, she shall
+be praised.” Proverbs 31:30
+</p>
+<h3>Objection 2.</h3>
+<p> someone will say:“But my grandma gave me this earring
+and I promised her I would ware it for the rest of my life, I;m not wareing
+it to draw attention, its to remember my grandma”</p>
+<h3>Objection 3.</h3>
+<p>Tell me your other objections because I have no idea why
+girls where jewelry.
+But why is this addressed to woman. What about men? Well think about
+it who is adorning themselves outwardly? Woman.Yes some times guys
+do some of these things and things like tattoos, stylish hair cuts, vain expensive cowboy boots and vain
+watches,or body building just for
+looks. Anything that is for outward
+used to gain attention. And guys are
+certainly not exempt, but the them
+they wright: “I desire therefore that
+the men pray everywhere, lifting up
+holy hands, without wrath and
+doubting” “Husbands, likewise,
+dwell with them with understanding,
+giving honor to the wife, as to the
+weaker vessel, and as being heirs
+together of the grace of life, that
+your prayers may not be hindered.”
+</p>
+
+
+
+  </div>
+
+  <!-- RIGHT: ADS -->
+  <div class="ads-column">
+
+  
+    <div class="ad-box">
+      <h2>Duck Eggs for Sale!!</h2>
+<p style="font-size: 18px;">Better than chicken
+eggs and better for you!</p>
+<p style="font-size: 20px;">Only $6.00/dozen<br>phone # (574)971-0572</p>
+<p style="font-size: 18px;">Isaiah 55:2b Listen diligently
+to me, and eat what is good
+and delight yourselves in
+rich food.</p>
+    </div>
+
+    <div class="ad-box">
+ <h2>Terry Tales</h2>
+ <p style="font-size: 18px;">Funny comedy videos made by Sammy Buck.</p>
+ <img src="ad3.png";>
+ <p style="font-size: 18px;"><a href="https://www.youtube.com/@SammyTheBuck" target="_blank">youtube.com/@SammyTheBuck</a></p>
+     </div>
+     
+   <div class="ad-box">
+      <img src="ad1.png";>
+    </div>
+     <div class="ad-box">
+      <h2>Advertise for free!</h2>
+      <p style="font-size: 18px;">Need to advertise something? You
+      can advertise for free in The Prove
+      It Post. Email
+      benbuck@mail.com subject “Prove
+      it post ad”</p>
+    </div>
+
+    <div class="ad-box">
+      <img src="ad2.png";>
+    </div>
+   
+    <div class="ad-box">
+    <h2>Zappizoids</h2>
+    <p style="font-size: 20px;">SALE!!!<br>
+ <s>$25 each</s> 2 for $50!
+ Order now! </p>
+ <p>www.Zappizoids.fake</p>
+    </div>
+  <div class="ad-box">
+    <h2>Hate this Prove it Post?</h2>
+      <p style="font-size: 18px;">If you disagree with this post, we
+want to hear about it so we can
+prove you wrong. Email your
+objections to benbuck@mail.com
+under the subject “Objection PIP#2”</p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
