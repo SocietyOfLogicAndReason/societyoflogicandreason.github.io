@@ -7,6 +7,19 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 <style>
+  .fullscreen-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid #888;
+  background: #eee;
+}
+.fullscreen-btn:hover {
+  background: #ddd;
+}
+
 /* Banner */
 .banner-container {
   display: flex;
@@ -133,6 +146,8 @@
 }
 </style>
 
+
+
 </head>
 <body>
 
@@ -164,19 +179,34 @@
   }
 </style>
 
+<script>
+function goFullscreen(id) {
+  const iframe = document.getElementById(id);
+  if (iframe.requestFullscreen) iframe.requestFullscreen();
+  else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+  else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+}
+</script>
+
+
 <div class="games-grid">
-  <iframe src="https://scratch.mit.edu/projects/746039760/embed"
-          allowtransparency="true"
-          scrolling="no"
-          allowfullscreen></iframe>
 
-  <iframe src="https://scratch.mit.edu/projects/863026345/embed"
-          allowtransparency="true"
-          scrolling="no"
-          allowfullscreen></iframe>
+  <div>
+    <iframe id="game1" src="https://scratch.mit.edu/projects/746039760/embed"
+            allowtransparency="true" scrolling="no" allowfullscreen></iframe>
+    <button class="fullscreen-btn" onclick="goFullscreen('game1')">Full Screen</button>
+  </div>
 
-  <iframe src="https://scratch.mit.edu/projects/831380343/embed"
-          allowtransparency="true"
-          scrolling="no"
-          allowfullscreen></iframe>
+  <div>
+    <iframe id="game2" src="https://scratch.mit.edu/projects/863026345/embed"
+            allowtransparency="true" scrolling="no" allowfullscreen></iframe>
+    <button class="fullscreen-btn" onclick="goFullscreen('game2')">Full Screen</button>
+  </div>
+
+  <div>
+    <iframe id="game3" src="https://scratch.mit.edu/projects/831380343/embed"
+            allowtransparency="true" scrolling="no" allowfullscreen></iframe>
+    <button class="fullscreen-btn" onclick="goFullscreen('game3')">Full Screen</button>
+  </div>
+
 </div>
