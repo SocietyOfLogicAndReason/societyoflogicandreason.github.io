@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR - Apostle's creed</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+<style>
+  .text-box {
+  max-width: 700px;   /* how wide the text is allowed to be */
+  margin: 0 auto;     /* centers it horizontally */
+  padding: 20px;
+}
+
+/* Banner */
+.banner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background-color: #24f;
+}
+
+.BannerLeft, .BannerText, .BannerRight {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+/* Desktop Banner Layout */
+@media (min-width: 900px) {
+  .banner-container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 250px;
+  }
+  .BannerLeft { width: 8%; }
+  .BannerText { width: 100%; max-width: 350px; }
+  .BannerRight { width: 110%; max-width: 240px; }
+}
+
+/* Tabs */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tab button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  margin: 4px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 16px;
+}
+.tab button:hover { background-color: #ddd; }
+
+/* Main Layout */
+.main-layout {
+  max-width: 1200px;
+  margin: 0 auto 50px auto;
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+}
+
+@media (max-width: 899px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="banner-container">
+    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
+    <img class="BannerText" src="bannerText.png" alt="banner text">
+    <img class="BannerRight" src="bannerRight.png" alt="right banner">
+  </div>
+</header>
+
+<!-- Tabs -->
+<div class="tab">
+  <button onclick="location.href='https://societyoflogicandreason.com'">Home</button>
+
+</div>
+
+
+<div class="text-box">
+<h1>Apostle's creed<h1>
+
+ <p style="font-size: 20px;">I believe in God,
+the Father almighty,
+Creator of heaven and earth,
+and in Jesus Christ, his only Son, our Lord,
+who was conceived by the Holy Spirit,
+born of the Virgin Mary,
+suffered under Pontius Pilate,
+was crucified, died and was buried;
+he descended into Hades;
+on the third day he rose again from the dead;
+he ascended into heaven,
+and is seated at the right hand of God the Father almighty;
+from there he will come to judge the living and the dead.
+I believe in the Holy Spirit,
+the holy universal Church,
+the communion of saints,
+the forgiveness of sins,
+the resurrection of the body,
+and life everlasting.
+Amen.</p>
