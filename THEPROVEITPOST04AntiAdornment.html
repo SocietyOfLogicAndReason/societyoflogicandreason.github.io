@@ -134,6 +134,24 @@
 </style>
 
 </head>
+
+<video id="chickenVideo" style="display:none;" src="chickenpanic.mp4"></video>
+
+<script>
+  function playChickenPanic() {
+    const vid = document.getElementById("chickenVideo");
+
+    vid.style.display = "block";       // make visible
+    vid.requestFullscreen();           // go fullscreen
+    vid.play();                        // start video
+
+    vid.onended = () => {
+      document.exitFullscreen();       // exit fullscreen when done
+      vid.style.display = "none";      // hide vid
+    };
+  }
+</script>
+
 <body>
 
 <header>
@@ -321,8 +339,8 @@ rich food.</p>
 <p style="font-size: 18px;"><a href="https://societyoflogicandreason.com/noweb.html" target="_blank">www.Verminoids.fake</a></p>
 
    <div class="info-box">
-      <img src="ad1.png">
-    </div>
+  <img src="ad1.png" style="cursor:pointer;" onclick="playChickenPanic()">
+</div>
      <div class="info-box">
       <h2>Advertise for free!</h2>
       <p style="font-size: 18px;">Need to advertise something? You
