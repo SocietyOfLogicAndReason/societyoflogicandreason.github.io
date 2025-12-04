@@ -7,6 +7,23 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 <style>
+
+   #audioControl {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    font-size: 40px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 9999;
+    transition: transform 0.2s;
+  }
+
+  #audioControl:hover {
+    transform: scale(1.2);
+  }
+
+
 .banner-container {
   display: flex;
   flex-direction: column;
@@ -120,8 +137,66 @@
 }
 </style>
 
+<audio id="clik" src="audio/clik.mp3" preload="auto"></audio>
+<audio id="next" src="audio/next.mp3" preload="auto"></audio>
+<audio id="boop" src="audio/boop.mp3" preload="auto"></audio>
+<audio id="uoop" src="audio/uoop.mp3" preload="auto"></audio>
+<audio id="pageup" src="audio/pageup.mp3" preload="auto"></audio>
+<audio id="pagedown" src="audio/pagedown.mp3" preload="auto"></audio>
+<audio id="soundon" src="audio/soundon.mp3" preload="auto"></audio>
+<audio id="soundoff" src="audio/soundoff.mp3" preload="auto"></audio>
+<audio id="video" src="audio/video.mp3" preload="auto"></audio>
+
+</audio>
+
 <script>
- 
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Get all audio elements
+    const allAudio = document.querySelectorAll('audio');
+    const audioBtn = document.getElementById('audioControl');
+
+    // Start muted
+    let isMuted = true;
+    allAudio.forEach(a => a.muted = true);
+
+    // Update icon initially
+    audioBtn.textContent = '🔇';
+
+    // Toggle mute/unmute
+    audioBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      allAudio.forEach(a => a.muted = isMuted);
+      audioBtn.textContent = isMuted ? '🔇' : '🔊';
+
+      // Optional: play short feedback when unmuting
+      if (!isMuted) {
+        const feedback = document.getElementById('soundon');
+        if (feedback) {
+          feedback.currentTime = 0;
+          feedback.play().catch(e => console.log("Autoplay blocked:", e));
+        }
+      }
+    });
+  });
+
+  function clickLinkWithSound(url) {
+  const sound = document.getElementById("pageup");
+  sound.currentTime = 0;
+  sound.play();
+
+  // Delay navigation so the sound can play
+  setTimeout(() => {
+    window.location.href = url;
+  }, 200); // 200 milliseconds delay
+}
+
+  function playSound(id) {
+  const sound = document.getElementById(id);
+  sound.currentTime = 0;
+  sound.play();
+}
+
 function openTab(evt, name) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -148,14 +223,14 @@ window.addEventListener('DOMContentLoaded', function () {
 </header>
 
 <div class="tab" style="display: flex; align-items: center; gap: 8px;">
-  <button class="tablinks" onclick="openTab(event, 'about')">About</button>
-  <button class="tablinks" onclick="openTab(event, 'members')">Members</button>
-  <button class="tablinks" onclick="openTab(event, 'PIP')">Prove it Post</button>
-  <button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
-    <button class="tablinks" onclick="openTab(event, 'contact')">Contact</button>
+  <button class="tablinks" onclick="playSound('next');openTab(event, 'about')">About</button>
+  <button class="tablinks" onclick="playSound('clik');openTab(event, 'members')">Members</button>
+  <button class="tablinks" onclick="playSound('pagedown');openTab(event, 'PIP')">Prove it Post</button>
+  <button class="tablinks" onclick="playSound('video');openTab(event, 'videos')">Videos</button>
+    <button class="tablinks" onclick="playSound('boop');openTab(event, 'contact')">Contact</button>
 
   <!-- YouTube icon link -->
-  <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" style="display: flex; align-items: center; height: 100%;">
+  <a href="https://www.youtube.com/@societyoflogicandreason"  target="_blank" style="display: flex; align-items: center; height: 100%;">
     <img src="yt.png" height="20px">
   </a>
 </div>
@@ -218,7 +293,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 
    <p>SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth.</p>
-  <a href="https://societyoflogicandreason.com/corevalues.html" style="text-decoration: none; color: inherit;">
+  <a style="text-decoration: none; color: inherit;" 
+   onclick="clickLinkWithSound('https://societyoflogicandreason.com/corevalues.html')">
   <h3>Core Values</h3>
 </a>
   <p>The Society of Logic and Reason is founded and governed by logic, which is right thinking. All things that SOLAR occupants decide for the club, be it moral or opinionated, shall be dictated by correct reasoning, using logic. That is to say, one cannot be perfectly logical, because logic (correct thinking) is based on God. God is the only one perfectly logical in all he does. And since we are not God, we are not perfectly logical. However, this does not mean we should not try to be logical. God calls us to be like Him. So we should try to be logical in everything we do.</p>
@@ -236,7 +312,10 @@ To become a member you must be invited by a current member, agree with our Terms
 
 <h3>WHAT do we believe?</h3>
 <p>We believe in Jesus Christ, the son of God 
-<br>We affirm the <a href="https://societyoflogicandreason.com/apostlescreed.html" target="_blank">Apostles creed</a> and <a href="https://societyoflogicandreason.com/nicenecreed.html" target="_blank">Nicene Creed.</a> 
+<br>We affirm the 
+<a href="#" onclick="clickLinkWithSound('https://societyoflogicandreason.com/apostlescreed.html')">Apostles Creed</a> 
+and 
+<a href="#" onclick="clickLinkWithSound('https://societyoflogicandreason.com/nicenecreed.html')">Nicene Creed</a>.
 <br>We believe that “all Scripture is given by inspiration of God.” (2 Timothy 3:16)
 <br>We believe in creation and appose evolution.
 <br>We  believe abortion is murder.
@@ -256,7 +335,7 @@ To become a member you must be invited by a current member, agree with our Terms
 
   <!-- POST 2 -->
   <div class="pip-item" style="margin-bottom: 40px;">
-    <a href="THEPROVEITPOST02ThisisAmerica.html">
+      <a href="#" onclick="clickLinkWithSound('THEPROVEITPOST02ThisisAmerica.html')">
         THE PROVE IT POST #2<br>
         This is America!
       </div>
@@ -265,16 +344,16 @@ To become a member you must be invited by a current member, agree with our Terms
 
   <!-- POST 3 -->
   <div class="pip-item" style="margin-bottom: 40px;">
-    <a href="THEPROVEITPOST03Sundayisnotpartoftheweekend.html">
+    <a href="#" onclick="clickLinkWithSound('THEPROVEITPOST03Sundayisnotpartoftheweekend.html')">
         THE PROVE IT POST #3<br>
         Sunday is not part of the weekend!
       </div>
     </a>
 
-  <!-- POST 4 -->
-  <div class="pip-item" style="margin-bottom: 40px;">
-    <a href="THEPROVEITPOST04AntiAdornment.html">
-         THE PROVE IT POST #4<br>
+  
+ <div class="pip-item" style="margin-bottom: 40px;">
+    <a href="#" onclick="clickLinkWithSound('THEPROVEITPOST04AntiAdornment.html')">
+  Go to Prove It Post #4<br>
         Girls shouldn't adorn themselves in vain jewelry and makeup!
       </div>
     </a>
@@ -283,48 +362,90 @@ To become a member you must be invited by a current member, agree with our Terms
 </div>
 <div class="tabcontent" id="videos">
     
-        <h3>Videos about Logic and Truth</h3>
-<div class="video-wrapper">
-          <p><iframe width="560" 
-            height="315" src="https://www.youtube.com/embed/FSLjkPfEcOg?si=jT4_efGzwGTqjTzc" 
-            title="YouTube video player" 
-            frameborder="10" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
-            </div>
-<div class="video-wrapper">
-            <p><iframe width="560" 
-              height="315" 
-              src="https://www.youtube.com/embed/bwgJCYLqtoE?si=v88SSa9Bb2-SfIA_" 
-              title="YouTube video player" 
-              frameborder="10" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
-              </div>
-<div class="video-wrapper">
-            <p><iframe width="560" 
+    <h3>Videos about Logic and Truth</h3>
+
+    <!-- Audio for video clicks -->
+    <audio id="videoClickSound" src="audio/soundon.mp3" preload="auto"></audio>
+
+    <div class="video-wrapper">
+        <p>
+            <iframe width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/FSLjkPfEcOg?si=jT4_efGzwGTqjTzc" 
+                title="YouTube video player" 
+                frameborder="10" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </p>
+    </div>
+
+    <div class="video-wrapper">
+        <p>
+            <iframe width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/bwgJCYLqtoE?si=v88SSa9Bb2-SfIA_" 
+                title="YouTube video player" 
+                frameborder="10" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </p>
+    </div>
+
+    <div class="video-wrapper">
+        <p>
+            <iframe width="560" 
                 height="315" 
                 src="https://www.youtube.com/embed/q6wf_mIAyFw?si=dL8Dfg_3fuo9SiTF" 
                 title="YouTube video player" 
                 frameborder="10" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
-                </div>
-<div class="video-wrapper">
-                      <p><iframe width="560" height="315"
-       
-       src="https://www.youtube.com/embed/y9Jr5ENVFVA?si=wUDeQfY-olK1WHTU" 
-       title="YouTube video player" 
-       frameborder="10" 
-       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
-</div>
-<div class="video-wrapper">
-            <p><iframe width="560" height="315" 
-          src="https://www.youtube.com/embed/VrIvwPConv0?si=gvDJAeYK5NEBuMis" 
-          title="YouTube video player" 
-          frameborder="10" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
-</div>
- <h3>Playlist</h3>
-  <div class="video-wrapper">
-    <iframe src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" title="YouTube video player" allowfullscreen></iframe>
-     </div>
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </p>
+    </div>
+
+    <div class="video-wrapper">
+        <p>
+            <iframe width="560" 
+                height="315"
+                src="https://www.youtube.com/embed/y9Jr5ENVFVA?si=wUDeQfY-olK1WHTU" 
+                title="YouTube video player" 
+                frameborder="10" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </p>
+    </div>
+
+    <div class="video-wrapper">
+        <p>
+            <iframe width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/VrIvwPConv0?si=gvDJAeYK5NEBuMis" 
+                title="YouTube video player" 
+                frameborder="10" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </p>
+    </div>
+
+    <h3>Playlist</h3>
+    <div class="video-wrapper">
+        <iframe 
+            src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" 
+            title="YouTube video player" 
+            allowfullscreen>
+        </iframe>
+    </div>
+
 </div>
 
 <div class="tabcontent" id="contact">
@@ -332,5 +453,6 @@ To become a member you must be invited by a current member, agree with our Terms
   <p>YouTube - <a href="https://www.youtube.com/@societyoflogicandreason">@societyoflogicandreason</a></p>
 </div>
 
+<div id="audioControl">🔇</div>
 </body>
 </html>
