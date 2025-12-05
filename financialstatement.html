@@ -23,31 +23,52 @@
 }
 
 /* Banner */
-.banner-container {
+banner-container {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 6px;
-  background-color: #24f;
+  justify-content: center; /* center the middle image */
+  background-color: #24f;  /* your blue background */
+  padding: 6px 0;
 }
 
-.BannerLeft, .BannerText, .BannerRight {
-  width: 100%;
-  max-width: 400px;
+/* Left image */
+.BannerLeft {
+  position: absolute;
+  left: 20px; /* distance from left edge */
+  max-width: 135px;
   height: auto;
 }
 
-/* Desktop Banner Layout */
-@media (min-width: 900px) {
+/* Center image */
+.BannerText {
+  max-width: 350px;
+  height: auto;
+}
+
+/* Right image */
+.BannerRight {
+  position: absolute;
+  right: 20px; /* distance from right edge */
+  max-width: 325px;
+  height: auto;
+}
+
+/* MOBILE STACKING */
+@media (max-width: 899px) {
   .banner-container {
-    flex-direction: row;
-    justify-content: center;
-    gap: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
-  .BannerLeft { width: 8%; }
-  .BannerText { width: 100%; max-width: 350px; }
-  .BannerRight { width: 110%; max-width: 240px; }
+  .BannerLeft,
+  .BannerText,
+  .BannerRight {
+    position: static; /* remove absolute for stacking */
+    max-width: 180px;
+    height: auto;
+  }
 }
 
 /* Tabs */

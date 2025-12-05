@@ -62,35 +62,51 @@
 
 
 .banner-container {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px; 
-  padding: 6px; 
-  background-color: #24f;
+  justify-content: center; /* center the middle image */
+  background-color: #24f;  /* your blue background */
+  padding: 6px 0;
 }
 
-.BannerLeft,
-.BannerText,
-.BannerRight {
-  width: 100%;
-  max-width: 400px;
+/* Left image */
+.BannerLeft {
+  position: absolute;
+  left: 20px; /* distance from left edge */
+  max-width: 135px;
   height: auto;
-  object-fit: contain;
 }
 
-/* Desktop layout */
-@media (min-width: 900px) {
+/* Center image */
+.BannerText {
+  max-width: 350px;
+  height: auto;
+}
+
+/* Right image */
+.BannerRight {
+  position: absolute;
+  right: 20px; /* distance from right edge */
+  max-width: 325px;
+  height: auto;
+}
+
+/* MOBILE STACKING */
+@media (max-width: 899px) {
   .banner-container {
-    flex-direction: row !important;
-    justify-content: center; !important;
-    gap: 250px !important;
-    padding: 5px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
-  .BannerLeft { width: 8% !important; }
-  .BannerText { width: 100% !important;
-                max-width: 350px !important;  }
-  .BannerRight { width: 100% !important; max-width: 325px !important; }
+  .BannerLeft,
+  .BannerText,
+  .BannerRight {
+    position: static; /* remove absolute for stacking */
+    max-width: 180px;
+    height: auto;
+  }
 }
 
 /* ----------------- TABS ----------------- */
@@ -524,7 +540,7 @@ We exist to get people to come back to there creator, to show them there error a
 </div>
 <div class="tabcontent" id="PIP" style="font-family: Arial, Helvetica, sans-serif; text-align: center;">
 
-<p>The Prove It Post is a post that proves Ben's points. This post is independant of SOLAR and<br> the points prosented in them may or may not be agreed apon by all members of the society.</p>
+<p>The Prove It Post is a post that proves Ben's points. This post is independant of SOLAR and<br> the points presented in them may or may not be agreed upon by all members of the society.</p>
   <!-- POST 2 -->
   <div class="pip-item" style="margin-bottom: 40px;">
       <a href="#" onclick="clickLinkWithSound('THEPROVEITPOST02ThisisAmerica.html')">
