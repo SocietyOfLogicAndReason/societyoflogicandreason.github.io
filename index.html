@@ -150,14 +150,24 @@
 </audio>
 
 <script>
-  function closeConstructionPopup() {
+ function closeConstructionPopup() {
     document.getElementById("constructionOverlay").style.display = "none";
-    document.body.style.overflow = "";  // restore scrolling
+    document.body.style.overflow = "";
+    localStorage.setItem("constructionSeen", "true"); // SAVE that user saw it
   }
 
-  // Lock scrolling while popup is visible
   window.addEventListener("DOMContentLoaded", () => {
-    document.body.style.overflow = "hidden";
+    const hasSeenPopup = localStorage.getItem("constructionSeen");
+
+    if (hasSeenPopup === "true") {
+      // User already saw it — NEVER show again
+      const popup = document.getElementById("constructionOverlay");
+      if (popup) popup.style.display = "none";
+      document.body.style.overflow = "";
+    } else {
+      // First visit — SHOW popup
+      document.body.style.overflow = "hidden";
+    }
   });
 
   window.addEventListener('DOMContentLoaded', () => {
