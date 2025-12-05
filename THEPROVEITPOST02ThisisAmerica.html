@@ -138,7 +138,7 @@
 <video id="chickenVideo" style="display:none;" src="chickenpanic.mp4"></video>
 
 <script>
-function clickHome() {
+  function clickHome() {
   const sound = document.getElementById('pagedownAudio');
   sound.currentTime = 0;   // start from beginning
   sound.play();
@@ -148,7 +148,21 @@ function clickHome() {
     window.location.href = 'https://societyoflogicandreason.com';
   }, 200); // 200ms delay
 }
+
+  function playChickenPanic() {
+    const vid = document.getElementById("chickenVideo");
+
+    vid.style.display = "block";       // make visible
+    vid.requestFullscreen();           // go fullscreen
+    vid.play();                        // start video
+
+    vid.onended = () => {
+      document.exitFullscreen();       // exit fullscreen when done
+      vid.style.display = "none";      // hide vid
+    };
+  }
 </script>
+
 <body>
 
 <audio id="pagedownAudio" src="pagedown.mp3" preload="auto"></audio>
