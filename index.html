@@ -7,6 +7,16 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 <style>
+  .no-videos {
+  text-align: center;
+  margin-top: 120px; /* pushes everything down farther */
+}
+
+.no-videos .emoji {
+  font-size: 150px;  /* bigger emoji */
+  margin-bottom: 40px; /* bigger gap between emoji and heading */
+}
+
 
   html, body {
   height: 100%;
@@ -561,93 +571,20 @@ We exist to get people to come back to there creator, to show them there error a
 
 
 <div class="tabcontent" id="videos">
-    
-    <h3>Videos about Logic and Truth</h3>
-
-    <!-- Audio for video clicks -->
-    <audio id="videoClickSound" src="audio/soundon.mp3" preload="auto"></audio>
-
-    <div class="video-wrapper">
-        <p>
-            <iframe width="560" 
-                height="315" 
-                src="https://www.youtube.com/embed/FSLjkPfEcOg?si=jT4_efGzwGTqjTzc" 
-                title="YouTube video player" 
-                frameborder="10" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-            </iframe>
-        </p>
-    </div>
-
-    <div class="video-wrapper">
-        <p>
-            <iframe width="560" 
-                height="315" 
-                src="https://www.youtube.com/embed/bwgJCYLqtoE?si=v88SSa9Bb2-SfIA_" 
-                title="YouTube video player" 
-                frameborder="10" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-            </iframe>
-        </p>
-    </div>
-
-    <div class="video-wrapper">
-        <p>
-            <iframe width="560" 
-                height="315" 
-                src="https://www.youtube.com/embed/q6wf_mIAyFw?si=dL8Dfg_3fuo9SiTF" 
-                title="YouTube video player" 
-                frameborder="10" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-            </iframe>
-        </p>
-    </div>
-
-    <div class="video-wrapper">
-        <p>
-            <iframe width="560" 
-                height="315"
-                src="https://www.youtube.com/embed/y9Jr5ENVFVA?si=wUDeQfY-olK1WHTU" 
-                title="YouTube video player" 
-                frameborder="10" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-            </iframe>
-        </p>
-    </div>
-
-    <div class="video-wrapper">
-        <p>
-            <iframe width="560" 
-                height="315" 
-                src="https://www.youtube.com/embed/VrIvwPConv0?si=gvDJAeYK5NEBuMis" 
-                title="YouTube video player" 
-                frameborder="10" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-            </iframe>
-        </p>
-    </div>
-
-    <h3>Playlist</h3>
-    <div class="video-wrapper">
-        <iframe 
-            src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" 
-            title="YouTube video player" 
-            allowfullscreen>
-        </iframe>
-    </div>
-
+  <div class="no-videos">
+    <div class="emoji">😞</div>
+    <h2>No videos recorded yet</h2>
+    <p>Check back later for new content!</p>
   </div>
 
+  <h3>Other Videos about Logic and Truth</h3>
+  <div class="video-wrapper">
+      <iframe 
+          src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" 
+          title="YouTube video player" 
+          allowfullscreen>
+      </iframe>
+  </div>
 </div>
 
 </div>
