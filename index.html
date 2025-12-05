@@ -8,6 +8,43 @@
 
 <style>
 
+  .footer-bar {
+  width: 100%;
+  background: #f1f1f1;
+  border-top: 2px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  font-size: 16px;
+  margin-top: 80px; /* space from content above */
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-bar a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.footer-bar a:hover {
+  text-decoration: underline;
+}
+
+.footer-bar img {
+  height: 22px;
+  vertical-align: middle;
+}
+
+
+
    #audioControl {
     position: fixed;
     bottom: 20px;
@@ -298,14 +335,10 @@ window.addEventListener('DOMContentLoaded', function () {
 <div class="tab" style="display: flex; align-items: center; gap: 8px;">
   <button class="tablinks" onclick="playSound('clik');openTab(event, 'about')">About</button>
   <button class="tablinks" onclick="playSound('next');openTab(event, 'members')">Members</button>
+  <button class="tablinks" onclick="playSound('pageup');openTab(event, 'articles')">Articles</button>
   <button class="tablinks" onclick="playSound('pagedown');openTab(event, 'PIP')">Prove it Post</button>
   <button class="tablinks" onclick="playSound('video');openTab(event, 'videos')">Videos</button>
-    <button class="tablinks" onclick="playSound('boop');openTab(event, 'contact')">Contact</button>
 
-  <!-- YouTube icon link -->
-  <a href="https://www.youtube.com/@societyoflogicandreason"  target="_blank" style="display: flex; align-items: center; height: 100%;">
-    <img src="yt.png" height="20px">
-  </a>
 </div>
 
 <div class="tabcontent" id="members" style="display: block;">
@@ -360,7 +393,39 @@ window.addEventListener('DOMContentLoaded', function () {
       <p>-Idea Generator-</p>
     </div>
   </div>
+<div class="footer-bar">
+
+  <!-- LEFT SIDE -->
+  <!-- YouTube icon + name -->
+    <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" style="display: flex; align-items: center; gap: 6px;">
+      <img src="yt.png" alt="YouTube">
+      <span>@societyoflogicandreason</span>
+      </a>
+
+  <div class="footer-left">
+    <a href="#" onclick="openTab(event, 'about')">About</a>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="footer-right">
+    <!-- Contact + Email -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd4tzoZIApbPpWJfuULUSi3Po1Sutl6LiL_ptDvvQqXcwZ26g/viewform?usp=header" target="_blank">
+      Contact us
+    </a>
+
+    <span>societyoflogicandreason@gmail.com</span>
+
+    
+
+    
+
+  </div>
+
 </div>
+
+</div>
+
+
 
 <div class="tabcontent" id="about">
 
@@ -415,10 +480,46 @@ and
 We exist to get people to come back to there creator, to show them there error and present to them the Truth. 
 “For this is good and acceptable in the sight of God our Savior, who desires all men to be saved and to come to the knowledge of the truth.” 1 Timothy 2:3-4</p>
 
+<div class="footer-bar">
+
+  <!-- LEFT SIDE -->
+  <!-- YouTube icon + name -->
+    <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" style="display: flex; align-items: center; gap: 6px;">
+      <img src="yt.png" alt="YouTube">
+      <span>@societyoflogicandreason</span>
+      </a>
+
+  <div class="footer-left">
+    <a href="#" onclick="openTab(event, 'about')">About</a>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="footer-right">
+    <!-- Contact + Email -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd4tzoZIApbPpWJfuULUSi3Po1Sutl6LiL_ptDvvQqXcwZ26g/viewform?usp=header" target="_blank">
+      Contact us
+    </a>
+
+    <span>societyoflogicandreason@gmail.com</span>
+
+    
+
+    
+
+  </div>
+
+</div>
+
+
+<div class="tabcontent" id="articles">
+</a>
+</div>
+
 
 </div>
 <div class="tabcontent" id="PIP" style="font-family: Arial, Helvetica, sans-serif; text-align: center;">
 
+<p>The Prove It Post is a post that proves Ben's points. This post is independant of SOLAR and<br> the points prosented in them may or may not be agreed apon by all members of the society.</p>
   <!-- POST 2 -->
   <div class="pip-item" style="margin-bottom: 40px;">
       <a href="#" onclick="clickLinkWithSound('THEPROVEITPOST02ThisisAmerica.html')">
@@ -444,8 +545,40 @@ We exist to get people to come back to there creator, to show them there error a
       </div>
     </a>
 
+    <div class="footer-bar">
+
+  <!-- LEFT SIDE -->
+  <!-- YouTube icon + name -->
+    <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" style="display: flex; align-items: center; gap: 6px;">
+      <img src="yt.png" alt="YouTube">
+      <span>@societyoflogicandreason</span>
+      </a>
+
+  <div class="footer-left">
+    <a href="#" onclick="openTab(event, 'about')">About</a>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="footer-right">
+    <!-- Contact + Email -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd4tzoZIApbPpWJfuULUSi3Po1Sutl6LiL_ptDvvQqXcwZ26g/viewform?usp=header" target="_blank">
+      Contact us
+    </a>
+
+    <span>societyoflogicandreason@gmail.com</span>
+
+    
+
+    
+
+  </div>
 
 </div>
+
+
+</div>
+
+
 <div class="tabcontent" id="videos">
     
     <h3>Videos about Logic and Truth</h3>
@@ -532,21 +665,36 @@ We exist to get people to come back to there creator, to show them there error a
         </iframe>
     </div>
 
+    <div class="footer-bar">
+
+  <!-- LEFT SIDE -->
+  <!-- YouTube icon + name -->
+    <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" style="display: flex; align-items: center; gap: 6px;">
+      <img src="yt.png" alt="YouTube">
+      <span>@societyoflogicandreason</span>
+      </a>
+
+  <div class="footer-left">
+    <a href="#" onclick="openTab(event, 'about')">About</a>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="footer-right">
+    <!-- Contact + Email -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd4tzoZIApbPpWJfuULUSi3Po1Sutl6LiL_ptDvvQqXcwZ26g/viewform?usp=header" target="_blank">
+      Contact us
+    </a>
+
+    <span>societyoflogicandreason@gmail.com</span>
+
+    
+
+    
+
+  </div>
+
 </div>
 
-<div class="tabcontent" id="contact">
-  <p>Email - societyoflogicandreason@gmail.com</p>
-  <p>YouTube - <a href="https://www.youtube.com/@societyoflogicandreason">@societyoflogicandreason</a></p>
-<a href="#" onclick="clickLinkWithSound('https://societyoflogicandreason.com/financialstatement.html')" 
-   style="
-      position: fixed;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      margin: 0;
-   ">
-  Financial Statement
-</a>
 </div>
 
 
