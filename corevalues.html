@@ -114,11 +114,24 @@
     flex-direction: column;
   }
 </style>
+<script>
+function clickHome() {
+  const sound = document.getElementById('pagedownAudio');
+  sound.currentTime = 0;   // start from beginning
+  sound.play();
+
+  // Navigate after a short delay so the sound can play
+  setTimeout(() => {
+    window.location.href = 'https://societyoflogicandreason.com';
+  }, 200); // 200ms delay
+}
+</script>
 
 
 
 </head>
 <body>
+  <audio id="pagedownAudio" src="pagedown.mp3" preload="auto"></audio>
 
 <header>
   <div class="banner-container">
@@ -129,7 +142,8 @@
 </header>
 
 <div class="tab">
-  <button onclick="location.href='https://societyoflogicandreason.com'">Home</button>
+  <button onclick="clickHome()">Home</button>
+
 </div>
 <style>
 </style>
