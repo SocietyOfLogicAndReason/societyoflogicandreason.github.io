@@ -8,6 +8,22 @@
 
 <style>
 
+  html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* ensure body is at least full viewport height */
+}
+
+main {
+  flex: 1; /* this pushes the footer down */
+}
+
   .responsive-text {
   max-width: 80%;     /* at most 60% of the screen on desktop */
   margin: 0 auto;     /* center the paragraph */
@@ -371,6 +387,8 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </header>
 
+<main>
+
 <div class="tab" style="display: flex; align-items: center; gap: 8px;">
   <button class="tablinks" onclick="playSound('clik');openTab(event, 'about')">About</button>
   <button class="tablinks" onclick="playSound('next');openTab(event, 'members')">Members</button>
@@ -633,7 +651,7 @@ We exist to get people to come back to there creator, to show them there error a
 </div>
 
 </div>
-
+</main>
 
 <div id="audioControl">🔇</div>
 
