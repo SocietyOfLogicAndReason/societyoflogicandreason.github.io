@@ -150,6 +150,16 @@
 </audio>
 
 <script>
+  function closeConstructionPopup() {
+    document.getElementById("constructionOverlay").style.display = "none";
+    document.body.style.overflow = "";  // restore scrolling
+  }
+
+  // Lock scrolling while popup is visible
+  window.addEventListener("DOMContentLoaded", () => {
+    document.body.style.overflow = "hidden";
+  });
+  
   window.addEventListener('DOMContentLoaded', () => {
     // Get all audio elements
     const allAudio = document.querySelectorAll('audio');
@@ -221,6 +231,51 @@ window.addEventListener('DOMContentLoaded', function () {
 
 </head>
 <body>
+
+  <div id="constructionOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+">
+
+  <div style="
+    background: white;
+    padding: 30px 25px;
+    max-width: 520px;
+    width: 90%;
+    text-align: center;
+    border-radius: 14px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    position: relative;
+  ">
+    <h2 style="margin-top: 0;">⚠️ Under Construction</h2>
+
+    <p style="font-size: 18px; line-height: 1.5;">
+      This website is under construction.  
+      It gets updated daily.  
+      Bugs may or may not be fixed tomorrow.
+    </p>
+
+    <button onclick="closeConstructionPopup()" style="
+      font-size: 18px;
+      padding: 12px 26px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #2244ff;
+      color: white;
+      margin-top: 18px;
+    ">
+      View now?
+    </button>
+  </div>
+
+</div>
 
 <header>
   <div class="banner-container">
