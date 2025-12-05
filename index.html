@@ -8,6 +8,20 @@
 
 <style>
 
+  .responsive-text {
+  max-width: 80%;     /* at most 60% of the screen on desktop */
+  margin: 0 auto;     /* center the paragraph */
+  line-height: 1.5;   /* optional: nicer spacing */
+  text-align: center; /* optional: center text */
+}
+
+/* Mobile view */
+@media (max-width: 899px) {
+  .responsive-text {
+    max-width: 95%;   /* almost full width on mobile */
+  }
+}
+
 .footer-container {
   width: 60%;         /* only 60% of the screen width */
   margin: 0 auto;     /* center horizontally */
@@ -493,7 +507,7 @@ We exist to get people to come back to there creator, to show them there error a
 
 <div class="tabcontent" id="PIP" style="font-family: Arial, Helvetica, sans-serif; text-align: center;">
 
-<p>The Prove It Post is a post that proves Ben's points. This post is independant of SOLAR and<br> the points presented in them may or may not be agreed upon by all members of the society.</p>
+<p class="responsive-text">The Prove It Post is a post that proves Ben's points. This post is independant of SOLAR and the points presented in them may or may not be agreed upon by all members of the society.</p>
   <!-- POST 2 -->
   <div class="pip-item" style="margin-bottom: 40px;">
       <a href="#" onclick="clickLinkWithSound('THEPROVEITPOST02ThisisAmerica.html')">
