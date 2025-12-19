@@ -264,12 +264,6 @@ main {
 }
 
 
- function closeConstructionPopup() {
-    document.getElementById("constructionOverlay").style.display = "none";
-    document.body.style.overflow = "";
-    localStorage.setItem("constructionSeen", "true"); // SAVE that user saw it
-  }
-
   window.addEventListener("DOMContentLoaded", () => {
     const hasSeenPopup = localStorage.getItem("constructionSeen");
 
@@ -366,39 +360,6 @@ window.addEventListener('DOMContentLoaded', function () {
   z-index: 999999;
 ">
 
-  <div style="
-    background: white;
-    padding: 30px 25px;
-    max-width: 520px;
-    width: 90%;
-    text-align: center;
-    border-radius: 14px;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 0 30px rgba(0,0,0,0.8);
-    position: relative;
-  ">
-    <h2 style="margin-top: 0;">⚠️ Under Construction</h2>
-
-    <p style="font-size: 18px; line-height: 1.5;">
-      This website is under construction.  
-      It gets updated daily.  
-      Bugs may or may not be fixed tomorrow.
-    </p>
-
-    <button onclick="closeConstructionPopup()" style="
-      font-size: 18px;
-      padding: 12px 26px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      background: #2244ff;
-      color: white;
-      margin-top: 18px;
-    ">
-      View now
-    </button>
-  </div>
-
 </div>
 
 <header>
@@ -483,7 +444,16 @@ window.addEventListener('DOMContentLoaded', function () {
 
 <div class="tabcontent" id="about">
 
- <p>SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth.</p>
+  <div class="video-wrapper">
+ <p> <iframe width="560" 
+  height="315" 
+  src="https://www.youtube.com/embed/JpeNi5FLH6A?si=ycy21G8dv5dHDtHO" 
+  title="YouTube video player" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+  </div>
+
+   <p>SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth.</p>
   <a style="text-decoration: none; color: inherit;" 
    onclick="clickLinkWithSound('https://societyoflogicandreason.com/corevalues.html')">
   <h3>Core Values</h3>
@@ -610,9 +580,9 @@ We exist to get people to come back to there creator, to show them there error a
 
     <div class="footer-right">
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSd4tzoZIApbPpWJfuULUSi3Po1Sutl6LiL_ptDvvQqXcwZ26g/viewform?usp=header" target="_blank">
-        Contact us
-      </a>
+        Contact us</a><br>
       <span>societyoflogicandreason@gmail.com</span>
+    
     </div>
   </div>
 </div>
