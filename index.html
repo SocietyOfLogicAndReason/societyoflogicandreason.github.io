@@ -239,16 +239,6 @@ main {
 }
 </style>
 
-<audio id="clik" src="clik.mp3" preload="auto"></audio>
-<audio id="next" src="next.mp3" preload="auto"></audio>
-<audio id="boop" src="boop.mp3" preload="auto"></audio>
-<audio id="uoop" src="uoop.mp3" preload="auto"></audio>
-<audio id="pageup" src="pageup.mp3" preload="auto"></audio>
-<audio id="pagedown" src="pagedown.mp3" preload="auto"></audio>
-<audio id="soundon" src="soundon.mp3" preload="auto"></audio>
-<audio id="soundoff" src="soundoff.mp3" preload="auto"></audio>
-<audio id="video" src="video.mp3" preload="auto"></audio>
-
 </audio>
 
 <script>
@@ -264,74 +254,7 @@ main {
 }
 
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const hasSeenPopup = localStorage.getItem("constructionSeen");
 
-    if (hasSeenPopup === "true") {
-      // User already saw it — NEVER show again
-      const popup = document.getElementById("constructionOverlay");
-      if (popup) popup.style.display = "none";
-      document.body.style.overflow = "";
-    } else {
-      // First visit — SHOW popup
-      document.body.style.overflow = "hidden";
-    }
-  });
-
-  window.addEventListener('DOMContentLoaded', () => {
-    // Get all audio elements
-    const allAudio = document.querySelectorAll('audio');
-    const audioBtn = document.getElementById('audioControl');
-
-    // Start muted
-    let isMuted = true;
-    allAudio.forEach(a => a.muted = true);
-
-    // Update icon initially
-    audioBtn.textContent = '🔇';
-
-    // Toggle mute/unmute
-    audioBtn.addEventListener('click', () => {
-      isMuted = !isMuted;
-      allAudio.forEach(a => a.muted = isMuted);
-      audioBtn.textContent = isMuted ? '🔇' : '🔊';
-
-      
-      if (!isMuted) {
-        const soundOn = document.getElementById('soundon');
-        if (soundOn) {
-          soundOn.currentTime = 0;
-          soundOn.play().catch(e => console.log("Autoplay blocked:", e));
-        }
-      }
-
-      
-      if (isMuted) {
-        const soundOff = document.getElementById('soundoff');
-        if (soundOff) {
-          soundOff.currentTime = 0;
-          soundOff.play().catch(e => console.log("Autoplay blocked:", e));
-        }
-      }
-    });
-  });
-
-  function clickLinkWithSound(url) {
-  const sound = document.getElementById("pageup");
-  sound.currentTime = 0;
-  sound.play();
-
-  // Delay navigation so the sound can play
-  setTimeout(() => {
-    window.location.href = url;
-  }, 200); // 200 milliseconds delay
-}
-
-  function playSound(id) {
-  const sound = document.getElementById(id);
-  sound.currentTime = 0;
-  sound.play();
-}
 
 function openTab(evt, name) {
   var i, tabcontent, tablinks;
@@ -349,18 +272,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
 </head>
 <body>
-
-  <div id="constructionOverlay" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999999;
-">
-
-</div>
 
 <header>
   <div class="banner-container">
@@ -562,8 +473,6 @@ We exist to get people to come back to there creator, to show them there error a
 
 </div>
 </main>
-
-<div id="audioControl">🔇</div>
 
 <div class="footer-bar">
   <div class="footer-container">
