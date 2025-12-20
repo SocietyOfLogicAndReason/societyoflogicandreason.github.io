@@ -8,15 +8,18 @@
 body {margin:0;overflow:hidden;font-family:Arial,sans-serif;background:#f0f0f0;}
 #layout {display:flex;height:100vh;}
 #canvas {flex:1;background:#fafafa;}
-#sidebar {width:220px;background:#222;color:white;padding:8px;overflow-y:auto;}
+#sidebar {width:240px;background:#222;color:white;padding:8px;overflow-y:auto;}
 button {width:100%;margin:6px 0;padding:8px;cursor:pointer;}
 .tab {padding:6px;background:#444;margin:4px 0;cursor:pointer;}
 .tab.active {background:#666;}
 text {user-select:none;cursor:pointer;}
 .tooltip {position:absolute;background:white;color:black;padding:2px 5px;border-radius:3px;font-size:12px;display:none;pointer-events:none;z-index:1000;white-space:nowrap;}
-#popup {position:absolute;display:none;background:#fff;border:1px solid #999;padding:8px;border-radius:4px;z-index:1000;}
-#popup input {width:100%;margin:4px 0;}
-#popup button {margin-top:4px;}
+#popup {position:absolute;display:none;background:#fff;border:1px solid #999;padding:8px;border-radius:4px;z-index:1000;width:220px;}
+#popup input[type=text]{width:100%;margin:2px 0;}
+#popup label{display:block;margin-top:4px;}
+#popup .color-row{display:flex;align-items:center;margin-top:4px;}
+#popup .color-row input[type=color]{flex:1;margin-right:6px;}
+#popup .color-row label{font-size:12px;color:#000;margin:0;}
 </style>
 </head>
 <body>
@@ -38,8 +41,14 @@ text {user-select:none;cursor:pointer;}
 <input type="text" id="renameInput">
 <label>Add child (blank for none)</label>
 <input type="text" id="childInput">
-<label>Color</label>
-<input type="color" id="colorInput">
+<div class="color-row">
+  <input type="color" id="colorInput">
+  <label><input type="checkbox" id="colorTick"> Apply color</label>
+</div>
+<label>Generation</label>
+<input type="text" id="genInput" placeholder="Leave blank for default">
+<label>Birth Order</label>
+<input type="text" id="birthInput" placeholder="Leave blank for default">
 <button onclick="applyPopup()">Apply</button>
 <button onclick="viewPerspective()">View in this perspective</button>
 <button onclick="closePopup()">Cancel</button>
@@ -48,28 +57,31 @@ text {user-select:none;cursor:pointer;}
 <div class="tooltip" id="tooltip"></div>
 
 <script>
-const svg=document.getElementById("canvas");
-const NS="http://www.w3.org/2000/svg";
-const view=document.createElementNS(NS,"g");
+const svg = document.getElementById("canvas");
+const NS = "http://www.w3.org/2000/svg";
+const view = document.createElementNS(NS,"g");
 svg.appendChild(view);
-const tooltip=document.getElementById("tooltip");
+const tooltip = document.getElementById("tooltip");
 
-let trees=[],active=0,scale=1,tx=0,ty=0,undoStack=[],popupNode=null;
+let trees=[], active=0, scale=1, tx=0, ty=0, undoStack=[], popupNode=null, perspectivesMap={};
 
 const popup=document.getElementById("popup");
 const renameInput=document.getElementById("renameInput");
 const childInput=document.getElementById("childInput");
 const colorInput=document.getElementById("colorInput");
+const colorTick=document.getElementById("colorTick");
+const genInput=document.getElementById("genInput");
+const birthInput=document.getElementById("birthInput");
 
-// Create root node
-function rootNode(){
-  return {name:"Root Person",children:[],depth:0,hue:200,light:70,order:0};
+function rootNode() {
+  return {name:"Root Person", children:[], depth:1, color:"#D2B48C", explicit:false, order:0};
 }
+
 newTree();
 
 /* ---------- TABS ---------- */
 function newTree(){
-  trees.push({name:"Root Person",root:rootNode()});
+  trees.push({name:"Root Person", root:rootNode()});
   active=trees.length-1;
   pushUndo();
   resetView();
@@ -105,7 +117,7 @@ function draw(){
 }
 
 function drawNode(node,cx,cy,a1,a2,r){
-  if(node.depth===0) drawCircle(cx,cy,r,node);
+  if(node.depth===1) drawCircle(cx,cy,r,node);
   if(!node.children.length) return;
   const slice=(a2-a1)/node.children.length;
   const r2=r+90;
@@ -123,7 +135,7 @@ function drawCircle(x,y,r,node){
   c.setAttribute("cx",x);
   c.setAttribute("cy",y);
   c.setAttribute("r",r);
-  c.setAttribute("fill",hslToHex(node.hue,node.light));
+  c.setAttribute("fill",node.color);
   view.appendChild(c);
   drawLabel(node,x,y,r*0.7,node.depth,0,r);
   c.addEventListener("click",e=>{e.stopPropagation();showPopup(node,e.clientX,e.clientY);});
@@ -137,14 +149,15 @@ function drawWedge(cx,cy,r1,r2,a1,a2,node){
   path.setAttribute("d",
     `M${x1} ${y1} A${r1} ${r1} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${r2} ${r2} 0 0 0 ${x4} ${y4} Z`
   );
-  path.setAttribute("fill",hslToHex(node.hue,node.light));
+  path.setAttribute("fill",node.color);
+  path.setAttribute("stroke","#000");
+  path.setAttribute("stroke-width","1");
   view.appendChild(path);
   path.addEventListener("click",e=>{e.stopPropagation();showPopup(node,e.clientX,e.clientY);});
   const ang=(a1+a2)/2;
   drawLabel(node,cx+Math.cos(ang)*(r1+(r2-r1)/2),cy+Math.sin(ang)*(r1+(r2-r1)/2),(r2-r1)*0.55,node.depth,ang,r1+(r2-r1)/2);
 }
 
-/* ---------- LABELS ---------- */
 function drawLabel(node,x,y,max,depth,angle,radius){
   const t=document.createElementNS(NS,"text");
   t.setAttribute("x",x);
@@ -160,7 +173,7 @@ function drawLabel(node,x,y,max,depth,angle,radius){
     tooltip.textContent=node.name;
     tooltip.style.left=e.clientX+10+"px";
     tooltip.style.top=e.clientY+10+"px";
-    tooltip.style.background=hslToHex(node.hue,node.light);
+    tooltip.style.background=node.color;
     tooltip.style.color="white";
     tooltip.style.padding="2px 4px";
   });
@@ -173,9 +186,12 @@ function showPopup(node,x,y){
   popupNode=node;
   renameInput.value=node.name;
   childInput.value="";
-  colorInput.value=hslToHex(node.hue,node.light);
-  popup.style.left=Math.min(x+5,window.innerWidth-220)+"px";
-  popup.style.top=Math.min(y+5,window.innerHeight-150)+"px";
+  colorInput.value=node.color;
+  colorTick.checked=false;
+  genInput.value="";
+  birthInput.value="";
+  popup.style.left=Math.min(x+5,window.innerWidth-240)+"px";
+  popup.style.top=Math.min(y+5,window.innerHeight-200)+"px";
   popup.style.display="block";
   childInput.focus();
 }
@@ -186,61 +202,84 @@ function applyPopup(){
   if(!popupNode) return;
   pushUndo();
 
+  // rename
   const newName=renameInput.value.trim();
   if(newName===""){
-    if(popupNode.depth>0) deleteChild(popupNode);
+    if(popupNode.depth>1) deleteChild(popupNode);
     closePopup(); draw(); return;
   }
   popupNode.name=newName;
 
-  // Adjust color only if it's a child of root
-  if(colorInput.value && popupNode.depth===1){
-    const hsl=colorInput.value;
-    popupNode.hue=parseInt(colorInput.value.slice(1,3),16)/255*360;
-    // update shades of grandchildren
-    popupNode.children.forEach((c,i)=>{
-      c.hue=popupNode.hue;
-      c.light=Math.min(90,c.light);
-    });
+  // change color if ticked
+  if(colorTick.checked && colorInput.value){
+    const newColor=colorInput.value;
+    function propagateColor(n){
+      if(!n.explicit) n.color=newColor;
+      n.children.forEach(propagateColor);
+    }
+    popupNode.color=newColor;
+    popupNode.explicit=true;
+    popupNode.children.forEach(propagateColor);
   }
 
   // add child
   const childName=childInput.value.trim();
   if(childName!==""){
+    let depthInc = popupNode.depth+1;
+    if(genInput.value.trim()!==""){
+      let g=parseInt(genInput.value);
+      if(!isNaN(g)) depthInc=g;
+    }
+    let orderVal = popupNode.children.length;
+    if(birthInput.value.trim()!==""){
+      let b=parseInt(birthInput.value);
+      if(!isNaN(b) && b>=1 && b<=popupNode.children.length+1) orderVal=b-1;
+    }
     const newChild={
       name:childName,
       children:[],
-      depth:popupNode.depth+1,
-      hue:(popupNode.depth===0 ? (popupNode.children.length*137)%360 : popupNode.hue),
-      light:(popupNode.depth===0 ? 70 : Math.min(90,popupNode.light+10*(popupNode.children.length+1))),
-      order:popupNode.children.length
+      depth:depthInc,
+      color:popupNode.color,
+      explicit:false,
+      order:orderVal
     };
-    popupNode.children.push(newChild);
+    if(orderVal<popupNode.children.length){
+      popupNode.children.splice(orderVal,0,newChild);
+      for(let i=0;i<popupNode.children.length;i++) popupNode.children[i].order=i;
+    } else popupNode.children.push(newChild);
   }
 
   closePopup(); draw();
 }
 
-// Press Enter to apply popup
 renameInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
 childInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
 colorInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
+genInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
+birthInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
 
 /* ---------- VIEW PERSPECTIVE ---------- */
 function viewPerspective(){
   if(!popupNode) return;
-  function cloneSubtree(node,depth=0){
-    const cloned={name:node.name,depth:depth,hue:node.hue,light:node.light,children:[],order:0};
-    cloned.children=node.children.map((c,i)=>{
-      const ch=cloneSubtree(c,depth+1);
-      if(depth===0) ch.hue=(i*137)%360;
-      return ch;
-    });
-    return cloned;
+  const key=popupNode.name+"_perspective";
+  if(perspectivesMap[key]){
+    active=perspectivesMap[key];
+    updateTabs(); draw();
+    return;
   }
-  trees.push({name:popupNode.name+"'s view",root:cloneSubtree(popupNode)});
+
+  function clone(node,depth=1){
+    const c={name:node.name,depth:depth,color:node.color,explicit:node.explicit,children:[],order:node.order};
+    c.children=node.children.map(ch=>clone(ch,depth+1));
+    return c;
+  }
+
+  const cloned=clone(popupNode,1);
+  const tabName=popupNode.name+"'s view";
+  trees.push({name:tabName,root:cloned,parentNode:popupNode});
   active=trees.length-1;
-  resetView(); updateTabs(); draw();
+  perspectivesMap[key]=active;
+  updateTabs(); draw();
 }
 
 /* ---------- DELETE CHILD ---------- */
@@ -253,39 +292,69 @@ function deleteChild(node){
 }
 
 /* ---------- UNDO ---------- */
-function pushUndo(){undoStack.push(JSON.stringify(trees[active])); if(undoStack.length>20) undoStack.shift();}
+function pushUndo(){undoStack.push(JSON.stringify(trees[active])); if(undoStack.length>50) undoStack.shift();}
 function undo(){if(undoStack.length===0) return; trees[active]=JSON.parse(undoStack.pop()); draw();}
 window.addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="z") undo();});
 
 /* ---------- ZOOM & PAN ---------- */
 svg.addEventListener("wheel",e=>{
   e.preventDefault();
-  const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
-  const before=pt.matrixTransform(view.getCTM().inverse());
-  const z=e.deltaY<0?1.1:0.9;
-  scale*=z;
-  tx+=before.x*(1-z); ty+=before.y*(1-z);
+  const pt=svg.createSVGPoint();
+  pt.x=e.clientX; pt.y=e.clientY;
+  const CTM=view.getCTM();
+  const before=pt.matrixTransform(CTM.inverse());
+  const factor=e.deltaY<0?1.1:0.9;
+  scale*=factor;
+  tx+=before.x*(1-factor); ty+=before.y*(1-factor);
   updateTransform();
 });
+
 svg.addEventListener("mousedown",e=>{
   if(e.button!==1) return;
   let x=e.clientX,y=e.clientY;
-  window.onmousemove=ev=>{tx+=ev.clientX-x;ty+=ev.clientY-y;x=ev.clientX;y=ev.clientY;updateTransform();};
+  window.onmousemove=ev=>{
+    tx+=ev.clientX-x; ty+=ev.clientY-y; x=ev.clientX; y=ev.clientY;
+    updateTransform();
+  };
   window.onmouseup=()=>window.onmousemove=null;
 });
+
 function updateTransform(){view.setAttribute("transform",`translate(${tx},${ty}) scale(${scale})`);}
 function resetView(){scale=1;tx=0;ty=0;updateTransform();}
 svg.addEventListener("click",e=>{if(!popup.contains(e.target)) closePopup();});
 
 /* ---------- SAVE / LOAD ---------- */
-function saveTree(){const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(trees[active],null,2)],{type:"application/json"})); a.download="genealogy.json"; a.click();}
-function loadTree(){const i=document.createElement("input"); i.type="file"; i.accept=".json"; i.onchange=e=>{const r=new FileReader(); r.onload=()=>{trees.push(JSON.parse(r.result)); active=trees.length-1; resetView(); updateTabs(); draw();}; r.readAsText(e.target.files[0]);}; i.click();}
+function saveTree(){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(trees[active],null,2)],{type:"application/json"}));
+  a.download="genealogy.json";
+  a.click();
+}
 
-/* ---------- COLOR UTILS ---------- */
-function hslToHex(h,l){
-  let c=1, x=0, m=l/100-0.5; // simplified for visualization
-  let rgb=[0,0,255];
-  return `hsl(${h},70%,${l}%)`;
+function loadTree(){
+  const i=document.createElement("input");
+  i.type="file"; i.accept=".json";
+  i.onchange=e=>{
+    const r=new FileReader();
+    r.onload=()=>{
+      let loaded=JSON.parse(r.result);
+      // Upgrade structure if needed
+      function upgrade(node,depth=1){
+        if(!node.depth) node.depth=depth;
+        if(!node.color) node.color="#D2B48C";
+        if(node.explicit===undefined) node.explicit=false;
+        if(!node.order) node.order=0;
+        if(node.children) node.children.forEach(ch=>upgrade(ch,depth+1));
+        else node.children=[];
+      }
+      upgrade(loaded.root);
+      trees.push(loaded);
+      active=trees.length-1;
+      resetView(); updateTabs(); draw();
+    };
+    r.readAsText(e.target.files[0]);
+  };
+  i.click();
 }
 </script>
 </body>
