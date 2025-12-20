@@ -48,31 +48,28 @@ text {user-select:none;cursor:pointer;}
 <div class="tooltip" id="tooltip"></div>
 
 <script>
-const svg = document.getElementById("canvas");
-const NS = "http://www.w3.org/2000/svg";
-const view = document.createElementNS(NS,"g");
+const svg=document.getElementById("canvas");
+const NS="http://www.w3.org/2000/svg";
+const view=document.createElementNS(NS,"g");
 svg.appendChild(view);
-const tooltip = document.getElementById("tooltip");
+const tooltip=document.getElementById("tooltip");
 
-let trees=[], active=0;
-let scale=1, tx=0, ty=0;
-let undoStack=[];
-let popupNode=null;
+let trees=[],active=0,scale=1,tx=0,ty=0,undoStack=[],popupNode=null;
 
 const popup=document.getElementById("popup");
 const renameInput=document.getElementById("renameInput");
 const childInput=document.getElementById("childInput");
 const colorInput=document.getElementById("colorInput");
 
-function rootNode() {
-  return {name:"Root Person", children:[], depth:0, color:"#66aaff", order:0};
+// Create root node
+function rootNode(){
+  return {name:"Root Person",children:[],depth:0,hue:200,light:70,order:0};
 }
-
 newTree();
 
-/* TABS */
+/* ---------- TABS ---------- */
 function newTree(){
-  trees.push({name:"Root Person", root:rootNode()});
+  trees.push({name:"Root Person",root:rootNode()});
   active=trees.length-1;
   pushUndo();
   resetView();
@@ -99,7 +96,7 @@ function updateTabs(){
   });
 }
 
-/* DRAW */
+/* ---------- DRAW ---------- */
 function draw(){
   view.innerHTML="";
   const cx=svg.clientWidth/2;
@@ -126,7 +123,7 @@ function drawCircle(x,y,r,node){
   c.setAttribute("cx",x);
   c.setAttribute("cy",y);
   c.setAttribute("r",r);
-  c.setAttribute("fill",node.color);
+  c.setAttribute("fill",hslToHex(node.hue,node.light));
   view.appendChild(c);
   drawLabel(node,x,y,r*0.7,node.depth,0,r);
   c.addEventListener("click",e=>{e.stopPropagation();showPopup(node,e.clientX,e.clientY);});
@@ -140,13 +137,14 @@ function drawWedge(cx,cy,r1,r2,a1,a2,node){
   path.setAttribute("d",
     `M${x1} ${y1} A${r1} ${r1} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${r2} ${r2} 0 0 0 ${x4} ${y4} Z`
   );
-  path.setAttribute("fill",node.color);
+  path.setAttribute("fill",hslToHex(node.hue,node.light));
   view.appendChild(path);
   path.addEventListener("click",e=>{e.stopPropagation();showPopup(node,e.clientX,e.clientY);});
   const ang=(a1+a2)/2;
   drawLabel(node,cx+Math.cos(ang)*(r1+(r2-r1)/2),cy+Math.sin(ang)*(r1+(r2-r1)/2),(r2-r1)*0.55,node.depth,ang,r1+(r2-r1)/2);
 }
 
+/* ---------- LABELS ---------- */
 function drawLabel(node,x,y,max,depth,angle,radius){
   const t=document.createElementNS(NS,"text");
   t.setAttribute("x",x);
@@ -162,7 +160,7 @@ function drawLabel(node,x,y,max,depth,angle,radius){
     tooltip.textContent=node.name;
     tooltip.style.left=e.clientX+10+"px";
     tooltip.style.top=e.clientY+10+"px";
-    tooltip.style.background=node.color;
+    tooltip.style.background=hslToHex(node.hue,node.light);
     tooltip.style.color="white";
     tooltip.style.padding="2px 4px";
   });
@@ -170,14 +168,14 @@ function drawLabel(node,x,y,max,depth,angle,radius){
   t.addEventListener("click",e=>{e.stopPropagation();showPopup(node,e.clientX,e.clientY);});
 }
 
-/* POPUP */
+/* ---------- POPUP ---------- */
 function showPopup(node,x,y){
   popupNode=node;
   renameInput.value=node.name;
   childInput.value="";
-  colorInput.value=node.color;
-  popup.style.left=x+5+"px";
-  popup.style.top=y+5+"px";
+  colorInput.value=hslToHex(node.hue,node.light);
+  popup.style.left=Math.min(x+5,window.innerWidth-220)+"px";
+  popup.style.top=Math.min(y+5,window.innerHeight-150)+"px";
   popup.style.display="block";
   childInput.focus();
 }
@@ -188,7 +186,6 @@ function applyPopup(){
   if(!popupNode) return;
   pushUndo();
 
-  // rename
   const newName=renameInput.value.trim();
   if(newName===""){
     if(popupNode.depth>0) deleteChild(popupNode);
@@ -196,8 +193,16 @@ function applyPopup(){
   }
   popupNode.name=newName;
 
-  // change color only if user clicked color
-  if(colorInput.value) popupNode.color=colorInput.value;
+  // Adjust color only if it's a child of root
+  if(colorInput.value && popupNode.depth===1){
+    const hsl=colorInput.value;
+    popupNode.hue=parseInt(colorInput.value.slice(1,3),16)/255*360;
+    // update shades of grandchildren
+    popupNode.children.forEach((c,i)=>{
+      c.hue=popupNode.hue;
+      c.light=Math.min(90,c.light);
+    });
+  }
 
   // add child
   const childName=childInput.value.trim();
@@ -206,7 +211,8 @@ function applyPopup(){
       name:childName,
       children:[],
       depth:popupNode.depth+1,
-      color:popupNode.depth===0?`hsl(${(popupNode.children.length*137)%360},70%,70%)`:popupNode.color,
+      hue:(popupNode.depth===0 ? (popupNode.children.length*137)%360 : popupNode.hue),
+      light:(popupNode.depth===0 ? 70 : Math.min(90,popupNode.light+10*(popupNode.children.length+1))),
       order:popupNode.children.length
     };
     popupNode.children.push(newChild);
@@ -215,28 +221,29 @@ function applyPopup(){
   closePopup(); draw();
 }
 
+// Press Enter to apply popup
 renameInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
 childInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
 colorInput.addEventListener("keydown",e=>{if(e.key==="Enter") applyPopup();});
 
-/* VIEW PERSPECTIVE */
+/* ---------- VIEW PERSPECTIVE ---------- */
 function viewPerspective(){
   if(!popupNode) return;
   function cloneSubtree(node,depth=0){
-    const cloned={name:node.name, depth:depth, color:node.color, children:[], order:0};
+    const cloned={name:node.name,depth:depth,hue:node.hue,light:node.light,children:[],order:0};
     cloned.children=node.children.map((c,i)=>{
       const ch=cloneSubtree(c,depth+1);
-      if(depth===0) ch.color=`hsl(${i*137},70%,70%)`; // root's children unique colors
+      if(depth===0) ch.hue=(i*137)%360;
       return ch;
     });
     return cloned;
   }
-  trees.push({name:popupNode.name+"'s view", root:cloneSubtree(popupNode)});
+  trees.push({name:popupNode.name+"'s view",root:cloneSubtree(popupNode)});
   active=trees.length-1;
   resetView(); updateTabs(); draw();
 }
 
-/* DELETE CHILD */
+/* ---------- DELETE CHILD ---------- */
 function deleteChild(node){
   function recurse(parent){
     parent.children=parent.children.filter(c=>c!==node);
@@ -245,12 +252,12 @@ function deleteChild(node){
   recurse(trees[active].root);
 }
 
-/* UNDO */
+/* ---------- UNDO ---------- */
 function pushUndo(){undoStack.push(JSON.stringify(trees[active])); if(undoStack.length>20) undoStack.shift();}
 function undo(){if(undoStack.length===0) return; trees[active]=JSON.parse(undoStack.pop()); draw();}
 window.addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="z") undo();});
 
-/* ZOOM & PAN */
+/* ---------- ZOOM & PAN ---------- */
 svg.addEventListener("wheel",e=>{
   e.preventDefault();
   const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
@@ -270,9 +277,16 @@ function updateTransform(){view.setAttribute("transform",`translate(${tx},${ty})
 function resetView(){scale=1;tx=0;ty=0;updateTransform();}
 svg.addEventListener("click",e=>{if(!popup.contains(e.target)) closePopup();});
 
-/* SAVE / LOAD */
+/* ---------- SAVE / LOAD ---------- */
 function saveTree(){const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(trees[active],null,2)],{type:"application/json"})); a.download="genealogy.json"; a.click();}
 function loadTree(){const i=document.createElement("input"); i.type="file"; i.accept=".json"; i.onchange=e=>{const r=new FileReader(); r.onload=()=>{trees.push(JSON.parse(r.result)); active=trees.length-1; resetView(); updateTabs(); draw();}; r.readAsText(e.target.files[0]);}; i.click();}
+
+/* ---------- COLOR UTILS ---------- */
+function hslToHex(h,l){
+  let c=1, x=0, m=l/100-0.5; // simplified for visualization
+  let rgb=[0,0,255];
+  return `hsl(${h},70%,${l}%)`;
+}
 </script>
 </body>
 </html>
