@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>SOLAR - Society of Logic and Reason</title>
+		<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+		<style>
+		   /* Style the tab */
+		.tab {
+		  overflow: hidden;
+		  border: 1px solid #ccc;
+		  background-color: #f1f1f1;
+		  display: flex;
+          justify-content: center; /* centers the tab buttons */
+		}
+
+		/* Style the buttons that are used to open the tab content */
+		.tab button {
+         background-color: inherit;
+         border: none;
+         outline: none;
+         cursor: pointer;
+         padding: 14px 16px;
+         transition: 0.3s;
+         margin: 0 4px; /* optional spacing between buttons */
+         border-radius: 8px; /* rounded edges */
+		}
+
+		/* Change background color of buttons on hover */
+		.tab button:hover {
+		  background-color: #ddd;
+		}
+
+		/* Create an active/current tablink class */
+		.tab button.active {
+		  background-color: #ccc;
+		}
+
+		/* Style the tab content */
+		.tabcontent {
+		  display: none;
+		  padding: 6px 12px;
+		}
+
+		header img {
+			padding: 15px;
+		}
+		</style>
+		<script>
+				function openTab(evt, name) {
+			  // Declare all variables
+			  var i, tabcontent, tablinks;
+
+			  // Get all elements with class="tabcontent" and hide them
+			  tabcontent = document.getElementsByClassName("tabcontent");
+			  for (i = 0; i < tabcontent.length; i++) {
+			    tabcontent[i].style.display = "none";
+			  }
+
+			  // Get all elements with class="tablinks" and remove the class "active"
+			  tablinks = document.getElementsByClassName("tablinks");
+			  for (i = 0; i < tablinks.length; i++) {
+			    tablinks[i].className = tablinks[i].className.replace(" active", "");
+			  }
+
+			  // Show the current tab, and add an "active" class to the button that opened the tab
+			  document.getElementById(name).style.display = "block";
+			  evt.currentTarget.className += " active";
+			}
+		</script>
+	</head>
+
+	<body>
+		<header style="background-color: #24f; display: flex; align-items: center;">
+				<img src="bannerLeft.png" align="left" width="20%" height="auto">
+				<img src="bannerText.png" align="center" width="50%" height="auto">
+				<img src="bannerRight.png" align="right" width="20%" height="auto">
+			
+		</header>
+		<div class="tab">
+			<button class="tablinks active" onclick="openTab(event, 'about')">About</button>
+			<button class="tablinks" onclick="openTab(event, 'values')">Core Values</button>
+			<button class="tablinks" onclick="openTab(event, 'PIP')">Prove it Post</button>
+			<button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
+			<button class="tablinks" onclick="openTab(event, 'contact')">Contact</button>
+		</div>
+		<div class="main">
+			<div class="tabcontent" id="about" style="display: block;">
+				<font size="4">
+				<p>SOLAR is a group of young men that meet to learn logic and reason to learn how to defend the truth.</p>
+               <font size="5">
+				<p>Members<br>
+				<font size="4">
+         <p>Lincoln Bontrager,</p>
+         <p>Lucas Miller,</p>
+	    <p> Sammy Buck,</p>
+			<p>Ben Buck, </p>
+			<p>Ian Miller, </p>
+			<p>Logan Ulrich, </p>
+			<p>Elijah Lehman.</p>
+			</div>
+			<div class="tabcontent" id="values">
+				<font size="5">
+				<p>Core Values<br>
+				<font size="4">
+			  The Society of Logic and Reason is founded and governed by logic, which is right thinking. All things that SOLAR occupants decide for the club, be it moral or opinionated, shall be dictated by correct reasoning, using logic. That is to say, one cannot be perfectly logical, because logic (correct thinking) is based on God. God is the only one perfectly logical in all he does. And since we are not God, we are not perfectly logical. However, this does not mean we should not try to be logical. God calls us to be like Him. So we should try to be logical in everything we do.</p>
+			  <font size="5">
+			  <p>Mission statement<br>
+			  <font size="4">
+              Mature in knowledge and wisdom of logic and the Bible, equipping ourselves to stand up for moral values, uphold a Biblical worldview, and ultimately defend truth.<br>1 Peter 3:15 “But in your hearts honor Christ the Lord as holy, always being prepared to make a defense to anyone who asks you for a reason for the hope that is in you; yet do it with gentleness and respect.”</p>
+
+			</div>
+			<div class="tabcontent" id="PIP">
+			<font size="5">
+				THE PROVE IT POST#2 This is America!
+			<p><a href="THEPROVEITPOST02ThisisAmerica.pdf"><img src="PIP2TN.png" align="center" width="35%" height="auto"></a></p>
+			THE PROVE IT POST#3 Sunday is not part of the weekend!
+			<p><a href="THEPROVEITPOST03Sundayisnotpartoftheweekend.pdf"><img src="PIP3TN.png" align="center" width="35%" height="auto"></a></p>
+			<font size="5">
+				THE PROVE IT POST#4 Anti Adornment
+			<p><a href="THEPROVEITPOST04AntiAdornment.pdf"><img src="PIP4TN.png" align="center" width="35%" height="auto"></a></p>
+				
+			</div>
+			
+			<div class="tabcontent" id="videos">
+			<font size="5">
+				<p>Playlist</p>
+			
+			<p><iframe width="560" height="315" 
+			src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&amp;list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" 
+			title="YouTube video player" 
+			frameborder="0" 
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+
+			<p>
+		    Playlist Videos
+			</p>
+
+			 		<p><iframe width="560" 
+			 			height="315" src="https://www.youtube.com/embed/FSLjkPfEcOg?si=jT4_efGzwGTqjTzc" 
+			 			title="YouTube video player" 
+			 			frameborder="10" 
+			 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+
+			 			<p><iframe width="560" 
+			 				height="315" 
+			 				src="https://www.youtube.com/embed/bwgJCYLqtoE?si=v88SSa9Bb2-SfIA_" 
+			 				title="YouTube video player" 
+			 				frameborder="10" 
+			 				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+
+			 			<p><iframe width="560" 
+			 					height="315" 
+			 					src="https://www.youtube.com/embed/q6wf_mIAyFw?si=dL8Dfg_3fuo9SiTF" 
+			 					title="YouTube video player" 
+			 					frameborder="10" 
+			 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+
+                      <p><iframe width="560" height="315"
+			 
+			 src="https://www.youtube.com/embed/y9Jr5ENVFVA?si=wUDeQfY-olK1WHTU" 
+			 title="YouTube video player" 
+			 frameborder="10" 
+			 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+
+
+			 			<p><iframe width="560" height="315" 
+			 		src="https://www.youtube.com/embed/VrIvwPConv0?si=gvDJAeYK5NEBuMis" 
+			 		title="YouTube video player" 
+			 		frameborder="10" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+
+			</div>
+
+			<div class="tabcontent" id="contact">
+				<font size="4">
+			<p>Email-societyoflogicandreason@gmail.com 
+				
+				</p>YouTube channel-<a href="https://www.youtube.com/@societyoflogicandreason">@societyoflogicandreason.com</a></p>	
+			</div>
+		</div>
+		
+	</body>
+</html>
