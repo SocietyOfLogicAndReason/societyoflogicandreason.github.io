@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Genealogy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+}
+#layout {
+  display: flex;
+  height: 100vh;
+}
+#canvas {
+  flex: 1;
+  background: #fafafa;
+}
+#sidebar {
+  width: 220px;
+  background: #222;
+  color: white;
+  padding: 8px;
+  overflow-y: auto;
+}
+button {
+  width: 100%;
+  margin: 6px 0;
+  padding: 8px;
+  cursor: pointer;
+}
+.tab {
+  padding: 6px;
+  background: #444;
+  margin: 4px 0;
+  cursor: pointer;
+}
+.tab.active {
+  background: #666;
+}
+text {
+  pointer-events: none;
+  user-select: none;
+}
+#popup {
+  position: absolute;
+  background: white;
+  padding: 10px;
+  border: 1px solid #999;
+  display: none;
+  z-index: 10;
+}
+#popup input { margin: 4px 0; width: 100%; padding: 4px; }
+#popup label { font-size: 12px; }
+</style>
+</head>
+
+<body>
+<div id="layout">
+  <svg id="canvas"></svg>
+  <div id="sidebar">
+    <button onclick="newTree()">➕ New</button>
+    <button onclick="undo()">↩ Undo</button>
+    <button onclick="saveTree()">💾 Save</button>
+    <button onclick="loadTree()">📂 Load</button>
+    <hr>
+    <div id="tabs"></div>
+  </div>
+</div>
+
+<div id="popup">
+  <label>Rename (leave blank to delete)</label>
+  <input type="text" id="renameInput">
+  <label>Add child (leave blank for none)</label>
+  <input type="text" id="childInput">
+  <label>Color (root child only)</label>
+  <input type="color" id="colorInput">
+  <button onclick="applyPopup()">Apply</button>
+  <button onclick="closePopup()">Cancel</button>
+</div>
+
+<script>
+const svg = document.getElementById("canvas");
+const NS = "http://www.w3.org/2000/svg";
+const view = document.createElementNS(NS,"g");
+svg.appendChild(view);
+
+let trees=[], active=0;
+let scale=1, tx=0, ty=0;
+let undoStack = [];
+let popupNode = null;
+const popup = document.getElementById("popup");
+const renameInput = document.getElementById("renameInput");
+const childInput = document.getElementById("childInput");
+const colorInput = document.getElementById("colorInput");
+
+function rootNode() {
+  return {name:"Root Person", children:[], depth:0, hue:200, light:70, order:0};
+}
+
+newTree();
+
+/* ---------- TABS ---------- */
+function newTree(){
+  trees.push({name:"Untitled",root:rootNode()});
+  active = trees.length-1;
+  pushUndo();
+  resetView();
+  updateTabs();
+  draw();
+}
+
+function updateTabs(){
+  const t=document.getElementById("tabs");
+  t.innerHTML="";
+  trees.forEach((tr,i)=>{
+    const d=document.createElement("div");
+    d.className="tab"+(i===active?" active":"");
+    d.textContent=tr.name;
+    d.onclick=()=>{active=i;draw();updateTabs();};
+    d.ondblclick=()=>{
+      const n=prompt("Rename tree (blank deletes):",tr.name);
+      if(n===null) return;
+      if(n===""){trees.splice(i,1);active=Math.max(0,active-1);}
+      else tr.name=n;
+      updateTabs(); draw();
+    };
+    t.appendChild(d);
+  });
+}
+
+/* ---------- DRAW ---------- */
+function draw(){
+  view.innerHTML="";
+  const cx = svg.clientWidth/2;
+  const cy = svg.clientHeight/2;
+  drawNode(trees[active].root, cx, cy, -Math.PI/2, 3*Math.PI/2, 60); // start top
+}
+
+function drawNode(node,cx,cy,a1,a2,r){
+  if(node.depth===0) drawCircle(cx,cy,r,node);
+
+  if(!node.children.length) return;
+  const slice = (a2-a1)/node.children.length;
+  const r2 = r+90;
+
+  node.children.sort((a,b)=>a.order-b.order); // order by insertion
+  node.children.forEach((ch,i)=>{
+    const s = a1 + i*slice;
+    const e = s + slice;
+    drawWedge(cx,cy,r,r2,s,e,ch);
+    drawNode(ch,cx,cy,s,e,r2);
+  });
+}
+
+function drawCircle(x,y,r,node){
+  const c=document.createElementNS(NS,"circle");
+  c.setAttribute("cx",x);
+  c.setAttribute("cy",y);
+  c.setAttribute("r",r);
+  c.setAttribute("fill",`hsl(${node.hue},70%,${node.light}%)`);
+  bindEvents(c,node);
+  view.appendChild(c);
+  drawLabel(node.name,x,y,r*0.7,node.depth);
+}
+
+function drawWedge(cx,cy,r1,r2,a1,a2,node){
+  const p=(r,a)=>[cx+Math.cos(a)*r,cy+Math.sin(a)*r];
+  const [x1,y1]=p(r1,a1),[x2,y2]=p(r1,a2),
+        [x3,y3]=p(r2,a2),[x4,y4]=p(r2,a1);
+  const path=document.createElementNS(NS,"path");
+  path.setAttribute("d",
+    `M${x1} ${y1} A${r1} ${r1} 0 0 1 ${x2} ${y2}
+     L${x3} ${y3} A${r2} ${r2} 0 0 0 ${x4} ${y4} Z`
+  );
+
+  const light = Math.max(30, node.light - node.depth*5);
+  path.setAttribute("fill",`hsl(${node.hue},70%,${light}%)`);
+
+  bindEvents(path,node);
+  view.appendChild(path);
+
+  const ang=(a1+a2)/2;
+  const offset=(node.depth>1)?10:0;
+  drawLabel(node.name,cx+Math.cos(ang)*(r1+(r2-r1)/2+offset),
+            cy+Math.sin(ang)*(r1+(r2-r1)/2+offset),
+            (r2-r1)*0.55,node.depth);
+}
+
+function drawLabel(text,x,y,max,depth){
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("x",x);
+  t.setAttribute("y",y);
+  t.setAttribute("text-anchor","middle");
+  t.setAttribute("dominant-baseline","middle");
+  t.textContent=text;
+
+  let size=Math.min(16,max);
+  const limit=max*(depth>=2?0.75:1);
+
+  while(size>2){
+    t.setAttribute("font-size",size);
+    view.appendChild(t);
+    if(t.getComputedTextLength()<=limit) break;
+    view.removeChild(t);
+    size--;
+  }
+  view.appendChild(t);
+}
+
+/* ---------- INTERACTION ---------- */
+function bindEvents(el,node){
+  el.onclick = e => {
+    e.stopPropagation();
+    showPopup(node,e.clientX,e.clientY,true);
+  };
+  el.onmousedown = e => {
+    if(e.button===0 && node.depth>0) startDrag(node,e);
+  };
+}
+
+svg.onclick = e => {
+  closePopup();
+};
+
+/* ---------- POPUP ---------- */
+function showPopup(node,x,y,focusChild=false){
+  popupNode = node;
+  renameInput.value = node.name;
+  childInput.value = "";
+  colorInput.value = `#${hslToHex(node.hue,70,node.light)}`;
+  popup.style.left = x+5+"px";
+  popup.style.top = y+5+"px";
+  popup.style.display="block";
+
+  if(focusChild) childInput.focus();
+}
+
+function closePopup(){ popup.style.display="none"; popupNode=null; }
+
+function applyPopup(){
+  if(!popupNode) return;
+  pushUndo();
+
+  const newName = renameInput.value.trim();
+  if(newName===""){
+    if(popupNode.depth>0) deleteChild(popupNode);
+    closePopup(); draw(); return;
+  }
+  popupNode.name = newName;
+
+  const childName = childInput.value.trim();
+  if(childName!=="" && popupNode.depth>=0){
+    const hue = popupNode.depth===0 ? (popupNode.children.length*137)%360 : popupNode.hue;
+    popupNode.children.push({name:childName,children:[],depth:popupNode.depth+1,hue,light:70,order:popupNode.children.length});
+  }
+
+  if(popupNode.depth===0){
+    const hex = colorInput.value;
+    popupNode.hue = parseInt(hex.slice(1,3),16)/255*360;
+  }
+
+  closePopup();
+  draw();
+}
+
+childInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter") applyPopup();
+});
+renameInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter") applyPopup();
+});
+colorInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter") applyPopup();
+});
+
+/* ---------- DELETE CHILD ---------- */
+function deleteChild(node){
+  function recurse(parent){
+    parent.children = parent.children.filter(c=>c!==node);
+    parent.children.forEach(recurse);
+  }
+  recurse(trees[active].root);
+}
+
+/* ---------- DRAG/REORDER ---------- */
+let dragNode=null, dragStartX=0;
+function startDrag(node,e){
+  dragNode=node;
+  dragStartX=e.clientX;
+  window.onmousemove=dragMove;
+  window.onmouseup=dragEnd;
+}
+function dragMove(e){
+  if(!dragNode) return;
+  const dx = e.clientX - dragStartX;
+  dragNode.order += dx*0.01;
+  dragStartX = e.clientX;
+  draw();
+}
+function dragEnd(){dragNode=null; window.onmousemove=null;}
+
+/* ---------- UNDO ---------- */
+function pushUndo(){ undoStack.push(JSON.stringify(trees[active])); if(undoStack.length>20) undoStack.shift(); }
+function undo(){ if(undoStack.length===0) return; trees[active]=JSON.parse(undoStack.pop()); draw(); }
+window.addEventListener("keydown",e=>{ if(e.ctrlKey && e.key==="z") undo(); });
+
+/* ---------- ZOOM & PAN ---------- */
+svg.addEventListener("wheel",e=>{
+  e.preventDefault();
+  const pt = svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
+  const before = pt.matrixTransform(view.getCTM().inverse());
+  const z = e.deltaY<0?1.1:0.9;
+  scale*=z;
+  tx += before.x*(1-z); ty += before.y*(1-z);
+  updateTransform();
+});
+svg.addEventListener("mousedown",e=>{
+  if(e.button!==1) return;
+  let x=e.clientX,y=e.clientY;
+  window.onmousemove=ev=>{ tx+=ev.clientX-x; ty+=ev.clientY-y; x=ev.clientX; y=ev.clientY; updateTransform(); };
+  window.onmouseup=()=>window.onmousemove=null;
+});
+function updateTransform(){ view.setAttribute("transform",`translate(${tx},${ty}) scale(${scale})`); }
+function resetView(){ scale=1; tx=0; ty=0; updateTransform(); }
+
+/* ---------- SAVE / LOAD ---------- */
+function saveTree(){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(trees[active],null,2)],{type:"application/json"}));
+  a.download="genealogy.json"; a.click();
+}
+function loadTree(){
+  const i=document.createElement("input");
+  i.type="file"; i.accept=".json";
+  i.onchange=e=>{
+    const r=new FileReader();
+    r.onload=()=>{ trees.push(JSON.parse(r.result)); active=trees.length-1; resetView(); updateTabs(); draw(); };
+    r.readAsText(e.target.files[0]);
+  };
+  i.click();
+}
+
+/* ---------- COLOR CONVERSION ---------- */
+function hslToHex(h,s,l){
+  s/=100; l/=100;
+  let c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m=l-c/2, r=0,g=0,b=0;
+  if(h<60){r=c;g=x;b=0;} else if(h<120){r=x;g=c;b=0;} else if(h<180){r=0;g=c;b=x;}
+  else if(h<240){r=0;g=x;b=c;} else if(h<300){r=x;g=0;b=c;} else {r=c;g=0;b=c-x;}
+  r=Math.round((r+m)*255); g=Math.round((g+m)*255); b=Math.round((b+m)*255);
+  return ((1<<24)+ (r<<16) + (g<<8) + b).toString(16).slice(1);
+}
+</script>
+</body>
+</html>
