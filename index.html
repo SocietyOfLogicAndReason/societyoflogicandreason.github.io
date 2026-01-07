@@ -215,7 +215,7 @@ function openTab(event, tabName) {
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-  document.getElementsByClassName("tablinks")[1].click();
+  document.getElementsByClassName("tablinks")[0].click();
 });
 </script>
 
@@ -233,8 +233,8 @@ window.addEventListener("DOMContentLoaded", function () {
 <main>
 
 <div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'about')">About</button>
   <button class="tablinks" onclick="openTab(event, 'members')">Members</button>
-  <button class="tablinks" onclick="openTab(event, 'about')">Core Values</button>
   <button class="tablinks" onclick="openTab(event, 'articles')">Articles</button>
   <button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
 </div>
