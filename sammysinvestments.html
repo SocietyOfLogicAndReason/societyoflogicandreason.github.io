@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Portfolio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .card {
+      background: #161b22;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .title {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+
+    .label {
+      color: #8b949e;
+    }
+
+    .value {
+      font-weight: bold;
+    }
+
+    .total-box {
+      background: #238636;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>My Portfolio</h1>
+
+<div class="container">
+
+  <div class="card">
+    <div class="title">Eventide Gilead Fund</div>
+    <div class="row"><span class="label">Price</span><span class="value">$<span id="gilead-price">...</span></span></div>
+    <div class="row"><span class="label">Value</span><span class="value">$<span id="gilead-value">...</span></span></div>
+  </div>
+
+  <div class="card">
+    <div class="title">Eventide Balanced Fund</div>
+    <div class="row"><span class="label">Price</span><span class="value">$<span id="balanced-price">...</span></span></div>
+    <div class="row"><span class="label">Value</span><span class="value">$<span id="balanced-value">...</span></span></div>
+  </div>
+
+  <div class="card">
+    <div class="title">Eventide Dividend Growth</div>
+    <div class="row"><span class="label">Price</span><span class="value">$<span id="dividend-price">...</span></span></div>
+    <div class="row"><span class="label">Value</span><span class="value">$<span id="dividend-value">...</span></span></div>
+  </div>
+
+  <div class="card">
+    <div class="title">Bitcoin (0.176337455 BTC)</div>
+    <div class="row"><span class="label">BTC Price</span><span class="value">$<span id="btc-price">...</span></span></div>
+    <div class="row"><span class="label">Value</span><span class="value">$<span id="btc-value">...</span></span></div>
+  </div>
+
+  <div class="total-box">
+    Total Portfolio: $<span id="total">...</span>
+  </div>
+
+</div>
+
+<script>
+const funds = [
+  { id: "gilead", ticker: "ETGLX", shares: 121.059 },
+  { id: "balanced", ticker: "ETBAX", shares: 682.409 },
+  { id: "dividend", ticker: "ETDGX", shares: 533.973 }
+];
+
+const bitcoinAmount = 0.176337455;
+
+const fallbackPrices = {
+  ETGLX: 20.50,
+  ETBAX: 25.10,
+  ETDGX: 30.25
+};
+
+async function getStockPrice(ticker) {
+  try {
+    const res = await fetch(`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`);
+    const data = await res.json();
+    return data.quoteResponse.result[0].regularMarketPrice;
+  } catch {
+    return fallbackPrices[ticker];
+  }
+}
+
+async function getBTCPrice() {
+  try {
+    const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+    const data = await res.json();
+    return data.bitcoin.usd;
+  } catch {
+    return 60000;
+  }
+}
+
+async function update() {
+  let total = 0;
+
+  for (let fund of funds) {
+    let price = await getStockPrice(fund.ticker);
+    let value = price * fund.shares;
+
+    document.getElementById(`${fund.id}-price`).textContent = price.toFixed(2);
+    document.getElementById(`${fund.id}-value`).textContent = value.toFixed(2);
+
+    total += value;
+  }
+
+  let btcPrice = await getBTCPrice();
+  let btcValue = btcPrice * bitcoinAmount;
+
+  document.getElementById("btc-price").textContent = btcPrice.toFixed(2);
+  document.getElementById("btc-value").textContent = btcValue.toFixed(2);
+
+  total += btcValue;
+
+  document.getElementById("total").textContent = total.toFixed(2);
+}
+
+update();
+setInterval(update, 60000);
+</script>
+
+</body>
+</html>
