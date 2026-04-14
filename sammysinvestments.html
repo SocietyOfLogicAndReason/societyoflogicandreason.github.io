@@ -97,7 +97,7 @@
   <div class="card">
     <div class="title">Eventide Dividend Growth</div>
     <div class="row"><span class="label">Price per share</span><span class="price">$<span id="dividend-price">...</span></span></div>
-    <div class="row"><span class="label">My </span><span class="value">$<span id="dividend-value">...</span></span></div>
+    <div class="row"><span class="label">Value</span><span class="value">$<span id="dividend-value">...</span></span></div>
   </div>
 
   <div class="card">
@@ -122,9 +122,9 @@ const funds = [
 const bitcoinAmount = 0.176337455;
 
 const fallbackPrices = {
-  ETGLX: 20.50,
-  ETBAX: 25.10,
-  ETDGX: 30.25
+  ETGLX: 55.00,
+  ETBAX: 15.00,
+  ETDGX: 21.00
 };
 
 function formatNumber(num) {
@@ -147,7 +147,7 @@ async function getBTCPrice() {
     const data = await res.json();
     return data.bitcoin.usd;
   } catch {
-    return 00000;
+    return 73000;
   }
 }
 
