@@ -1,2 +1,213 @@
 <!DOCTYPE html>
-<html><head><title>Investments</title></head><body>File created. Replace with full code if needed.</body></html>
+<html>
+<head>
+  <title>Investments</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .card {
+      background: #161b22;
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 18px;
+      font-size: 18px;
+    }
+
+    .title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+
+    .price {
+      font-style: italic;
+      font-size: 14px;
+      color: #9da7b3;
+    }
+
+    .value {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .total {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      border-bottom: 3px solid #fff;
+      padding-bottom: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Investments</h1>
+
+<div class="container">
+
+  <div class="card">
+    <div class="title">Eventide Gilead Fund</div>
+    <div class="row">
+      <span>Price per share</span>
+      <span class="price" id="gilead-price">$0.00</span>
+    </div>
+    <div class="row">
+      <span>Value</span>
+      <span class="value" id="gilead-value">$0.00</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title">Bitcoin (0.176337455 BTC)</div>
+    <div class="row">
+      <span>Price</span>
+      <span class="price" id="btc-price">$0.00</span>
+    </div>
+    <div class="row">
+      <span>Value</span>
+      <span class="value" id="btc-value">$0.00</span>
+    </div>
+  </div>
+
+  <div class="total">
+    Total Investments: $<span id="total">0.00</span>
+  </div>
+
+</div>
+
+<script>
+const API_KEY = "7a79d0b2709843e7a3a77217ec1faaeb";
+
+const funds = [
+  { id: "gilead", ticker: "ETGLX", shares: 121.059 }
+];
+
+const bitcoinAmount = 0.176337455;
+
+// Format with commas
+function format(num) {
+  return "$" + num.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+// Smooth animation
+function animateValue(el, start, end, duration = 800) {
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    let progress = Math.min((timestamp - startTime) / duration, 1);
+    let value = start + (end - start) * progress;
+    el.textContent = format(value);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+
+// Get stock price
+async function getStock(ticker) {
+  try {
+    const res = await fetch(`https://api.twelvedata.com/price?symbol=${ticker}&apikey=${API_KEY}`);
+    const data = await res.json();
+    return parseFloat(data.price);
+  } catch {
+    return null;
+  }
+}
+
+// Get BTC price
+async function getBTC() {
+  try {
+    const res = await fetch(`https://api.twelvedata.com/price?symbol=BTC/USD&apikey=${API_KEY}`);
+    const data = await res.json();
+    return parseFloat(data.price);
+  } catch {
+    return null;
+  }
+}
+
+async function update() {
+  let total = 0;
+
+  // STOCKS
+  for (let fund of funds) {
+    let stored = localStorage.getItem(fund.ticker);
+    let last = stored ? parseFloat(stored) : 0;
+
+    let priceEl = document.getElementById(fund.id + "-price");
+
+    // show last immediately
+    priceEl.textContent = format(last);
+
+    let price = await getStock(fund.ticker);
+
+    if (price && !isNaN(price)) {
+      localStorage.setItem(fund.ticker, price);
+      animateValue(priceEl, last, price);
+      last = price;
+    }
+
+    let value = last * fund.shares;
+    document.getElementById(fund.id + "-value").textContent = format(value);
+
+    total += value;
+  }
+
+  // BITCOIN
+  let storedBTC = localStorage.getItem("BTC");
+  let lastBTC = storedBTC ? parseFloat(storedBTC) : 0;
+
+  let btcEl = document.getElementById("btc-price");
+  btcEl.textContent = format(lastBTC);
+
+  let btcPrice = await getBTC();
+
+  if (btcPrice && !isNaN(btcPrice)) {
+    localStorage.setItem("BTC", btcPrice);
+    animateValue(btcEl, lastBTC, btcPrice);
+    lastBTC = btcPrice;
+  }
+
+  let btcValue = lastBTC * bitcoinAmount;
+  document.getElementById("btc-value").textContent = format(btcValue);
+
+  total += btcValue;
+
+  document.getElementById("total").textContent =
+    total.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+}
+
+// Run
+update();
+setInterval(update, 60000);
+</script>
+
+</body>
+</html>
