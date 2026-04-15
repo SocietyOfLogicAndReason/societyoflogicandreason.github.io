@@ -4,7 +4,7 @@
   <title>Investments</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial;
       background: #0d1117;
       color: #e6edf3;
       padding: 20px;
@@ -24,13 +24,13 @@
       background: #161b22;
       border-radius: 14px;
       padding: 25px;
-      margin-bottom: 18px;
-      font-size: 18px;
+      margin-bottom: 20px;
     }
 
     .title {
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .row {
@@ -47,16 +47,22 @@
 
     .value {
       font-weight: bold;
-      font-size: 20px;
+      font-size: 18px;
     }
 
-    .total {
+    .section-total {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 20px;
+      text-align: right;
+    }
+
+    .grand-total {
       text-align: center;
       font-size: 26px;
       font-weight: bold;
       border-bottom: 3px solid #fff;
       padding-bottom: 10px;
-      margin-top: 20px;
     }
   </style>
 </head>
@@ -66,59 +72,59 @@
 
 <div class="container">
 
-  <!-- Gilead -->
+  <!-- INVESTMENTS BLOCK -->
   <div class="card">
-    <div class="title">Eventide Gilead Fund</div>
+    <div class="title">Eventide Investments</div>
+
     <div class="row">
-      <span>Price per share</span>
+      <span>Gilead</span>
       <span class="price" id="gilead-price">$0.00</span>
     </div>
     <div class="row">
-      <span>Value</span>
+      <span></span>
       <span class="value" id="gilead-value">$0.00</span>
     </div>
-  </div>
 
-  <!-- Balanced -->
-  <div class="card">
-    <div class="title">Eventide Balanced Fund</div>
     <div class="row">
-      <span>Price per share</span>
+      <span>Balanced</span>
       <span class="price" id="balanced-price">$0.00</span>
     </div>
     <div class="row">
-      <span>Value</span>
+      <span></span>
       <span class="value" id="balanced-value">$0.00</span>
     </div>
-  </div>
 
-  <!-- Dividend -->
-  <div class="card">
-    <div class="title">Eventide Dividend Growth</div>
     <div class="row">
-      <span>Price per share</span>
+      <span>Dividend</span>
       <span class="price" id="dividend-price">$0.00</span>
     </div>
     <div class="row">
-      <span>Value</span>
+      <span></span>
       <span class="value" id="dividend-value">$0.00</span>
+    </div>
+
+    <div class="section-total">
+      Total: $<span id="fund-total">0.00</span>
     </div>
   </div>
 
-  <!-- Bitcoin -->
+  <!-- BITCOIN BLOCK -->
   <div class="card">
-    <div class="title">Bitcoin</div>
+    <div class="title">Bitcoin (0.176337455 BTC)</div>
+
     <div class="row">
       <span>Price</span>
       <span class="price" id="btc-price">$0.00</span>
     </div>
+
     <div class="row">
       <span>Value</span>
       <span class="value" id="btc-value">$0.00</span>
     </div>
   </div>
 
-  <div class="total">
+  <!-- GRAND TOTAL -->
+  <div class="grand-total">
     Total Investments: $<span id="total">0.00</span>
   </div>
 
@@ -128,98 +134,40 @@
 const API_KEY = "7a79d0b2709843e7a3a77217ec1faaeb";
 
 const funds = [
-  { id: "gilead", ticker: "ETGLX", shares: 121.059 },
-  { id: "balanced", ticker: "ETBAX", shares: 682.409 },
-  { id: "dividend", ticker: "ETDGX", shares: 533.973 }
+  { id:"gilead", ticker:"ETGLX", shares:121.059 },
+  { id:"balanced", ticker:"ETBAX", shares:682.409 },
+  { id:"dividend", ticker:"ETDGX", shares:533.973 }
 ];
 
 const bitcoinAmount = 0.176337455;
 
-function format(num) {
-  return "$" + num.toLocaleString(undefined, {
+function format(n){
+  return "$" + n.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   });
 }
 
-function animateValue(el, start, end, duration = 800) {
-  let startTime = null;
-
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
-    let progress = Math.min((timestamp - startTime) / duration, 1);
-    let value = start + (end - start) * progress;
-    el.textContent = format(value);
-    if (progress < 1) requestAnimationFrame(step);
+function animate(el,start,end){
+  let t0=null;
+  function step(t){
+    if(!t0) t0=t;
+    let p=Math.min((t-t0)/800,1);
+    let val=start+(end-start)*p;
+    el.textContent=format(val);
+    if(p<1) requestAnimationFrame(step);
   }
-
   requestAnimationFrame(step);
 }
 
-async function getPrice(symbol) {
-  try {
-    const res = await fetch(`https://api.twelvedata.com/price?symbol=${symbol}&apikey=${API_KEY}`);
-    const data = await res.json();
-    return parseFloat(data.price);
-  } catch {
-    return null;
-  }
+// ✅ Yahoo (works for ALL funds)
+async function getYahoo(symbol){
+  try{
+    let r=await fetch(`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`);
+    let d=await r.json();
+    return d.quoteResponse.result[0].regularMarketPrice;
+  }catch{return null;}
 }
 
-async function update() {
-  let total = 0;
-
-  for (let fund of funds) {
-    let stored = localStorage.getItem(fund.ticker);
-    let last = stored ? parseFloat(stored) : 0;
-
-    let priceEl = document.getElementById(fund.id + "-price");
-    priceEl.textContent = format(last);
-
-    let price = await getPrice(fund.ticker);
-
-    if (price && !isNaN(price)) {
-      localStorage.setItem(fund.ticker, price);
-      animateValue(priceEl, last, price);
-      last = price;
-    }
-
-    let value = last * fund.shares;
-    document.getElementById(fund.id + "-value").textContent = format(value);
-
-    total += value;
-  }
-
-  // Bitcoin
-  let storedBTC = localStorage.getItem("BTC");
-  let lastBTC = storedBTC ? parseFloat(storedBTC) : 0;
-
-  let btcEl = document.getElementById("btc-price");
-  btcEl.textContent = format(lastBTC);
-
-  let btcPrice = await getPrice("BTC/USD");
-
-  if (btcPrice && !isNaN(btcPrice)) {
-    localStorage.setItem("BTC", btcPrice);
-    animateValue(btcEl, lastBTC, btcPrice);
-    lastBTC = btcPrice;
-  }
-
-  let btcValue = lastBTC * bitcoinAmount;
-  document.getElementById("btc-value").textContent = format(btcValue);
-
-  total += btcValue;
-
-  document.getElementById("total").textContent =
-    total.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-}
-
-update();
-setInterval(update, 60000);
-</script>
-
-</body>
-</html>
+// BTC (reliable)
+async function getBTC
