@@ -60,4 +60,130 @@
 
   <div class="divider"></div>
 
-  <
+  <div class="row">
+    <span class="label">Gilead</span>
+    <span class="value" id="gilead">$0.00</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Balanced</span>
+    <span class="value" id="balanced">$0.00</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Dividend</span>
+    <span class="value" id="dividend">$0.00</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="row">
+    <span class="label">Bitcoin</span>
+    <span class="value" id="btc">$0.00</span>
+  </div>
+
+</div>
+
+<script>
+const funds = [
+  { id:"gilead", symbol:"etglx.us", shares:121.059 },
+  { id:"balanced", symbol:"etbax.us", shares:682.409 },
+  { id:"dividend", symbol:"etdgx.us", shares:533.973 }
+];
+
+const bitcoinAmount = 0.176337455;
+
+// format
+function format(n){
+  return "$" + n.toLocaleString(undefined,{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+// animate
+function animate(el,start,end){
+  let t0=null;
+  function step(t){
+    if(!t0) t0=t;
+    let p=Math.min((t-t0)/800,1);
+    let val=start+(end-start)*p;
+    el.textContent=format(val);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// fetch from Stooq
+async function getPrice(symbol){
+  try{
+    let r = await fetch(`https://stooq.com/q/l/?s=${symbol}&f=sd2t2ohlcv&h&e=csv`);
+    let text = await r.text();
+    let parts = text.split("\\n")[1].split(",");
+    return parseFloat(parts[6]); // close price
+  }catch{
+    return null;
+  }
+}
+
+// BTC (CoinGecko, no key)
+async function getBTC(){
+  try{
+    let r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+    let d = await r.json();
+    return d.bitcoin.usd;
+  }catch{
+    return null;
+  }
+}
+
+async function update(){
+  let total = 0;
+
+  for(let f of funds){
+    let last = parseFloat(localStorage.getItem(f.symbol)) || 0;
+
+    let price = await getPrice(f.symbol);
+
+    if(price){
+      localStorage.setItem(f.symbol, price);
+      last = price;
+    }
+
+    let value = last * f.shares;
+
+    let el = document.getElementById(f.id);
+    let current = parseFloat(el.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+    animate(el, current, value);
+
+    total += value;
+  }
+
+  // BTC
+  let lastBTC = parseFloat(localStorage.getItem("BTC")) || 0;
+  let btcPrice = await getBTC();
+
+  if(btcPrice){
+    localStorage.setItem("BTC", btcPrice);
+    lastBTC = btcPrice;
+  }
+
+  let btcValue = lastBTC * bitcoinAmount;
+
+  let btcEl = document.getElementById("btc");
+  let currentBTC = parseFloat(btcEl.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+  animate(btcEl, currentBTC, btcValue);
+
+  total += btcValue;
+
+  let totalEl = document.getElementById("total");
+  let currentTotal = parseFloat(totalEl.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+  animate(totalEl, currentTotal, total);
+}
+
+update();
+setInterval(update, 60000);
+</script>
+
+</body>
+</html>
