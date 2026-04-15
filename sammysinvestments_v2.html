@@ -80,12 +80,19 @@ function animate(el,start,end){
 // ✅ STOOQ (works for funds)
 async function getFund(symbol){
   try{
-    let r = await fetch(`https://stooq.com/q/l/?s=${symbol}&f=sd2t2ohlcv&h&e=csv`);
-    let text = await r.text();
-    let lines = text.split("\\n");
-    let data = lines[1].split(",");
-    return parseFloat(data[6]); // close price
-  }catch{return null;}
+    let url = encodeURIComponent(
+      `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`
+    );
+
+    let res = await fetch(`https://api.allorigins.win/get?url=${url}`);
+    let wrapped = await res.json();
+
+    let data = JSON.parse(wrapped.contents);
+
+    return data.quoteResponse.result[0].regularMarketPrice;
+  }catch{
+    return null;
+  }
 }
 
 // BTC
