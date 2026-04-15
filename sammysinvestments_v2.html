@@ -1,2 +1,237 @@
 <!DOCTYPE html>
-<html><head><title>Investments</title></head><body>File created. Replace with full code if needed.</body></html>
+<html>
+<head>
+  <title>Investments</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0d1117;
+      color: #e6edf3;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .card {
+      background: #161b22;
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+
+    .price {
+      font-style: italic;
+      font-size: 14px;
+      color: #9da7b3;
+    }
+
+    .value {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .section-total {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 20px;
+      text-align: right;
+    }
+
+    .grand-total {
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      border-bottom: 3px solid #fff;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Investments</h1>
+
+<div class="container">
+
+  <!-- INVESTMENTS BLOCK -->
+  <div class="card">
+    <div class="title">Eventide Investments</div>
+
+    <div class="row">
+      <span>Gilead</span>
+      <span class="price" id="gilead-price">$0.00</span>
+    </div>
+    <div class="row">
+      <span></span>
+      <span class="value" id="gilead-value">$0.00</span>
+    </div>
+
+    <div class="row">
+      <span>Balanced</span>
+      <span class="price" id="balanced-price">$0.00</span>
+    </div>
+    <div class="row">
+      <span></span>
+      <span class="value" id="balanced-value">$0.00</span>
+    </div>
+
+    <div class="row">
+      <span>Dividend</span>
+      <span class="price" id="dividend-price">$0.00</span>
+    </div>
+    <div class="row">
+      <span></span>
+      <span class="value" id="dividend-value">$0.00</span>
+    </div>
+
+    <div class="section-total">
+      Total: $<span id="fund-total">0.00</span>
+    </div>
+  </div>
+
+  <!-- BITCOIN BLOCK -->
+  <div class="card">
+    <div class="title">Bitcoin</div>
+
+    <div class="row">
+      <span>Price</span>
+      <span class="price" id="btc-price">$0.00</span>
+    </div>
+
+    <div class="row">
+      <span>Value</span>
+      <span class="value" id="btc-value">$0.00</span>
+    </div>
+  </div>
+
+  <!-- GRAND TOTAL -->
+  <div class="grand-total">
+    Total Investments: $<span id="total">0.00</span>
+  </div>
+
+</div>
+
+<script>
+const API_KEY = "7a79d0b2709843e7a3a77217ec1faaeb";
+
+const funds = [
+  { id:"gilead", ticker:"ETGLX", shares:121.059 },
+  { id:"balanced", ticker:"ETBAX", shares:682.409 },
+  { id:"dividend", ticker:"ETDGX", shares:533.973 }
+];
+
+const bitcoinAmount = 0.176337455;
+
+function format(n){
+  return "$" + n.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function animate(el,start,end){
+  let t0=null;
+  function step(t){
+    if(!t0) t0=t;
+    let p=Math.min((t-t0)/800,1);
+    let val=start+(end-start)*p;
+    el.textContent=format(val);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ✅ Yahoo (works for ALL funds)
+async function getYahoo(symbol){
+  try{
+    let r=await fetch(`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`);
+    let d=await r.json();
+    return d.quoteResponse.result[0].regularMarketPrice;
+  }catch{return null;}
+}
+
+// BTC (reliable)
+async function getBTC(){
+  try{
+    let r=await fetch(`https://api.twelvedata.com/price?symbol=BTC/USD&apikey=${API_KEY}`);
+    let d=await r.json();
+    return parseFloat(d.price);
+  }catch{return null;}
+}
+
+async function update(){
+  let fundTotal = 0;
+
+  for(let f of funds){
+    let stored = localStorage.getItem(f.ticker);
+    let last = stored ? parseFloat(stored) : 0;
+
+    let el = document.getElementById(f.id+"-price");
+    el.textContent = format(last);
+
+    let price = await getYahoo(f.ticker);
+
+    if(price && !isNaN(price)){
+      localStorage.setItem(f.ticker, price);
+      animate(el, last, price);
+      last = price;
+    }
+
+    let value = last * f.shares;
+    document.getElementById(f.id+"-value").textContent = format(value);
+
+    fundTotal += value;
+  }
+
+  document.getElementById("fund-total").textContent =
+    fundTotal.toLocaleString(undefined,{minimumFractionDigits:2});
+
+  // BTC
+  let storedBTC = localStorage.getItem("BTC");
+  let lastBTC = storedBTC ? parseFloat(storedBTC) : 0;
+
+  let btcEl = document.getElementById("btc-price");
+  btcEl.textContent = format(lastBTC);
+
+  let btc = await getBTC();
+
+  if(btc){
+    localStorage.setItem("BTC", btc);
+    animate(btcEl, lastBTC, btc);
+    lastBTC = btc;
+  }
+
+  let btcValue = lastBTC * bitcoinAmount;
+  document.getElementById("btc-value").textContent = format(btcValue);
+
+  let total = fundTotal + btcValue;
+
+  document.getElementById("total").textContent =
+    total.toLocaleString(undefined,{minimumFractionDigits:2});
+}
+
+update();
+setInterval(update, 60000);
+</script>
+
+</body>
+</html>
