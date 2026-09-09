@@ -3,1191 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Metric Time</title>
+<title>SOLAR - Society of Logic and Reason</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 <style>
-    :root {
-        --bg: #080b10;
-        --panel: #11161e;
-        --panel-light: #171d27;
-        --text: #f1f5f9;
-        --muted: #8b96a7;
-        --accent: #63e6a8;
-        --border: #293241;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-            radial-gradient(circle at 50% 0%, #17241e, transparent 42%),
-            var(--bg);
-        color: var(--text);
-        font-family: system-ui, -apple-system, BlinkMacSystemFont,
-            "Segoe UI", sans-serif;
-        padding: 35px 20px;
-    }
-
-    .container {
-        width: min(100%, 950px);
-        margin: auto;
-    }
-
-    header {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    h1 {
-        margin: 0;
-        font-size: clamp(2.8rem, 8vw, 5.5rem);
-        letter-spacing: -0.07em;
-        font-weight: 850;
-    }
-
-    .subtitle {
-        color: var(--muted);
-        margin-top: 8px;
-        font-size: 1.05rem;
-    }
-
-    /* LIVE CLOCK */
-
-    .clock-panel {
-        background: linear-gradient(145deg, #151b24, #0d1118);
-        border: 1px solid var(--border);
-        border-radius: 26px;
-        padding: clamp(25px, 5vw, 50px);
-        text-align: center;
-        box-shadow: 0 30px 80px rgba(0,0,0,.4);
-    }
-
-    .digital-clock {
-        font-family: "Courier New", monospace;
-        font-size: clamp(4rem, 13vw, 9rem);
-        font-weight: 900;
-        letter-spacing: .025em;
-        color: var(--accent);
-        text-shadow:
-            0 0 10px rgba(99,230,168,.7),
-            0 0 35px rgba(99,230,168,.25);
-        white-space: nowrap;
-    }
-
-    .digital-clock .colon {
-        animation: blink 1s infinite alternate;
-    }
-
-    @keyframes blink {
-        from { opacity: .35; }
-        to { opacity: 1; }
-    }
-
-    .sync {
-        margin-top: 12px;
-        color: var(--muted);
-        font-size: .8rem;
-    }
-
-    .sync-dot {
-        display: inline-block;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 9px var(--accent);
-        margin-right: 6px;
-    }
-
-    /* ANALOG CLOCK */
-
-    .analog-wrapper {
-        margin: 35px auto 0;
-        width: min(82vw, 480px);
-        aspect-ratio: 1;
-    }
-
-    .analog-clock {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        position: relative;
-        background:
-            radial-gradient(circle, #161d27 0%, #0c1118 72%);
-        border: 3px solid #354052;
-        box-shadow:
-            0 20px 60px rgba(0,0,0,.45),
-            inset 0 0 30px rgba(0,0,0,.5);
-    }
-
-    .tick {
-        position: absolute;
-        width: 2px;
-        height: 8px;
-        background: #596475;
-        left: 50%;
-        top: 4px;
-        transform-origin: 50% calc(100% + 228px);
-    }
-
-    .tick.major {
-        width: 3px;
-        height: 13px;
-        background: #aab4c2;
-    }
-
-    .number {
-        position: absolute;
-        transform: translate(-50%, -50%);
-        font-family: "Courier New", monospace;
-        font-size: clamp(.65rem, 2vw, .9rem);
-        font-weight: 700;
-        color: #9ba6b6;
-    }
-
-    .hand {
-        position: absolute;
-        left: 50%;
-        bottom: 50%;
-        transform-origin: 50% 100%;
-        border-radius: 999px;
-    }
-
-    .jrid-hand {
-        width: 7px;
-        height: 35%;
-        background: var(--text);
-    }
-
-    .zen-hand {
-        width: 5px;
-        height: 43%;
-        background: var(--accent);
-    }
-
-    .li-hand {
-        width: 2px;
-        height: 46%;
-        background: #d9ffe9;
-    }
-
-    .center {
-        position: absolute;
-        width: 17px;
-        height: 17px;
-        border-radius: 50%;
-        background: var(--accent);
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 0 12px rgba(99,230,168,.7);
-        z-index: 10;
-    }
-
-    .clock-key {
-        margin-top: 18px;
-        color: var(--muted);
-        font-size: .8rem;
-    }
-
-    /* GENERAL PANELS */
-
-    .panel {
-        margin-top: 20px;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 28px;
-    }
-
-    h2 {
-        margin: 0 0 8px;
-        font-size: 1.4rem;
-    }
-
-    .panel-description {
-        color: var(--muted);
-        line-height: 1.6;
-        margin: 0;
-    }
-
-    /* CONVERTER */
-
-    .converter-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .swap-button {
-        width: auto;
-        margin: 0;
-        padding: 10px 15px;
-        background: var(--panel-light);
-        border: 1px solid var(--border);
-        color: var(--text);
-        font-size: .85rem;
-    }
-
-    .inputs {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 22px;
-    }
-
-    .normal-inputs {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-    }
-
-    @media (max-width: 600px) {
-        .normal-inputs {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-
-    @media (max-width: 450px) {
-        .inputs {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    label {
-        display: block;
-        color: var(--muted);
-        font-size: .72rem;
-        text-transform: uppercase;
-        letter-spacing: .08em;
-        margin-bottom: 7px;
-    }
-
-    input, select {
-        width: 100%;
-        padding: 13px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: var(--panel-light);
-        color: var(--text);
-        font-size: 1rem;
-        outline: none;
-    }
-
-    input:focus, select:focus {
-        border-color: var(--accent);
-    }
-
-    .convert-button {
-        margin-top: 16px;
-        width: 100%;
-    }
-
-    button {
-        border: 0;
-        border-radius: 10px;
-        padding: 14px;
-        background: var(--accent);
-        color: #06100b;
-        font-weight: 800;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: .15s;
-    }
-
-    button:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.08);
-    }
-
-    .result {
-        margin-top: 20px;
-        padding: 22px;
-        background: #0a100d;
-        border: 1px solid #244232;
-        border-radius: 14px;
-        text-align: center;
-    }
-
-    .result-label {
-        color: var(--muted);
-        font-size: .72rem;
-        text-transform: uppercase;
-        letter-spacing: .12em;
-    }
-
-    .result-value {
-        margin-top: 7px;
-        color: var(--accent);
-        font-family: "Courier New", monospace;
-        font-size: clamp(2rem, 7vw, 3.5rem);
-        font-weight: 900;
-    }
-
-    .error {
-        color: #ff7b88;
-        margin-top: 10px;
-        font-size: .85rem;
-    }
-
-    /* REFERENCE */
-
-    .reference {
-        margin-top: 20px;
-    }
-
-    .reference-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 20px;
-    }
-
-    @media (max-width: 600px) {
-        .reference-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .reference-card {
-        padding: 18px;
-        border-radius: 13px;
-        background: var(--panel-light);
-        border: 1px solid var(--border);
-    }
-
-    .reference-card strong {
-        display: block;
-        font-size: 1.1rem;
-        margin-bottom: 5px;
-    }
-
-    .reference-card span {
-        color: var(--muted);
-        font-size: .85rem;
-    }
-
-    .bottom-info {
-        margin-top: 20px;
-    }
-
-    .bottom-info p {
-        color: var(--muted);
-        line-height: 1.7;
-        margin: 7px 0;
-    }
-
-    footer {
-        text-align: center;
-        margin: 35px 0 5px;
-        color: #657080;
-        font-size: .75rem;
-    }
-
-    footer strong {
-        color: #9aa5b5;
-    }
+:root{--blue:#2444ff;--blue-dark:#1429b8;--text:#111827;--muted:#667085;--surface:#fff;--soft:#f5f7fb;--border:#e5e7eb;--shadow:0 14px 40px rgba(15,23,42,.09);--radius:20px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text);background:#f8f9fc;line-height:1.65}a{color:var(--blue)}main{flex:1;width:min(1180px,calc(100% - 32px));margin:28px auto 70px}
+.banner-container{position:relative;min-height:170px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--blue);padding:18px 32px;box-shadow:0 8px 30px rgba(36,68,255,.22)}.BannerLeft{position:absolute;left:24px;max-height:125px;max-width:30%;object-fit:contain}.BannerText{position:relative;z-index:1;width:min(350px,55%);max-height:125px;object-fit:contain}.BannerRight{position:absolute;right:24px;max-width:28%;max-height:125px;object-fit:contain}
+.tab{position:sticky;top:14px;z-index:10;display:flex;flex-wrap:wrap;justify-content:center;gap:7px;width:fit-content;max-width:100%;margin:0 auto 30px;padding:8px;background:rgba(255,255,255,.92);border:1px solid rgba(229,231,235,.95);border-radius:999px;box-shadow:var(--shadow);backdrop-filter:blur(14px)}.tab button{appearance:none;border:0;background:transparent;color:#475467;cursor:pointer;padding:10px 20px;margin:0;border-radius:999px;font:inherit;font-weight:700;font-size:15px;transition:.2s}.tab button:hover{background:#eef2ff;color:var(--blue);transform:translateY(-1px)}.tab button.active{background:var(--blue);color:#fff;box-shadow:0 5px 14px rgba(36,68,255,.25)}
+.tabcontent{display:none;max-width:980px;margin:0 auto;padding:clamp(26px,5vw,56px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);animation:fadeIn .25s ease}.tabcontent h2,.tabcontent h3{color:#101828;line-height:1.2}.tabcontent h2{font-size:clamp(28px,4vw,38px);margin-top:0}.tabcontent h3{margin-top:38px;font-size:21px}@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.responsive-text{max-width:80%;margin:0 auto;line-height:1.5;text-align:center}.members-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:22px;margin:28px auto 0;max-width:1000px}.member{padding:22px 14px;text-align:center;background:var(--soft);border:1px solid var(--border);border-radius:16px;transition:.2s}.member:hover{transform:translateY(-4px);box-shadow:0 12px 25px rgba(15,23,42,.09)}.member img{display:block;width:min(150px,100%);aspect-ratio:1/1;margin:0 auto 14px;border-radius:16px;object-fit:cover}.member p{margin:4px 0;color:var(--muted);font-size:14px}.member p strong{color:var(--text);font-size:17px}
+#articles{padding:clamp(30px,6vw,60px) 20px}#articles h2{text-align:center}.pip-item{margin-bottom:40px!important}.pip-item a{display:block;width:min(760px,100%);margin:0 auto;padding:25px 28px;color:var(--blue);text-decoration:none;font-weight:750;font-size:19px;line-height:1.45;background:var(--soft);border:1px solid var(--border);border-radius:15px;transition:.2s}.pip-item a:hover{transform:translateY(-3px);border-color:#b8c1ff;box-shadow:0 10px 25px rgba(15,23,42,.08)}.spaced{margin:65px auto;border:none;border-top:1px solid var(--border);width:min(850px,90%)}
+.no-videos{text-align:center;padding:20px 0 55px}.no-videos h2{margin:0}.video-wrapper{position:relative;width:100%;aspect-ratio:16/9;margin:0 auto;overflow:hidden;border-radius:16px;background:#111827;box-shadow:0 12px 30px rgba(15,23,42,.14)}.video-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:0}#videos>hr{border:0;border-top:1px solid var(--border);margin:0 0 42px}#videos>h3{text-align:center;margin-bottom:24px}
+.footer-bar{width:100%;background:#101828;color:#d0d5dd;border-top:1px solid #253044;padding:28px 20px;margin-top:0}.footer-container{width:min(1000px,100%);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:22px 36px}.footer-left,.footer-right{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.footer-bar a{color:#fff;text-decoration:none;font-weight:700}.footer-bar a:hover{text-decoration:underline}.footer-bar img{height:22px;width:auto}.footer-right span{color:#98a2b3}
+@media(max-width:899px){main{width:min(100% - 20px,980px);margin-top:18px}.banner-container{min-height:145px;gap:8px}.BannerLeft,.BannerRight{position:static;max-width:23%;max-height:90px}.BannerText{width:45%;max-height:100px}.tab{position:relative;top:0;width:100%;border-radius:16px}.tab button{flex:1 1 calc(50% - 10px)}.tabcontent{padding:28px 20px}.responsive-text{max-width:95%}.footer-container{justify-content:center;text-align:center}.footer-left,.footer-right{justify-content:center}}
+@media(max-width:520px){.banner-container{min-height:115px;padding:10px 14px}.BannerLeft,.BannerRight{max-height:70px}.BannerText{width:50%;max-height:75px}.tab button{padding:9px 12px;font-size:14px}.members-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.member{padding:16px 8px}.member img{border-radius:12px}.pip-item a{padding:20px 15px;font-size:17px}}
 </style>
-</head>
 
+<script>
+function goToMembers(event) {
+  event.preventDefault();
+  document.querySelector("button[onclick*='members']").click();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openTab(event, tabName) {
+  var tabcontent = document.getElementsByClassName("tabcontent");
+  var tablinks = document.getElementsByClassName("tablinks");
+
+  for (var index = 0; index < tabcontent.length; index++) {
+    tabcontent[index].style.display = "none";
+  }
+
+  for (var linkIndex = 0; linkIndex < tablinks.length; linkIndex++) {
+    tablinks[linkIndex].classList.remove("active");
+  }
+
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.classList.add("active");
+}
+
+window.addEventListener("DOMContentLoaded", function () {
+  document.getElementsByClassName("tablinks")[0].click();
+});
+</script>
+
+</head>
 <body>
 
-<div class="container">
-
-    <header>
-        <h1>Metric Time</h1>
-        <div class="subtitle">
-            A decimal-based system for measuring the day
-        </div>
-    </header>
-
-
-    <!-- LIVE DIGITAL CLOCK -->
-
-    <section class="clock-panel">
-
-        <div class="digital-clock">
-            <span id="jrids">00</span><span class="colon">:</span><span id="zens">00</span><span>.</span><span id="li">0</span>
-        </div>
-
-        <div class="sync" id="syncStatus">
-            <span class="sync-dot"></span>
-            Synchronizing time…
-        </div>
-
-
-        <!-- ROUND ANALOG CLOCK -->
-
-        <div class="analog-wrapper">
-            <div class="analog-clock" id="analogClock">
-
-                <div class="hand jrid-hand" id="jridHand"></div>
-                <div class="hand zen-hand" id="zenHand"></div>
-                <div class="hand li-hand" id="liHand"></div>
-
-                <div class="center"></div>
-
-            </div>
-        </div>
-
-        <div class="clock-key">
-            Jrid hand &nbsp; • &nbsp; Zen hand &nbsp; • &nbsp; Li hand
-        </div>
-
-    </section>
-
-
-    <!-- CONVERTER -->
-
-    <section class="panel">
-
-        <div class="converter-top">
-
-            <div>
-                <h2 id="converterTitle">
-                    Normal Time → Metric Time
-                </h2>
-
-                <p class="panel-description">
-                    Convert between conventional time and Metric Time.
-                </p>
-            </div>
-
-            <button class="swap-button" onclick="swapConverter()">
-                ⇄ Swap
-            </button>
-
-        </div>
-
-
-        <!-- NORMAL → METRIC -->
-
-        <div id="normalToMetric">
-
-            <div class="inputs normal-inputs">
-
-                <div>
-                    <label for="normalHour">Hour</label>
-                    <input
-                        id="normalHour"
-                        type="number"
-                        min="1"
-                        max="12"
-                        value="12"
-                    >
-                </div>
-
-                <div>
-                    <label for="normalMinute">Minute</label>
-                    <input
-                        id="normalMinute"
-                        type="number"
-                        min="0"
-                        max="59"
-                        value="00"
-                    >
-                </div>
-
-                <div>
-                    <label for="normalSecond">Second</label>
-                    <input
-                        id="normalSecond"
-                        type="number"
-                        min="0"
-                        max="59"
-                        value="00"
-                    >
-                </div>
-
-                <div>
-                    <label for="normalAmPm">AM / PM</label>
-                    <select id="normalAmPm">
-                        <option>AM</option>
-                        <option>PM</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <button class="convert-button" onclick="normalToMetric()">
-                Convert to Metric Time
-            </button>
-
-        </div>
-
-
-        <!-- METRIC → NORMAL -->
-
-        <div id="metricToNormal" style="display:none;">
-
-            <div class="inputs">
-
-                <div>
-                    <label for="metricJrid">Jrids</label>
-                    <input
-                        id="metricJrid"
-                        type="number"
-                        min="0"
-                        max="99"
-                        value="50"
-                    >
-                </div>
-
-                <div>
-                    <label for="metricZen">Zens</label>
-                    <input
-                        id="metricZen"
-                        type="number"
-                        min="0"
-                        max="99"
-                        value="00"
-                    >
-                </div>
-
-                <div>
-                    <label for="metricLi">Lis</label>
-                    <input
-                        id="metricLi"
-                        type="number"
-                        min="0"
-                        max="99"
-                        value="00"
-                    >
-                </div>
-
-            </div>
-
-            <button class="convert-button" onclick="metricToNormal()">
-                Convert to Normal Time
-            </button>
-
-        </div>
-
-
-        <div class="result">
-
-            <div class="result-label" id="resultLabel">
-                Metric Time
-            </div>
-
-            <div class="result-value" id="conversionResult">
-                00:00.0
-            </div>
-
-            <div class="error" id="conversionError"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- REFERENCE AT BOTTOM -->
-
-    <section class="panel reference">
-
-        <h2>Reference</h2>
-
-        <div class="reference-grid">
-
-            <div class="reference-card">
-                <strong>1 Jrid</strong>
-                <span>
-                    1/100 of a day<br>
-                    14.4 minutes
-                </span>
-            </div>
-
-            <div class="reference-card">
-                <strong>1 Zen</strong>
-                <span>
-                    1/10,000 of a day<br>
-                    8.64 seconds
-                </span>
-            </div>
-
-            <div class="reference-card">
-                <strong>1 Li</strong>
-                <span>
-                    1/1,000,000 of a day<br>
-                    0.864 milliseconds
-                </span>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- SYSTEM AT BOTTOM -->
-
-    <section class="panel bottom-info">
-
-        <h2>The Metric Time System</h2>
-
-        <p>
-            Metric Time divides a complete day into decimal units.
-        </p>
-
-        <p>
-            <strong>100 Jrids = 1 day</strong><br>
-            <strong>100 Zens = 1 Jrid</strong><br>
-            <strong>100 Lis = 1 Zen</strong>
-        </p>
-
-        <p>
-            This means there are exactly
-            <strong>1,000,000 Lis</strong>
-            in one complete day.
-        </p>
-
-    </section>
-
-
-    <footer>
-        This website was created by AI<br>
-        and this Metric Time system was created by
-        <strong>Sammy Buck</strong>.
-    </footer>
+<header>
+  <div class="banner-container">
+    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
+    <img class="BannerText" src="bannerText.png" alt="banner text">
+    <img class="BannerRight" src="bannerRight.png" alt="right banner">
+  </div>
+</header>
+
+<main>
+
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'about')">About</button>
+  <button class="tablinks" onclick="openTab(event, 'members')">Members</button>
+  <button class="tablinks" onclick="openTab(event, 'articles')">Articles</button>
+  <button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
+</div>
+
+<div class="tabcontent" id="members" style="display: block;">
+  <h3>Members</h3>
+  <div class="members-grid">
+    <div class="member">
+      <img src="Lincoln.png" alt="Lincoln">
+      <p><strong>Lincoln</strong></p>
+      <p>-Founder-</p>
+      <p>-Charlie Kirk fan-</p>
+    </div>
+    <div class="member">
+      <img src="Lucas.png" alt="Lucas">
+      <p><strong>Lucas</strong></p>
+      <p>-Co-founder-</p>
+      <p>-Writer-</p>
+      
+          </div>
+    <div class="member">
+      <img src="Sammy.png" alt="Sammy">
+      <p><strong>Sammy</strong></p>
+      <p>-Co-founder-</p>
+      <p>-Tech-</p>
+      
+          </div>
+    <div class="member">
+      <img src="Ben.png" alt="Ben">
+      <p><strong>Ben</strong></p>
+      <p>-Member-</p>
+      <p>-Researcher-</p>
+     
+    </div>
+    <div class="member">
+      <img src="Ian.png" alt="Ian">
+      <p><strong>Ian</strong></p>
+      <p>-Member-</p>
+      <p>-Meetings-</p>
+      
+          </div>
+    <div class="member">
+      <img src="Logan.png" alt="Logan">
+      <p><strong>Logan</strong></p>
+      <p>-Member-</p>
+      <p>-Observer-</p>
+    </div>
+    <div class="member">
+      <img src="Elijah.png" alt="Elijah">
+      <p><strong>Elijah</strong></p>
+      <p>-Member-</p>
+      <p>-Idea Generator-</p>
+    </div>
+  </div>
 
 </div>
 
 
-<script>
 
-let timeOffset = 0;
-
-
-/*
-    INTERNET TIME SYNCHRONIZATION
-*/
-
-async function syncTime() {
-
-    const status =
-        document.getElementById("syncStatus");
-
-    try {
-
-        const start = performance.now();
-
-        const response = await fetch(
-            "https://worldtimeapi.org/api/timezone/Etc/UTC",
-            {
-                cache: "no-store"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Time service unavailable");
-        }
-
-        const data = await response.json();
-
-        const end = performance.now();
-
-        const midpoint =
-            start + (end - start) / 2;
-
-        const localTimestamp =
-            performance.timeOrigin + midpoint;
-
-        const internetTimestamp =
-            data.unixtime * 1000;
-
-        timeOffset =
-            internetTimestamp - localTimestamp;
-
-        status.innerHTML =
-            '<span class="sync-dot"></span>' +
-            'Time synchronized';
-
-    } catch (error) {
-
-        status.innerHTML =
-            '<span class="sync-dot"></span>' +
-            'Using local clock';
-
-    }
-}
-
-
-/*
-    CURRENT TIMESTAMP
-*/
-
-function getNow() {
-
-    return (
-        performance.timeOrigin +
-        performance.now() +
-        timeOffset
-    );
-}
-
-
-/*
-    METRIC TIME
-*/
-
-function getMetricTime(timestamp) {
-
-    const date =
-        new Date(timestamp);
-
-    const midnight =
-        new Date(date);
-
-    midnight.setHours(0, 0, 0, 0);
-
-    const elapsed =
-        timestamp - midnight.getTime();
-
-    const DAY = 86400000;
-
-    let totalLis =
-        Math.floor(
-            elapsed / DAY * 1000000
-        );
-
-    totalLis =
-        Math.max(
-            0,
-            Math.min(999999, totalLis)
-        );
-
-
-    const jrids =
-        Math.floor(totalLis / 10000);
-
-    const remaining =
-        totalLis % 10000;
-
-    const zens =
-        Math.floor(remaining / 100);
-
-    const lis =
-        remaining % 100;
-
-
-    return {
-        jrids,
-        zens,
-        lis,
-        totalLis
-    };
-}
-
-
-/*
-    DIGITAL CLOCK
-*/
-
-function updateClock() {
-
-    const metric =
-        getMetricTime(getNow());
-
-    document.getElementById("jrids").textContent =
-        String(metric.jrids).padStart(2, "0");
-
-    document.getElementById("zens").textContent =
-        String(metric.zens).padStart(2, "0");
-
-    document.getElementById("li").textContent =
-        Math.floor(metric.lis / 10);
-
-    updateAnalogClock(metric);
-
-    requestAnimationFrame(updateClock);
-}
-
-
-/*
-    ROUND CLOCK FACE
-*/
-
-function createClockFace() {
-
-    const clock =
-        document.getElementById("analogClock");
-
-    const radius = 46;
-
-    for (let i = 0; i < 100; i++) {
-
-        const angle =
-            (i / 100) * Math.PI * 2;
-
-        const x =
-            50 + radius * Math.sin(angle);
-
-        const y =
-            50 - radius * Math.cos(angle);
-
-
-        const tick =
-            document.createElement("div");
-
-        tick.className =
-            "tick" +
-            (i % 10 === 0 ? " major" : "");
-
-        tick.style.transform =
-            `translateX(-50%) rotate(${i * 3.6}deg)`;
-
-        clock.appendChild(tick);
-
-
-        if (i % 10 === 0) {
-
-            const number =
-                document.createElement("div");
-
-            number.className = "number";
-
-            number.textContent =
-                String(i).padStart(2, "0");
-
-            number.style.left = x + "%";
-            number.style.top = y + "%";
-
-            clock.appendChild(number);
-        }
-    }
-}
-
-
-/*
-    ANALOG HANDS
-
-    Jrid hand:
-        1 rotation every 100 Jrids = 1 day
-
-    Zen hand:
-        1 rotation every 100 Zens = 1 Jrid
-
-    Li hand:
-        1 rotation every 100 Lis = 1 Zen
-*/
-
-function updateAnalogClock(metric) {
-
-    const jridAngle =
-        metric.totalLis / 1000000 * 360;
-
-    const zenAngle =
-        (metric.totalLis % 10000) / 10000 * 360;
-
-    /*
-        IMPORTANT:
-        The Li hand completes one full rotation
-        during the 100 Lis contained inside one Zen.
-    */
-
-    const liAngle =
-        (metric.lis / 100) * 360;
-
-
-    document.getElementById("jridHand").style.transform =
-        `translateX(-50%) rotate(${jridAngle}deg)`;
-
-    document.getElementById("zenHand").style.transform =
-        `translateX(-50%) rotate(${zenAngle}deg)`;
-
-    document.getElementById("liHand").style.transform =
-        `translateX(-50%) rotate(${liAngle}deg)`;
-}
-
-
-/*
-    NORMAL → METRIC
-*/
-
-function normalToMetric() {
-
-    clearError();
-
-    let hour =
-        Number(
-            document.getElementById("normalHour").value
-        );
-
-    const minute =
-        Number(
-            document.getElementById("normalMinute").value
-        );
-
-    const second =
-        Number(
-            document.getElementById("normalSecond").value
-        );
-
-    const ampm =
-        document.getElementById("normalAmPm").value;
-
-
-    if (
-        !Number.isFinite(hour) ||
-        !Number.isFinite(minute) ||
-        !Number.isFinite(second) ||
-        hour < 1 ||
-        hour > 12 ||
-        minute < 0 ||
-        minute > 59 ||
-        second < 0 ||
-        second > 59
-    ) {
-
-        showError("Please enter a valid time.");
-
-        return;
-    }
-
-
-    if (ampm === "AM") {
-
-        if (hour === 12) {
-            hour = 0;
-        }
-
-    } else {
-
-        if (hour !== 12) {
-            hour += 12;
-        }
-    }
-
-
-    const elapsedMilliseconds =
-        hour * 3600000 +
-        minute * 60000 +
-        second * 1000;
-
-
-    const totalLis =
-        Math.round(
-            elapsedMilliseconds /
-            86400000 *
-            1000000
-        );
-
-
-    const jrids =
-        Math.floor(totalLis / 10000);
-
-    const remaining =
-        totalLis % 10000;
-
-    const zens =
-        Math.floor(remaining / 100);
-
-    const lis =
-        remaining % 100;
-
-
-    document.getElementById("resultLabel").textContent =
-        "Metric Time";
-
-    document.getElementById("conversionResult").textContent =
-        String(jrids).padStart(2, "0") +
-        ":" +
-        String(zens).padStart(2, "0") +
-        "." +
-        Math.floor(lis / 10);
-}
-
-
-/*
-    METRIC → NORMAL
-*/
-
-function metricToNormal() {
-
-    clearError();
-
-    const jrids =
-        Number(
-            document.getElementById("metricJrid").value
-        );
-
-    const zens =
-        Number(
-            document.getElementById("metricZen").value
-        );
-
-    const lis =
-        Number(
-            document.getElementById("metricLi").value
-        );
-
-
-    if (
-        !Number.isFinite(jrids) ||
-        !Number.isFinite(zens) ||
-        !Number.isFinite(lis) ||
-        jrids < 0 ||
-        jrids > 99 ||
-        zens < 0 ||
-        zens > 99 ||
-        lis < 0 ||
-        lis > 99
-    ) {
-
-        showError(
-            "Enter Jrids, Zens, and Lis from 00–99."
-        );
-
-        return;
-    }
-
-
-    const totalLis =
-        jrids * 10000 +
-        zens * 100 +
-        lis;
-
-
-    const milliseconds =
-        totalLis /
-        1000000 *
-        86400000;
-
-
-    let totalSeconds =
-        Math.round(
-            milliseconds / 1000
-        );
-
-    totalSeconds %= 86400;
-
-
-    const hour =
-        Math.floor(totalSeconds / 3600);
-
-    const minute =
-        Math.floor(
-            (totalSeconds % 3600) / 60
-        );
-
-    const second =
-        totalSeconds % 60;
-
-
-    const ampm =
-        hour >= 12 ? "PM" : "AM";
-
-
-    let displayHour =
-        hour % 12;
-
-    if (displayHour === 0) {
-        displayHour = 12;
-    }
-
-
-    document.getElementById("resultLabel").textContent =
-        "Normal Time";
-
-    document.getElementById("conversionResult").textContent =
-        String(displayHour).padStart(2, "0") +
-        ":" +
-        String(minute).padStart(2, "0") +
-        ":" +
-        String(second).padStart(2, "0") +
-        " " +
-        ampm;
-}
-
-
-/*
-    SWAP CONVERTER
-*/
-
-let converterDirection = "normal";
-
-
-function swapConverter() {
-
-    const normal =
-        document.getElementById("normalToMetric");
-
-    const metric =
-        document.getElementById("metricToNormal");
-
-    const title =
-        document.getElementById("converterTitle");
-
-
-    if (converterDirection === "normal") {
-
-        converterDirection = "metric";
-
-        normal.style.display = "none";
-        metric.style.display = "block";
-
-        title.textContent =
-            "Metric Time → Normal Time";
-
-        document.getElementById("resultLabel").textContent =
-            "Normal Time";
-
-        document.getElementById("conversionResult").textContent =
-            "12:00:00 AM";
-
-    } else {
-
-        converterDirection = "normal";
-
-        normal.style.display = "block";
-        metric.style.display = "none";
-
-        title.textContent =
-            "Normal Time → Metric Time";
-
-        document.getElementById("resultLabel").textContent =
-            "Metric Time";
-
-        document.getElementById("conversionResult").textContent =
-            "00:00.0";
-    }
-
-    clearError();
-}
-
-
-function showError(message) {
-
-    document.getElementById("conversionError").textContent =
-        message;
-}
-
-
-function clearError() {
-
-    document.getElementById("conversionError").textContent =
-        "";
-}
-
-
-/*
-    START
-*/
-
-createClockFace();
-
-syncTime();
-
-setInterval(
-    syncTime,
-    5 * 60 * 1000
-);
-
-updateClock();
-
-</script>
-
+<div class="tabcontent" id="about">
+
+
+   <p style="text-indent: 20px;">Hi There! Welcome to the Society of Logic and Reason. The number of people who reject the Christian faith and accept other worldviews is continuously growing because of a lack of important foundational truths. And along with the skepticism comes a broadening amount of worldviews and ideas, such as Naturalism, Materialism, Postmodernism, and many more. It is our mission to equip ourselves and others with the primary truths of Christianity and respectfully point out the flaws in other worldviews.</p>
+  <h3>Core Values</h3>
+</a>
+  <p style="text-indent: 20px;">The Society of Logic and Reason is founded and governed by logic, which is right thinking. All things that SOLAR occupants decide for the club, be it moral or opinionated, shall be dictated by correct reasoning, using logic. That is to say, one cannot be perfectly logical, because logic (correct thinking) is based on God. God is the only one perfectly logical in all he does. And since we are not God, we are not perfectly logical. However, this does not mean we should not try to be logical. God calls us to be like Him. So we should try to be logical in everything we do.</p>
+  
+  <h3>Mission statement</h3>
+  <p style="text-indent: 20px;">Mature in knowledge and wisdom of logic and the Bible, equipping ourselves to stand up for moral values, uphold a Biblical worldview, and ultimately defend truth.</p>
+<p>1 Peter 3:15 “But in your hearts honor Christ the Lord as holy, always being prepared to make a defense to anyone who asks you for a reason for the hope that is in you; yet do it with gentleness and respect.”</p>
+<p>Titus 2:6-8 “Likewise, urge the younger men to be self-controlled. Show yourself in all respects to be a model of good works, and in your teaching show integrity, dignity, and sound speech that cannot be condemned, so that an opponent may be put to shame, having nothing evil to say about us.”</p>
+
+<h3>WHO are we?</h3>
+<p style="text-indent: 20px;">We are The Society of Logic and Reason, or SOLAR. We are a group of homeschooled, conservative christian young men co-founded by Lincoln, Lucas, Sammy. <a href="#" onclick="goToMembers(event)">All Members</a>.
+To become a member you must be invited by a current member, agree with our Terms and Conditions, and the supermajority of SOLAR members must vote for you to join. </p>
+
+<h3>WHAT do we do?</h3>
+<p style="text-indent: 20px;">We meet to learn logic, reasoning, critical thinking and apologetics, to use for defending the Truth. Our first step is to examine what we believe and why we believe it, follow the evidence where it leads, and equip ourselves for defending the Truth. With the knowledge we gain, we defend our position in articles and videos.</p>
+
+<h3>WHAT do we believe?</h3>
+<p>We believe in Jesus Christ, the son of God 
+<br>We affirm the 
+<a href="https://societyoflogicandreason.com/apostlescreed.html">Apostles Creed</a> 
+and 
+<a href="https://societyoflogicandreason.com/nicenecreed.html">Nicene Creed</a>.
+<br>We believe that “all Scripture is given by inspiration of God.” (2 Timothy 3:16)
+<br>We believe in creation and oppose evolution.
+<br>We  believe abortion is murder.
+<br>We believe marriage is between one man and one woman for life.(Matthew19:5)
+<br>We believe God created them male and female.(Genesis 1:27)</p>
+
+<h3>WHEN did we start?</h3>
+<p>Spring 2025</p>
+
+<h3>WHERE do we live?</h3>
+<p>We are from the Great Lakes Region.</p>
+
+<h3>WHY do we exist?</h3> 
+<p style="text-indent: 20px;">So many people are led astray by errors world views, false beliefs, false assumptions and misinterpretations of evidences,  for whatever reason people believe theses things, they lead to unfulfilled lives, broken relationships, murder, selfishness, wickedness and eventually hell. 
+We exist to get people to come back to there creator, to show them there error and present to them the Truth. 
+“For this is good and acceptable in the sight of God our Savior, who desires all men to be saved and to come to the knowledge of the truth.” 1 Timothy 2:3-4</p>
+
+<p style="font-style: italic;" > All articles, notes, and other content was creatively written by real human beings. The code layout of this website was created using AI  </p>
+  </div>
+
+</div>
+
+
+<div class="tabcontent" id="articles" style="text-align: center; font-family: Arial, sans-serif; padding: 60px 20px;">
+  <h2>Articles</h2>
+
+  <br><div class="pip-item" style="margin-bottom: 40px;">
+      <a href="Article1.html">If God is Moral, Just, Loving, and Good,<br>
+        Why Does He Allow Evil and Suffering on Earth?
+      </div>
+    </a>
+
+  <hr class="spaced">
+  
+  <h2>THE PROVE IT POST</h2>
+  <br class="responsive-text">The Prove It Post is a post that proves Ben's points. This post is independant of SOLAR and the points presented in them may or may not be agreed upon by all members of the society.</p>
+  <!-- POST 2 -->
+  <br><div class="pip-item" style="margin-bottom: 40px;">
+      <a href="THEPROVEITPOST02ThisisAmerica.html">
+        THE PROVE IT POST #2<br>
+        This is America!
+      </div>
+    </a>
+
+
+  <!-- POST 3 -->
+  <div class="pip-item" style="margin-bottom: 40px;">
+    <a href="THEPROVEITPOST03Sundayisnotpartoftheweekend.html">
+        THE PROVE IT POST #3<br>
+        Sunday is not part of the weekend!
+      </div>
+    </a>
+
+  
+ <div class="pip-item" style="margin-bottom: 40px;">
+    <a href="THEPROVEITPOST04AntiAdornment.html">
+  Go to Prove It Post #4<br>
+        Girls shouldn't adorn themselves in vain jewelry and makeup!
+      </div>
+    </a>
+    
+
+
+</div>
+
+</div>
+
+
+<div class="tabcontent" id="videos">
+  <div class="no-videos">
+    <h2>No SOLAR videos recorded yet</h2>
+  </div>
+
+  <hr>
+
+  <h3>Other Videos about Logic and Truth</h3>
+  <div class="video-wrapper">
+      <iframe 
+          src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL" 
+          title="YouTube video player" 
+          allowfullscreen>
+      </iframe>
+  </div>
+</div>
+
+</div>
+</main>
+
+<div class="footer-bar">
+  <div class="footer-container">
+    <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" style="display: flex; align-items: center; gap: 6px;">
+      <img src="yt.png" alt="YouTube">
+      <span>@societyoflogicandreason</span>
+    </a>
+
+    <div class="footer-right">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd4tzoZIApbPpWJfuULUSi3Po1Sutl6LiL_ptDvvQqXcwZ26g/viewform?usp=header" target="_blank">
+        Contact us</a><br>
+      <span>societyoflogicandreason@gmail.com</span>
+    
+    </div>
+  </div>
+</div>
+</div>
 </body>
 </html>
