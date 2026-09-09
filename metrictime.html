@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metric Time</title>
+
+<style>
+    :root {
+        --bg: #080b10;
+        --panel: #11161e;
+        --panel-light: #171d27;
+        --text: #f1f5f9;
+        --muted: #8b96a7;
+        --accent: #63e6a8;
+        --border: #293241;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at 50% 0%, #17241e, transparent 42%),
+            var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont,
+            "Segoe UI", sans-serif;
+        padding: 35px 20px;
+    }
+
+    .container {
+        width: min(100%, 950px);
+        margin: auto;
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.8rem, 8vw, 5.5rem);
+        letter-spacing: -0.07em;
+        font-weight: 850;
+    }
+
+    .subtitle {
+        color: var(--muted);
+        margin-top: 8px;
+        font-size: 1.05rem;
+    }
+
+    /* LIVE CLOCK */
+
+    .clock-panel {
+        background: linear-gradient(145deg, #151b24, #0d1118);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        padding: clamp(25px, 5vw, 50px);
+        text-align: center;
+        box-shadow: 0 30px 80px rgba(0,0,0,.4);
+    }
+
+    .digital-clock {
+        font-family: "Courier New", monospace;
+        font-size: clamp(4rem, 13vw, 9rem);
+        font-weight: 900;
+        letter-spacing: .025em;
+        color: var(--accent);
+        text-shadow:
+            0 0 10px rgba(99,230,168,.7),
+            0 0 35px rgba(99,230,168,.25);
+        white-space: nowrap;
+    }
+
+    .digital-clock .colon {
+        animation: blink 1s infinite alternate;
+    }
+
+    @keyframes blink {
+        from { opacity: .35; }
+        to { opacity: 1; }
+    }
+
+    .sync {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: .8rem;
+    }
+
+    .sync-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 9px var(--accent);
+        margin-right: 6px;
+    }
+
+    /* ANALOG CLOCK */
+
+    .analog-wrapper {
+        margin: 35px auto 0;
+        width: min(82vw, 480px);
+        aspect-ratio: 1;
+    }
+
+    .analog-clock {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: relative;
+        background:
+            radial-gradient(circle, #161d27 0%, #0c1118 72%);
+        border: 3px solid #354052;
+        box-shadow:
+            0 20px 60px rgba(0,0,0,.45),
+            inset 0 0 30px rgba(0,0,0,.5);
+    }
+
+    .tick {
+        position: absolute;
+        width: 2px;
+        height: 8px;
+        background: #596475;
+        left: 50%;
+        top: 4px;
+        transform-origin: 50% calc(100% + 228px);
+    }
+
+    .tick.major {
+        width: 3px;
+        height: 13px;
+        background: #aab4c2;
+    }
+
+    .number {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        font-family: "Courier New", monospace;
+        font-size: clamp(.65rem, 2vw, .9rem);
+        font-weight: 700;
+        color: #9ba6b6;
+    }
+
+    .hand {
+        position: absolute;
+        left: 50%;
+        bottom: 50%;
+        transform-origin: 50% 100%;
+        border-radius: 999px;
+    }
+
+    .jrid-hand {
+        width: 7px;
+        height: 35%;
+        background: var(--text);
+    }
+
+    .zen-hand {
+        width: 5px;
+        height: 43%;
+        background: var(--accent);
+    }
+
+    .li-hand {
+        width: 2px;
+        height: 46%;
+        background: #d9ffe9;
+    }
+
+    .center {
+        position: absolute;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background: var(--accent);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 12px rgba(99,230,168,.7);
+        z-index: 10;
+    }
+
+    .clock-key {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: .8rem;
+    }
+
+    /* GENERAL PANELS */
+
+    .panel {
+        margin-top: 20px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 28px;
+    }
+
+    h2 {
+        margin: 0 0 8px;
+        font-size: 1.4rem;
+    }
+
+    .panel-description {
+        color: var(--muted);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* CONVERTER */
+
+    .converter-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .swap-button {
+        width: auto;
+        margin: 0;
+        padding: 10px 15px;
+        background: var(--panel-light);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: .85rem;
+    }
+
+    .inputs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 22px;
+    }
+
+    .normal-inputs {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    @media (max-width: 600px) {
+        .normal-inputs {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .inputs {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    label {
+        display: block;
+        color: var(--muted);
+        font-size: .72rem;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-bottom: 7px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 13px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--panel-light);
+        color: var(--text);
+        font-size: 1rem;
+        outline: none;
+    }
+
+    input:focus, select:focus {
+        border-color: var(--accent);
+    }
+
+    .convert-button {
+        margin-top: 16px;
+        width: 100%;
+    }
+
+    button {
+        border: 0;
+        border-radius: 10px;
+        padding: 14px;
+        background: var(--accent);
+        color: #06100b;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: .15s;
+    }
+
+    button:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.08);
+    }
+
+    .result {
+        margin-top: 20px;
+        padding: 22px;
+        background: #0a100d;
+        border: 1px solid #244232;
+        border-radius: 14px;
+        text-align: center;
+    }
+
+    .result-label {
+        color: var(--muted);
+        font-size: .72rem;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+    }
+
+    .result-value {
+        margin-top: 7px;
+        color: var(--accent);
+        font-family: "Courier New", monospace;
+        font-size: clamp(2rem, 7vw, 3.5rem);
+        font-weight: 900;
+    }
+
+    .error {
+        color: #ff7b88;
+        margin-top: 10px;
+        font-size: .85rem;
+    }
+
+    /* REFERENCE */
+
+    .reference {
+        margin-top: 20px;
+    }
+
+    .reference-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+        .reference-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .reference-card {
+        padding: 18px;
+        border-radius: 13px;
+        background: var(--panel-light);
+        border: 1px solid var(--border);
+    }
+
+    .reference-card strong {
+        display: block;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .reference-card span {
+        color: var(--muted);
+        font-size: .85rem;
+    }
+
+    .bottom-info {
+        margin-top: 20px;
+    }
+
+    .bottom-info p {
+        color: var(--muted);
+        line-height: 1.7;
+        margin: 7px 0;
+    }
+
+    footer {
+        text-align: center;
+        margin: 35px 0 5px;
+        color: #657080;
+        font-size: .75rem;
+    }
+
+    footer strong {
+        color: #9aa5b5;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Metric Time</h1>
+        <div class="subtitle">
+            A decimal-based system for measuring the day
+        </div>
+    </header>
+
+
+    <!-- LIVE DIGITAL CLOCK -->
+
+    <section class="clock-panel">
+
+        <div class="digital-clock">
+            <span id="jrids">00</span><span class="colon">:</span><span id="zens">00</span><span>.</span><span id="li">0</span>
+        </div>
+
+        <div class="sync" id="syncStatus">
+            <span class="sync-dot"></span>
+            Synchronizing time…
+        </div>
+
+
+        <!-- ROUND ANALOG CLOCK -->
+
+        <div class="analog-wrapper">
+            <div class="analog-clock" id="analogClock">
+
+                <div class="hand jrid-hand" id="jridHand"></div>
+                <div class="hand zen-hand" id="zenHand"></div>
+                <div class="hand li-hand" id="liHand"></div>
+
+                <div class="center"></div>
+
+            </div>
+        </div>
+
+        <div class="clock-key">
+            Jrid hand &nbsp; • &nbsp; Zen hand &nbsp; • &nbsp; Li hand
+        </div>
+
+    </section>
+
+
+    <!-- CONVERTER -->
+
+    <section class="panel">
+
+        <div class="converter-top">
+
+            <div>
+                <h2 id="converterTitle">
+                    Normal Time → Metric Time
+                </h2>
+
+                <p class="panel-description">
+                    Convert between conventional time and Metric Time.
+                </p>
+            </div>
+
+            <button class="swap-button" onclick="swapConverter()">
+                ⇄ Swap
+            </button>
+
+        </div>
+
+
+        <!-- NORMAL → METRIC -->
+
+        <div id="normalToMetric">
+
+            <div class="inputs normal-inputs">
+
+                <div>
+                    <label for="normalHour">Hour</label>
+                    <input
+                        id="normalHour"
+                        type="number"
+                        min="1"
+                        max="12"
+                        value="12"
+                    >
+                </div>
+
+                <div>
+                    <label for="normalMinute">Minute</label>
+                    <input
+                        id="normalMinute"
+                        type="number"
+                        min="0"
+                        max="59"
+                        value="00"
+                    >
+                </div>
+
+                <div>
+                    <label for="normalSecond">Second</label>
+                    <input
+                        id="normalSecond"
+                        type="number"
+                        min="0"
+                        max="59"
+                        value="00"
+                    >
+                </div>
+
+                <div>
+                    <label for="normalAmPm">AM / PM</label>
+                    <select id="normalAmPm">
+                        <option>AM</option>
+                        <option>PM</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button class="convert-button" onclick="normalToMetric()">
+                Convert to Metric Time
+            </button>
+
+        </div>
+
+
+        <!-- METRIC → NORMAL -->
+
+        <div id="metricToNormal" style="display:none;">
+
+            <div class="inputs">
+
+                <div>
+                    <label for="metricJrid">Jrids</label>
+                    <input
+                        id="metricJrid"
+                        type="number"
+                        min="0"
+                        max="99"
+                        value="50"
+                    >
+                </div>
+
+                <div>
+                    <label for="metricZen">Zens</label>
+                    <input
+                        id="metricZen"
+                        type="number"
+                        min="0"
+                        max="99"
+                        value="00"
+                    >
+                </div>
+
+                <div>
+                    <label for="metricLi">Lis</label>
+                    <input
+                        id="metricLi"
+                        type="number"
+                        min="0"
+                        max="99"
+                        value="00"
+                    >
+                </div>
+
+            </div>
+
+            <button class="convert-button" onclick="metricToNormal()">
+                Convert to Normal Time
+            </button>
+
+        </div>
+
+
+        <div class="result">
+
+            <div class="result-label" id="resultLabel">
+                Metric Time
+            </div>
+
+            <div class="result-value" id="conversionResult">
+                00:00.0
+            </div>
+
+            <div class="error" id="conversionError"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- REFERENCE AT BOTTOM -->
+
+    <section class="panel reference">
+
+        <h2>Reference</h2>
+
+        <div class="reference-grid">
+
+            <div class="reference-card">
+                <strong>1 Jrid</strong>
+                <span>
+                    1/100 of a day<br>
+                    14.4 minutes
+                </span>
+            </div>
+
+            <div class="reference-card">
+                <strong>1 Zen</strong>
+                <span>
+                    1/10,000 of a day<br>
+                    8.64 seconds
+                </span>
+            </div>
+
+            <div class="reference-card">
+                <strong>1 Li</strong>
+                <span>
+                    1/1,000,000 of a day<br>
+                    0.864 milliseconds
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SYSTEM AT BOTTOM -->
+
+    <section class="panel bottom-info">
+
+        <h2>The Metric Time System</h2>
+
+        <p>
+            Metric Time divides a complete day into decimal units.
+        </p>
+
+        <p>
+            <strong>100 Jrids = 1 day</strong><br>
+            <strong>100 Zens = 1 Jrid</strong><br>
+            <strong>100 Lis = 1 Zen</strong>
+        </p>
+
+        <p>
+            This means there are exactly
+            <strong>1,000,000 Lis</strong>
+            in one complete day.
+        </p>
+
+    </section>
+
+
+    <footer>
+        This website was created by AI<br>
+        and this Metric Time system was created by
+        <strong>Sammy Buck</strong>.
+    </footer>
+
+</div>
+
+
+<script>
+
+let timeOffset = 0;
+
+
+/*
+    INTERNET TIME SYNCHRONIZATION
+*/
+
+async function syncTime() {
+
+    const status =
+        document.getElementById("syncStatus");
+
+    try {
+
+        const start = performance.now();
+
+        const response = await fetch(
+            "https://worldtimeapi.org/api/timezone/Etc/UTC",
+            {
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Time service unavailable");
+        }
+
+        const data = await response.json();
+
+        const end = performance.now();
+
+        const midpoint =
+            start + (end - start) / 2;
+
+        const localTimestamp =
+            performance.timeOrigin + midpoint;
+
+        const internetTimestamp =
+            data.unixtime * 1000;
+
+        timeOffset =
+            internetTimestamp - localTimestamp;
+
+        status.innerHTML =
+            '<span class="sync-dot"></span>' +
+            'Time synchronized';
+
+    } catch (error) {
+
+        status.innerHTML =
+            '<span class="sync-dot"></span>' +
+            'Using local clock';
+
+    }
+}
+
+
+/*
+    CURRENT TIMESTAMP
+*/
+
+function getNow() {
+
+    return (
+        performance.timeOrigin +
+        performance.now() +
+        timeOffset
+    );
+}
+
+
+/*
+    METRIC TIME
+*/
+
+function getMetricTime(timestamp) {
+
+    const date =
+        new Date(timestamp);
+
+    const midnight =
+        new Date(date);
+
+    midnight.setHours(0, 0, 0, 0);
+
+    const elapsed =
+        timestamp - midnight.getTime();
+
+    const DAY = 86400000;
+
+    let totalLis =
+        Math.floor(
+            elapsed / DAY * 1000000
+        );
+
+    totalLis =
+        Math.max(
+            0,
+            Math.min(999999, totalLis)
+        );
+
+
+    const jrids =
+        Math.floor(totalLis / 10000);
+
+    const remaining =
+        totalLis % 10000;
+
+    const zens =
+        Math.floor(remaining / 100);
+
+    const lis =
+        remaining % 100;
+
+
+    return {
+        jrids,
+        zens,
+        lis,
+        totalLis
+    };
+}
+
+
+/*
+    DIGITAL CLOCK
+*/
+
+function updateClock() {
+
+    const metric =
+        getMetricTime(getNow());
+
+    document.getElementById("jrids").textContent =
+        String(metric.jrids).padStart(2, "0");
+
+    document.getElementById("zens").textContent =
+        String(metric.zens).padStart(2, "0");
+
+    document.getElementById("li").textContent =
+        Math.floor(metric.lis / 10);
+
+    updateAnalogClock(metric);
+
+    requestAnimationFrame(updateClock);
+}
+
+
+/*
+    ROUND CLOCK FACE
+*/
+
+function createClockFace() {
+
+    const clock =
+        document.getElementById("analogClock");
+
+    const radius = 46;
+
+    for (let i = 0; i < 100; i++) {
+
+        const angle =
+            (i / 100) * Math.PI * 2;
+
+        const x =
+            50 + radius * Math.sin(angle);
+
+        const y =
+            50 - radius * Math.cos(angle);
+
+
+        const tick =
+            document.createElement("div");
+
+        tick.className =
+            "tick" +
+            (i % 10 === 0 ? " major" : "");
+
+        tick.style.transform =
+            `translateX(-50%) rotate(${i * 3.6}deg)`;
+
+        clock.appendChild(tick);
+
+
+        if (i % 10 === 0) {
+
+            const number =
+                document.createElement("div");
+
+            number.className = "number";
+
+            number.textContent =
+                String(i).padStart(2, "0");
+
+            number.style.left = x + "%";
+            number.style.top = y + "%";
+
+            clock.appendChild(number);
+        }
+    }
+}
+
+
+/*
+    ANALOG HANDS
+
+    Jrid hand:
+        1 rotation every 100 Jrids = 1 day
+
+    Zen hand:
+        1 rotation every 100 Zens = 1 Jrid
+
+    Li hand:
+        1 rotation every 100 Lis = 1 Zen
+*/
+
+function updateAnalogClock(metric) {
+
+    const jridAngle =
+        metric.totalLis / 1000000 * 360;
+
+    const zenAngle =
+        (metric.totalLis % 10000) / 10000 * 360;
+
+    /*
+        IMPORTANT:
+        The Li hand completes one full rotation
+        during the 100 Lis contained inside one Zen.
+    */
+
+    const liAngle =
+        (metric.lis / 100) * 360;
+
+
+    document.getElementById("jridHand").style.transform =
+        `translateX(-50%) rotate(${jridAngle}deg)`;
+
+    document.getElementById("zenHand").style.transform =
+        `translateX(-50%) rotate(${zenAngle}deg)`;
+
+    document.getElementById("liHand").style.transform =
+        `translateX(-50%) rotate(${liAngle}deg)`;
+}
+
+
+/*
+    NORMAL → METRIC
+*/
+
+function normalToMetric() {
+
+    clearError();
+
+    let hour =
+        Number(
+            document.getElementById("normalHour").value
+        );
+
+    const minute =
+        Number(
+            document.getElementById("normalMinute").value
+        );
+
+    const second =
+        Number(
+            document.getElementById("normalSecond").value
+        );
+
+    const ampm =
+        document.getElementById("normalAmPm").value;
+
+
+    if (
+        !Number.isFinite(hour) ||
+        !Number.isFinite(minute) ||
+        !Number.isFinite(second) ||
+        hour < 1 ||
+        hour > 12 ||
+        minute < 0 ||
+        minute > 59 ||
+        second < 0 ||
+        second > 59
+    ) {
+
+        showError("Please enter a valid time.");
+
+        return;
+    }
+
+
+    if (ampm === "AM") {
+
+        if (hour === 12) {
+            hour = 0;
+        }
+
+    } else {
+
+        if (hour !== 12) {
+            hour += 12;
+        }
+    }
+
+
+    const elapsedMilliseconds =
+        hour * 3600000 +
+        minute * 60000 +
+        second * 1000;
+
+
+    const totalLis =
+        Math.round(
+            elapsedMilliseconds /
+            86400000 *
+            1000000
+        );
+
+
+    const jrids =
+        Math.floor(totalLis / 10000);
+
+    const remaining =
+        totalLis % 10000;
+
+    const zens =
+        Math.floor(remaining / 100);
+
+    const lis =
+        remaining % 100;
+
+
+    document.getElementById("resultLabel").textContent =
+        "Metric Time";
+
+    document.getElementById("conversionResult").textContent =
+        String(jrids).padStart(2, "0") +
+        ":" +
+        String(zens).padStart(2, "0") +
+        "." +
+        Math.floor(lis / 10);
+}
+
+
+/*
+    METRIC → NORMAL
+*/
+
+function metricToNormal() {
+
+    clearError();
+
+    const jrids =
+        Number(
+            document.getElementById("metricJrid").value
+        );
+
+    const zens =
+        Number(
+            document.getElementById("metricZen").value
+        );
+
+    const lis =
+        Number(
+            document.getElementById("metricLi").value
+        );
+
+
+    if (
+        !Number.isFinite(jrids) ||
+        !Number.isFinite(zens) ||
+        !Number.isFinite(lis) ||
+        jrids < 0 ||
+        jrids > 99 ||
+        zens < 0 ||
+        zens > 99 ||
+        lis < 0 ||
+        lis > 99
+    ) {
+
+        showError(
+            "Enter Jrids, Zens, and Lis from 00–99."
+        );
+
+        return;
+    }
+
+
+    const totalLis =
+        jrids * 10000 +
+        zens * 100 +
+        lis;
+
+
+    const milliseconds =
+        totalLis /
+        1000000 *
+        86400000;
+
+
+    let totalSeconds =
+        Math.round(
+            milliseconds / 1000
+        );
+
+    totalSeconds %= 86400;
+
+
+    const hour =
+        Math.floor(totalSeconds / 3600);
+
+    const minute =
+        Math.floor(
+            (totalSeconds % 3600) / 60
+        );
+
+    const second =
+        totalSeconds % 60;
+
+
+    const ampm =
+        hour >= 12 ? "PM" : "AM";
+
+
+    let displayHour =
+        hour % 12;
+
+    if (displayHour === 0) {
+        displayHour = 12;
+    }
+
+
+    document.getElementById("resultLabel").textContent =
+        "Normal Time";
+
+    document.getElementById("conversionResult").textContent =
+        String(displayHour).padStart(2, "0") +
+        ":" +
+        String(minute).padStart(2, "0") +
+        ":" +
+        String(second).padStart(2, "0") +
+        " " +
+        ampm;
+}
+
+
+/*
+    SWAP CONVERTER
+*/
+
+let converterDirection = "normal";
+
+
+function swapConverter() {
+
+    const normal =
+        document.getElementById("normalToMetric");
+
+    const metric =
+        document.getElementById("metricToNormal");
+
+    const title =
+        document.getElementById("converterTitle");
+
+
+    if (converterDirection === "normal") {
+
+        converterDirection = "metric";
+
+        normal.style.display = "none";
+        metric.style.display = "block";
+
+        title.textContent =
+            "Metric Time → Normal Time";
+
+        document.getElementById("resultLabel").textContent =
+            "Normal Time";
+
+        document.getElementById("conversionResult").textContent =
+            "12:00:00 AM";
+
+    } else {
+
+        converterDirection = "normal";
+
+        normal.style.display = "block";
+        metric.style.display = "none";
+
+        title.textContent =
+            "Normal Time → Metric Time";
+
+        document.getElementById("resultLabel").textContent =
+            "Metric Time";
+
+        document.getElementById("conversionResult").textContent =
+            "00:00.0";
+    }
+
+    clearError();
+}
+
+
+function showError(message) {
+
+    document.getElementById("conversionError").textContent =
+        message;
+}
+
+
+function clearError() {
+
+    document.getElementById("conversionError").textContent =
+        "";
+}
+
+
+/*
+    START
+*/
+
+createClockFace();
+
+syncTime();
+
+setInterval(
+    syncTime,
+    5 * 60 * 1000
+);
+
+updateClock();
+
+</script>
+
+</body>
+</html>
