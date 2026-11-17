@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR - Society of Logic and Reason</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+<style>
+:root{
+  --navy:#1c3fa8;
+  --navy-deep:#0f2563;
+  --gold:#a67c2e;
+  --gold-soft:#e9dcc0;
+  --text:#1f2937;
+  --muted:#55627a;
+  --page:#f1f4fb;
+  --surface:#ffffff;
+  --border:#d5ddee;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:var(--serif);font-size:18px;color:var(--text);background:var(--page);line-height:1.75}
+a{color:var(--navy);text-decoration-color:var(--gold);text-underline-offset:3px}
+a:hover{color:var(--gold)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+main{flex:1;width:min(1040px,calc(100% - 32px));margin:0 auto 64px}
+
+/* Banner */
+.banner-container{position:relative;min-height:170px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--navy);padding:18px 32px;border-bottom:4px solid var(--gold)}
+.BannerLeft{position:absolute;left:24px;max-height:125px;max-width:30%;object-fit:contain}
+.BannerText{position:relative;z-index:1;width:min(350px,55%);max-height:125px;object-fit:contain}
+.BannerRight{position:absolute;right:24px;max-width:28%;max-height:125px;object-fit:contain}
+
+/* Navigation */
+.tab{position:sticky;top:0;z-index:10;display:flex;justify-content:center;gap:4px;margin:0 0 36px;background:var(--surface);border-bottom:1px solid var(--border);font-family:var(--sans)}
+.tab button{appearance:none;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);cursor:pointer;padding:16px 26px 13px;margin:0;font:inherit;font-weight:600;font-size:15px;letter-spacing:.01em;transition:color .15s,border-color .15s}
+.tab button:hover{color:var(--navy)}
+.tab button.active{color:var(--navy);border-bottom-color:var(--gold)}
+
+/* Content panels */
+.tabcontent{display:none;max-width:860px;margin:0 auto;padding:clamp(28px,5vw,56px);background:var(--surface);border:1px solid var(--border);border-radius:4px}
+.tabcontent h2,.tabcontent h3{font-family:var(--serif);color:var(--navy);line-height:1.25;font-weight:700}
+.tabcontent h2{font-size:clamp(28px,4vw,36px);margin-top:0}
+.tabcontent h3{font-size:22px;margin:42px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.tabcontent>h3:first-child{margin-top:0}
+.tabcontent p{margin:0 0 16px}
+.scripture{margin:0 0 16px;padding:4px 0 4px 20px;border-left:3px solid var(--gold);color:#374151}
+.note{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);font-size:15px;font-style:italic;color:var(--muted)}
+.responsive-text{max-width:80%;margin:0 auto 24px;text-align:center;color:var(--muted)}
+
+/* Members */
+.members-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin:28px auto 0}
+.member{padding:20px 14px;text-align:center;background:var(--page);border:1px solid var(--border);border-top:3px solid var(--navy);border-radius:3px;font-family:var(--sans)}
+.member img{display:block;width:min(140px,100%);aspect-ratio:1/1;margin:0 auto 14px;border-radius:3px;object-fit:cover}
+.member p{margin:3px 0;color:var(--muted);font-size:14px;line-height:1.5}
+.member p strong{color:var(--navy);font-family:var(--serif);font-size:18px}
+
+/* Articles */
+#articles{text-align:center}
+.pip-item{margin:0 0 20px}
+.pip-item a{display:block;width:min(720px,100%);margin:0 auto;padding:20px 26px;color:var(--navy);text-decoration:none;font-weight:700;font-size:19px;line-height:1.45;text-align:left;background:var(--page);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:3px;transition:background .15s,border-color .15s}
+.pip-item a:hover{background:#e6ecfa;border-left-color:var(--navy);color:var(--navy)}
+.spaced{margin:56px auto;border:none;border-top:1px solid var(--border);width:min(720px,100%)}
+
+/* Videos */
+.no-videos{text-align:center;padding:10px 0 36px}
+.no-videos h2{margin:0;font-size:24px}
+.video-wrapper{position:relative;width:100%;aspect-ratio:16/9;margin:0 auto;overflow:hidden;border-radius:3px;background:var(--navy-deep);border:1px solid var(--border)}
+.video-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#videos>hr{border:0;border-top:1px solid var(--border);margin:0 0 36px}
+
+/* Footer */
+.footer-bar{width:100%;background:var(--navy-deep);color:#c9d6f5;border-top:4px solid var(--gold);padding:28px 20px;font-family:var(--sans);font-size:15px}
+.footer-container{width:min(1040px,100%);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px 36px}
+.footer-right{display:flex;align-items:center;gap:6px 20px;flex-wrap:wrap}
+.footer-bar a{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:600}
+.footer-bar a:hover{color:var(--gold-soft);text-decoration:underline}
+.footer-bar img{height:22px;width:auto}
+.footer-right span{color:#9aa3b5}
+
+@media(max-width:899px){
+  .banner-container{min-height:145px;gap:8px}
+  .BannerLeft,.BannerRight{position:static;max-width:23%;max-height:90px}
+  .BannerText{width:45%;max-height:100px}
+  .tab{position:relative;flex-wrap:wrap;margin-bottom:24px}
+  .tab button{flex:1 1 calc(50% - 4px);padding:13px 10px 10px}
+  .responsive-text{max-width:95%}
+  .footer-container{justify-content:center;text-align:center}
+  .footer-right{justify-content:center}
+}
+@media(max-width:520px){
+  body{font-size:17px}
+  .banner-container{min-height:115px;padding:10px 14px}
+  .BannerLeft,.BannerRight{max-height:70px}
+  .BannerText{width:50%;max-height:75px}
+  .members-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .member{padding:14px 8px}
+  .pip-item a{padding:16px;font-size:17px}
+}
+</style>
+
+<script>
+function goToMembers(event) {
+  event.preventDefault();
+  document.querySelector("button[onclick*='members']").click();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openTab(event, tabName) {
+  var tabcontent = document.getElementsByClassName("tabcontent");
+  var tablinks = document.getElementsByClassName("tablinks");
+
+  for (var index = 0; index < tabcontent.length; index++) {
+    tabcontent[index].style.display = "none";
+  }
+
+  for (var linkIndex = 0; linkIndex < tablinks.length; linkIndex++) {
+    tablinks[linkIndex].classList.remove("active");
+  }
+
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.classList.add("active");
+}
+
+window.addEventListener("DOMContentLoaded", function () {
+  document.getElementsByClassName("tablinks")[0].click();
+});
+</script>
+
+</head>
+<body>
+
+<header>
+  <div class="banner-container">
+    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
+    <img class="BannerText" src="bannerText.png" alt="banner text">
+    <img class="BannerRight" src="bannerRight.png" alt="right banner">
+  </div>
+</header>
+
+<nav class="tab" aria-label="Main">
+  <button class="tablinks" onclick="openTab(event, 'about')">About</button>
+  <button class="tablinks" onclick="openTab(event, 'members')">Members</button>
+  <button class="tablinks" onclick="openTab(event, 'articles')">Articles</button>
+  <button class="tablinks" onclick="openTab(event, 'videos')">Videos</button>
+</nav>
+
+<main>
+
+<div class="tabcontent" id="members">
+  <h3>Members</h3>
+  <div class="members-grid">
+    <div class="member">
+      <img src="Lincoln.png" alt="Lincoln">
+      <p><strong>Lincoln</strong></p>
+      <p>-Founder-</p>
+      <p>-Charlie Kirk fan-</p>
+    </div>
+    <div class="member">
+      <img src="Lucas.png" alt="Lucas">
+      <p><strong>Lucas</strong></p>
+      <p>-Co-founder-</p>
+      <p>-Writer-</p>
+    </div>
+    <div class="member">
+      <img src="Sammy.png" alt="Sammy">
+      <p><strong>Sammy</strong></p>
+      <p>-Co-founder-</p>
+      <p>-Tech-</p>
+    </div>
+    <div class="member">
+      <img src="Ben.png" alt="Ben">
+      <p><strong>Ben</strong></p>
+      <p>-Member-</p>
+      <p>-Researcher-</p>
+    </div>
+    <div class="member">
+      <img src="Ian.png" alt="Ian">
+      <p><strong>Ian</strong></p>
+      <p>-Member-</p>
+      <p>-Meetings-</p>
+    </div>
+    <div class="member">
+      <img src="Logan.png" alt="Logan">
+      <p><strong>Logan</strong></p>
+      <p>-Member-</p>
+      <p>-Observer-</p>
+    </div>
+    <div class="member">
+      <img src="Elijah.png" alt="Elijah">
+      <p><strong>Elijah</strong></p>
+      <p>-Member-</p>
+      <p>-Idea Generator-</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="tabcontent" id="about">
+
+  <p style="text-indent: 20px;">Hi There! Welcome to the Society of Logic and Reason. The number of people who reject the Christian faith and accept other worldviews is continuously growing because of a lack of important foundational truths. And along with the skepticism comes a broadening amount of worldviews and ideas, such as Naturalism, Materialism, Postmodernism, and many more. It is our mission to equip ourselves and others with the primary truths of Christianity and respectfully point out the flaws in other worldviews.</p>
+
+  <h3>Core Values</h3>
+  <p style="text-indent: 20px;">The Society of Logic and Reason is founded and governed by logic, which is right thinking. All things that SOLAR occupants decide for the club, be it moral or opinionated, shall be dictated by correct reasoning, using logic. That is to say, one cannot be perfectly logical, because logic (correct thinking) is based on God. God is the only one perfectly logical in all he does. And since we are not God, we are not perfectly logical. However, this does not mean we should not try to be logical. God calls us to be like Him. So we should try to be logical in everything we do.</p>
+
+  <h3>Mission statement</h3>
+  <p style="text-indent: 20px;">Mature in knowledge and wisdom of logic and the Bible, equipping ourselves to stand up for moral values, uphold a Biblical worldview, and ultimately defend truth.</p>
+  <p class="scripture">1 Peter 3:15 “But in your hearts honor Christ the Lord as holy, always being prepared to make a defense to anyone who asks you for a reason for the hope that is in you; yet do it with gentleness and respect.”</p>
+  <p class="scripture">Titus 2:6-8 “Likewise, urge the younger men to be self-controlled. Show yourself in all respects to be a model of good works, and in your teaching show integrity, dignity, and sound speech that cannot be condemned, so that an opponent may be put to shame, having nothing evil to say about us.”</p>
+
+  <h3>WHO are we?</h3>
+  <p style="text-indent: 20px;">We are The Society of Logic and Reason, or SOLAR. We are a group of homeschooled, conservative christian young men co-founded by Lincoln, Lucas, Sammy. <a href="#" onclick="goToMembers(event)">All Members</a>.
+  To become a member you must be invited by a current member, agree with our Terms and Conditions, and the supermajority of SOLAR members must vote for you to join.</p>
+
+  <h3>WHAT do we do?</h3>
+  <p style="text-indent: 20px;">We meet to learn logic, reasoning, critical thinking and apologetics, to use for defending the Truth. Our first step is to examine what we believe and why we believe it, follow the evidence where it leads, and equip ourselves for defending the Truth. With the knowledge we gain, we defend our position in articles and videos.</p>
+
+  <h3>WHAT do we believe?</h3>
+  <p>We believe in Jesus Christ, the son of God
+  <br>We affirm the
+  <a href="https://societyoflogicandreason.com/apostlescreed.html">Apostles Creed</a>
+  and
+  <a href="https://societyoflogicandreason.com/nicenecreed.html">Nicene Creed</a>.
+  <br>We believe that “all Scripture is given by inspiration of God.” (2 Timothy 3:16)
+  <br>We believe in creation and oppose evolution.
+  <br>We believe abortion is murder.
+  <br>We believe marriage is between one man and one woman for life.(Matthew19:5)
+  <br>We believe God created them male and female.(Genesis 1:27)</p>
+
+  <h3>WHEN did we start?</h3>
+  <p>Spring 2025</p>
+
+  <h3>WHERE do we live?</h3>
+  <p>We are from the Great Lakes Region.</p>
+
+  <h3>WHY do we exist?</h3>
+  <p style="text-indent: 20px;">So many people are led astray by errors world views, false beliefs, false assumptions and misinterpretations of evidences,  for whatever reason people believe theses things, they lead to unfulfilled lives, broken relationships, murder, selfishness, wickedness and eventually hell.
+  We exist to get people to come back to there creator, to show them there error and present to them the Truth.</p>
+  <p class="scripture">“For this is good and acceptable in the sight of God our Savior, who desires all men to be saved and to come to the knowledge of the truth.” 1 Timothy 2:3-4</p>
+
+  <p class="note">All articles, notes, and other content was creatively written by real human beings. The code layout of this website was created using AI</p>
+</div>
+
+
+<div class="tabcontent" id="articles">
+  <h2>Articles</h2>
+
+  <div class="pip-item">
+    <a href="Article1.html">If God is Moral, Just, Loving, and Good,<br>
+      Why Does He Allow Evil and Suffering on Earth?</a>
+  </div>
+
+  <hr class="spaced">
+
+  <h2>THE PROVE IT POST</h2>
+  <p class="responsive-text">The Prove It Post is a post that proves Ben's points. This post is independant of SOLAR and the points presented in them may or may not be agreed upon by all members of the society.</p>
+
+  <!-- POST 2 -->
+  <div class="pip-item">
+    <a href="THEPROVEITPOST02ThisisAmerica.html">
+      THE PROVE IT POST #2<br>
+      This is America!</a>
+  </div>
+
+  <!-- POST 3 -->
+  <div class="pip-item">
+    <a href="THEPROVEITPOST03Sundayisnotpartoftheweekend.html">
+      THE PROVE IT POST #3<br>
+      Sunday is not part of the weekend!</a>
+  </div>
+
+  <!-- POST 4 -->
+  <div class="pip-item">
+    <a href="THEPROVEITPOST04AntiAdornment.html">
+      Go to Prove It Post #4<br>
+      Girls shouldn't adorn themselves in vain jewelry and makeup!</a>
+  </div>
+</div>
+
+
+<div class="tabcontent" id="videos">
+  <div class="no-videos">
+    <h2>No SOLAR videos recorded yet</h2>
+  </div>
+
+  <hr>
+
+  <h3>Other Videos about Logic and Truth</h3>
+  <div class="video-wrapper">
+    <iframe
+      src="https://www.youtube.com/embed/videoseries?si=4wpouYdpGsRkUvKy&list=PLrONlh5pxcR_7_KSWvuY2lBtC3kIT8HmL"
+      title="YouTube video player"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+</main>
+
+<div class="footer-bar">
+  <div class="footer-container">
+    <a href="https://www.youtube.com/@societyoflogicandreason" target="_blank" rel="noopener">
+      <img src="yt.png" alt="YouTube">
+      <span>@societyoflogicandreason</span>
+    </a>
+
+    <div class="footer-right">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd4tzoZIApbPpWJfuULUSi3Po1Sutl6LiL_ptDvvQqXcwZ26g/viewform?usp=header" target="_blank" rel="noopener">Contact us</a>
+      <span>societyoflogicandreason@gmail.com</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
