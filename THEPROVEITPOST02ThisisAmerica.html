@@ -7,75 +7,6 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 <style>
-/* Banner */
-.banner-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* center the middle image */
-  background-color: #24f;  /* your blue background */
-  padding: 6px 0;
-}
-
-/* Left image */
-.BannerLeft {
-  position: absolute;
-  left: 20px; /* distance from left edge */
-  max-height: 125px;
-  width: auto;
-}
-
-/* Center image */
-.BannerText {
-  max-width: 350px;
-  height: auto;
-}
-
-/* Right image */
-.BannerRight {
-  position: absolute;
-  right: 20px; /* distance from right edge */
-  max-width: 325px;
-  height: auto;
-}
-
-/* MOBILE STACKING */
-@media (max-width: 899px) {
-  .banner-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-  .BannerLeft,
-  .BannerText,
-  .BannerRight {
-    position: static; /* remove absolute for stacking */
-    max-width: 180px;
-    height: auto;
-  }
-}
-
-/* Tabs */
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.tab button {
-  background-color: inherit;
-  border: none;
-  cursor: pointer;
-  padding: 12px 16px;
-  margin: 4px;
-  border-radius: 8px;
-  transition: 0.3s;
-  font-size: 16px;
-}
-.tab button:hover { background-color: #ddd; }
 
 
 .pip-header {
@@ -177,16 +108,11 @@
 <audio id="pagedownAudio" src="pagedown.mp3" preload="auto"></audio>
 
 <header>
-  <div class="banner-container">
-    <img class="BannerLeft" src="bannerLeft.png" alt="left banner">
-    <img class="BannerText" src="bannerText.png" alt="banner text">
-    <img class="BannerRight" src="bannerRight.png" alt="right banner">
-  </div>
 </header>
 
 
 <div class="tab">
-  <button onclick="clickHome()">Home</button>
+  <button onclick="clickHome()">Back to Solar</button>
 
 </div>
 
