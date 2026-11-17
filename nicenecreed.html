@@ -7,102 +7,46 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 <style>
-  .text-box {
-  max-width: 700px;   /* how wide the text is allowed to be */
-  margin: 0 auto;     /* centers it horizontally */
-  padding: 20px;
-}
+:root{--navy:#1c3fa8;--navy-deep:#0f2563;--gold:#a67c2e;--text:#1f2937;--muted:#55627a;--page:#f1f4fb;--surface:#fff;--border:#d5ddee;
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:var(--serif);font-size:18px;color:var(--text);background:var(--page);line-height:1.75}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 
-/* Banner */
-.banner-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* center the middle image */
-  background-color: #24f;  /* your blue background */
-  padding: 6px 0;
-}
+.banner-container{position:relative;min-height:170px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--navy);padding:18px 32px;border-bottom:4px solid var(--gold)}
+.BannerLeft{position:absolute;left:24px;max-height:125px;max-width:30%;object-fit:contain}
+.BannerText{position:relative;z-index:1;width:min(350px,55%);max-height:125px;object-fit:contain}
+.BannerRight{position:absolute;right:24px;max-width:28%;max-height:125px;object-fit:contain}
 
-/* Left image */
-.BannerLeft {
-  position: absolute;
-  left: 20px; /* distance from left edge */
-  max-height: 125px;
-  width: auto;
-}
+.tab{display:flex;justify-content:center;margin:0 0 36px;background:var(--surface);border-bottom:1px solid var(--border);font-family:var(--sans)}
+.tab button{appearance:none;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);cursor:pointer;padding:16px 26px 13px;font:inherit;font-weight:600;font-size:15px;transition:color .15s}
+.tab button:hover{color:var(--navy)}
 
-/* Center image */
-.BannerText {
-  max-width: 350px;
-  height: auto;
-}
+.text-box{width:min(760px,calc(100% - 32px));margin:0 auto 64px;padding:clamp(28px,5vw,56px);background:var(--surface);border:1px solid var(--border);border-radius:4px}
+.text-box h1{margin:0 0 28px;padding-bottom:14px;border-bottom:1px solid var(--border);font-size:clamp(28px,4vw,36px);line-height:1.25;color:var(--navy)}
+.text-box p{margin:0 0 22px;font-size:20px;line-height:1.8}
+.text-box p:last-child{margin-bottom:0}
 
-/* Right image */
-.BannerRight {
-  position: absolute;
-  right: 20px; /* distance from right edge */
-  max-width: 325px;
-  height: auto;
+@media(max-width:899px){
+ .banner-container{min-height:145px;gap:8px}
+ .BannerLeft,.BannerRight{position:static;max-width:23%;max-height:90px}
+ .BannerText{width:45%;max-height:100px}
 }
-
-/* MOBILE STACKING */
-@media (max-width: 899px) {
-  .banner-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-  .BannerLeft,
-  .BannerText,
-  .BannerRight {
-    position: static; /* remove absolute for stacking */
-    max-width: 180px;
-    height: auto;
-  }
+@media(max-width:520px){
+ body{font-size:17px}
+ .banner-container{min-height:115px;padding:10px 14px}
+ .BannerLeft,.BannerRight{max-height:70px}
+ .BannerText{width:50%;max-height:75px}
+ .text-box p{font-size:18px}
 }
-
-/* Tabs */
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.tab button {
-  background-color: inherit;
-  border: none;
-  cursor: pointer;
-  padding: 12px 16px;
-  margin: 4px;
-  border-radius: 8px;
-  transition: 0.3s;
-  font-size: 16px;
-}
-.tab button:hover { background-color: #ddd; }
-
-/* Main Layout */
-.main-layout {
-  max-width: 1200px;
-  margin: 0 auto 50px auto;
-  display: flex;
-  gap: 25px;
-  align-items: flex-start;
-}
-
-@media (max-width: 899px) {
-  .main-layout {
-    flex-direction: column;
-  }
-  
 </style>
+
 <script>
 function clickHome() {
   const sound = document.getElementById('pagedownAudio');
   sound.currentTime = 0;   // start from beginning
-  sound.play();
+  sound.play().catch(function () {});
 
   // Navigate after a short delay so the sound can play
   setTimeout(() => {
@@ -113,7 +57,8 @@ function clickHome() {
 
 </head>
 <body>
-  <audio id="pagedownAudio" src="pagedown.mp3" preload="auto"></audio>
+
+<audio id="pagedownAudio" src="pagedown.mp3" preload="auto"></audio>
 
 <header>
   <div class="banner-container">
@@ -123,41 +68,42 @@ function clickHome() {
   </div>
 </header>
 
-<div class="tab">
+<nav class="tab" aria-label="Main">
   <button onclick="clickHome()">Home</button>
+</nav>
 
-</div>
+<main class="text-box">
+<h1>Nicene Creed</h1>
+<p>We believe in one God,
+the Father, the almighty,
+maker of heaven and earth,
+of all that is, seen and unseen.</p>
 
-<div class="text-box">
-<h1>Nicene Creed<h1>
-
- <p style="font-size: 20px;">We believe in one God,
- the Father, the almighty, 
-maker of heaven and earth, 
-of all that is, seen and unseen. 
-
-<p style="font-size: 20px;">
-We believe in one Lord, Jesus Christ, the only Son of God, 
-eternally begotten of the Father, 
-God from God, Light from Light, true God from true God, 
-begotten, not made, of one being with the Father. 
+<p>We believe in one Lord, Jesus Christ, the only Son of God,
+eternally begotten of the Father,
+God from God, Light from Light, true God from true God,
+begotten, not made, of one being with the Father.
 Through him all things were made.
- For us men and for our salvation he came down from heaven;
- by the power of the Holy Spirit he became incarnate of the Virgin Mary, and was made man.
- For our sake he was crucified under Pontius Pilate;
- he suffered death and was buried.</p>
+For us men and for our salvation he came down from heaven;
+by the power of the Holy Spirit he became incarnate of the Virgin Mary, and was made man.
+For our sake he was crucified under Pontius Pilate;
+he suffered death and was buried.</p>
 
-<p style="font-size: 20px;">On the third day he rose again in accordance with the scriptures;
- he ascended into heaven and is seated at the right hand of the father. 
-He will come again in glory to judge the living and the dead, 
-and his kingdom will have no end.</p> 
+<p>On the third day he rose again in accordance with the scriptures;
+he ascended into heaven and is seated at the right hand of the father.
+He will come again in glory to judge the living and the dead,
+and his kingdom will have no end.</p>
 
-<p style="font-size: 20px;">We believe in the Holy Spirit, the Lord, the giver of life, 
+<p>We believe in the Holy Spirit, the Lord, the giver of life,
 who proceeds from the Father and the Son.
-With the Father and the Son he is worshipped and glorified. 
+With the Father and the Son he is worshipped and glorified.
 He has spoken through the Prophets.</p>
 
-<p style="font-size: 20px;">We believe in one holy universal and apostolic Church. 
-<br>We acknowledge one baptism for the forgiveness of sins. 
-<br>We look for the resurrection of the dead, 
+<p>We believe in one holy universal and apostolic Church.
+<br>We acknowledge one baptism for the forgiveness of sins.
+<br>We look for the resurrection of the dead,
 and the life of the world to come. Amen.</p>
+</main>
+
+</body>
+</html>
